@@ -25,7 +25,7 @@ $mw_is_view = true;
 
 include_once("$board_skin_path/mw.lib/mw.skin.basic.lib.php");
 
-header("Content-Type: text/html; charset=$g4[charset]");
+header("Content-Type: text/html; charset={$g4['charset']}");
 $gmnow = gmdate("D, d M Y H:i:s") . " GMT";
 header("Expires: 0"); // rfc2616 - Section 14.21
 header("Last-Modified: " . $gmnow);
@@ -35,15 +35,15 @@ header("Pragma: no-cache"); // HTTP/1.0
 
 $img_path = "$g4[url]/skin/board/$board[bo_skin]/img/";
 
-if ($mw_basic[cf_good_graph])
+if ($mw_basic['cf_good_graph'])
 {
     $good_box_width = $_GET['width'];
     if (!$good_box_width)
         $good_box_width = 270;
     if (mw_is_mobile_builder() or G5_IS_MOBILE)
         $good_box_width = 170;
-    $wgg = @(($good_box_width-20)/($write[wr_good]+$write[wr_nogood]))*$write[wr_good]+10;
-    $wgn = @(($good_box_width-20)/($write[wr_good]+$write[wr_nogood]))*$write[wr_nogood]+10;
+    $wgg = @(($good_box_width-20)/($write['wr_good']+$write['wr_nogood']))*$write['wr_good']+10;
+    $wgn = @(($good_box_width-20)/($write['wr_good']+$write['wr_nogood']))*$write['wr_nogood']+10;
     if ($wgg == 10 && $wgn == 10) {
         $wgg = $good_box_width/2;
         $wgn = $good_box_width/2;
@@ -64,8 +64,8 @@ if ($mw_basic[cf_good_graph])
     <div class="in">
         <div class="bg"><img src="<?=$img_path?>/btn_good2.gif" border="0" onclick="mw_good_act('good')" style="cursor:pointer;"></a></div>
         <div class="gh">
-            <div class="gg"><span><?=number_format($write[wr_good])?></span></div>
-            <div class="gn"><span><?=number_format($write[wr_nogood])?></span></div>
+            <div class="gg"><span><?=number_format($write['wr_good'])?></span></div>
+            <div class="gn"><span><?=number_format($write['wr_nogood'])?></span></div>
         </div>
         <div class="bn"><img src="<?=$img_path?>/btn_nogood2.gif" border="0" onclick="mw_good_act('nogood')" style="cursor:pointer;"></div>
     </div>
@@ -74,7 +74,7 @@ if ($mw_basic[cf_good_graph])
 <?php
 }
 else {
-    if (!$board[bo_use_good] || !$board[bo_use_nogood])
+    if (!$board['bo_use_good'] || !$board['bo_use_nogood'])
         $good_box_width = 100;
     else
         $good_box_width = 260;
@@ -95,20 +95,20 @@ else {
     .good-box .gn { width:100px; height:30px; display:inline-block; cursor:pointer; background:url(<?=$img_path?>/btn_nogood.gif); margin:0 0 0 10px; }
     </style>
     <div class="good-box"><div class="in">
-        <?php if ($board[bo_use_good]) { ?>
+        <?php if ($board['bo_use_good']) { ?>
             <?php if (!$_GET['width']) { ?>
             <button onclick="mw_good_act('good')">
-                <div><i class="fa fa-thumbs-up"></i> <?=number_format($write[wr_good])?></div></button>
+                <div><i class="fa fa-thumbs-up"></i> <?=number_format($write['wr_good'])?></div></button>
             <?php } else { ?>
-            <div class="gg" onclick="mw_good_act('good')"><span>추천 : <?=number_format($write[wr_good])?></span></div>
+            <div class="gg" onclick="mw_good_act('good')"><span>추천 : <?=number_format($write['wr_good'])?></span></div>
             <?php } ?>
         <?php } ?>
-        <?php if ($board[bo_use_nogood]) { ?>
+        <?php if ($board['bo_use_nogood']) { ?>
             <?php if (!$_GET['width']) { ?>
             <button onclick="mw_good_act('nogood')">
-                <div><i class="fa fa-thumbs-down"></i> <?=number_format($write[wr_nogood])?></div></button>
+                <div><i class="fa fa-thumbs-down"></i> <?=number_format($write['wr_nogood'])?></div></button>
             <?php } else { ?>
-            <div class="gn" onclick="mw_good_act('nogood')"><span>비추 : <?=number_format($write[wr_nogood])?></span></div>
+            <div class="gn" onclick="mw_good_act('nogood')"><span>비추 : <?=number_format($write['wr_nogood'])?></span></div>
             <?php } ?>
         <?php } ?>
     </div></div>

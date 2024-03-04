@@ -20,7 +20,7 @@
  */
 
 include_once("_common.php");
-header("Content-Type: text/html; charset=$g4[charset]");
+header("Content-Type: text/html; charset={$g4['charset']}");
 
 if ($is_admin != 'super')
     die("로그인 해주세요.");
@@ -28,7 +28,7 @@ if ($is_admin != 'super')
 if (!$bo_table)
     die("bo_table 값이 없습니다.");
 
-if (!$token or get_session("ss_config_token") != $token) 
+if (!$token or get_session("ss_config_token") != $token)
     die("토큰 에러로 실행 불가합니다.");
 
 $data = array();
@@ -61,9 +61,9 @@ sql_query("update {$write_table} set wr_num = wr_num * -1");
 $wr_num = 0;
 foreach ($data as $row) {
     $wr_num--;
-    $row[wr_num] *= -1;
+    $row['wr_num'] *= -1;
 
-    $sql = "update {$write_table} set wr_num = '{$wr_num}' where wr_num = '{$row[wr_num]}'";
+    $sql = "update {$write_table} set wr_num = '{$wr_num}' where wr_num = '{$row['wr_num']}'";
     sql_query($sql);
 }
 

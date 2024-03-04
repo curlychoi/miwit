@@ -25,13 +25,13 @@ include_once("$board_skin_path/mw.lib/mw.skin.basic.lib.php");
 @ini_set('memory_limit', '-1');
 @set_time_limit(0);
 
-if (!mw_singo_admin($member[mb_id]))
+if (!mw_singo_admin($member['mb_id']))
     alert_close("접근 권한이 없습니다.");
 
-if (!strstr($_SERVER[HTTP_REFERER], "mw.proc/mw.intercept.php"))
+if (!strstr($_SERVER['HTTP_REFERER'], "mw.proc/mw.intercept.php"))
     alert_close("잘못된 접근입니다.");
 
-$token = md5(session_id().$member[mb_today_login].$member[mb_login_ip]);
+$token = md5(session_id().$member['mb_today_login'].$member['mb_login_ip']);
 if (($token != get_session("ss_token")) || ($token != $form_token))
     alert_close("잘못된 접근입니다.");
 
@@ -48,14 +48,14 @@ if (!$mb) {
     }
 }
 else {
-    $name = $mb[mb_nick];
+    $name = $mb['mb_nick'];
 }
 
-if ($config[cf_admin] == $mb_id)
+if ($config['cf_admin'] == $mb_id)
     alert_close("최고관리자는 접근 차단할 수 없습니다.");
 
 if (!$is_ip) {
-    $mb_intercept_date = date("Ymd", $g4[server_time]);
+    $mb_intercept_date = date("Ymd", $g4['server_time']);
     $sql = " update $g4[member_table] set mb_level = '1' ";
     $sql.= " ,mb_intercept_date = '$mb_intercept_date'  ";
     $sql.= " ,mb_memo = '$mb_memo'  ";
@@ -107,15 +107,15 @@ if ($is_all_delete or $is_all_move) {
             $all_write_sql = "select * from $g4[write_prefix]$all_board_row[bo_table] where mb_id = '$mb_id' order by wr_num";
         $all_write_qry = sql_query($all_write_sql);
         while ($all_write_row = sql_fetch_array($all_write_qry)) {
-            if ($is_all_delete or $all_write_row[wr_is_comment]) {
+            if ($is_all_delete or $all_write_row['wr_is_comment']) {
                 mw_delete_row($all_board_row, $all_write_row, "no");
             }
             elseif ($is_all_move) {
                 if ($all_board_row['bo_table'] == $move_table) continue;
-                mw_move($all_board_row, $all_write_row[wr_id], $move_table, 'move');
+                mw_move($all_board_row, $all_write_row['wr_id'], $move_table, 'move');
             }
-            if ($intercept_ip and !strstr($config[cf_intercept_ip], $all_write_row[wr_ip])) {
-                $config[cf_intercept_ip] = trim($config[cf_intercept_ip]) . "\n$all_write_row[wr_ip]";
+            if ($intercept_ip and !strstr($config['cf_intercept_ip'], $all_write_row['wr_ip'])) {
+                $config['cf_intercept_ip'] = trim($config['cf_intercept_ip']) . "\n$all_write_row[wr_ip]";
                 sql_query("update $g4[config_table] set cf_intercept_ip = '$config[cf_intercept_ip]'");
             }
 

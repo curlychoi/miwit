@@ -31,7 +31,7 @@ include_once("$board_skin_path/mw.lib/mw.skin.basic.lib.php");
 define('SECRET_COMMENT', "비밀글 입니다.");
 
 // 실명인증 & 성인인증
-if (($mw_basic[cf_kcb_read] || $write[wr_kcb_use]) && !is_okname()) {
+if (($mw_basic['cf_kcb_read'] || $write['wr_kcb_use']) && !is_okname()) {
     check_okname();
 } else {
 
@@ -40,81 +40,81 @@ if (!is_array($mw_membership)) {
     $mw_membership_icon = array();
 }
 
-if ($cwin && $mw_basic[cf_read_level] && $write[wr_read_level] && $write[wr_read_level] > $member[mb_level]) {
+if ($cwin && $mw_basic['cf_read_level'] && $write['wr_read_level'] && $write['wr_read_level'] > $member['mb_level']) {
     alert_close("글을 읽을 권한이 없습니다.");
 }
 
-if ($cwin && $mw_basic[cf_comment_level] && $mw_basic[cf_comment_level] > $member[mb_level]) {
+if ($cwin && $mw_basic['cf_comment_level'] && $mw_basic['cf_comment_level'] > $member['mb_level']) {
     alert_close("글을 읽을 권한이 없습니다.");
 }
 
-if ($cwin && ($mw_basic[cf_must_notice_read] || $mw_basic[cf_must_notice_comment])) // 공지 읽기 필수
+if ($cwin && ($mw_basic['cf_must_notice_read'] || $mw_basic['cf_must_notice_comment'])) // 공지 읽기 필수
 {
     //$tmp_notice = str_replace($notice_div, ",", trim($board[bo_notice]));
-    $tmp_notice = implode(",", array_filter(explode($notice_div, trim($board[bo_notice])), "strlen"));
+    $tmp_notice = implode(",", array_filter(explode($notice_div, trim($board['bo_notice'])), "strlen"));
     $cnt_notice = sizeof(explode(",", $tmp_notice));
 
     if ($tmp_notice) {
-        $sql = "select count(*) as cnt from $mw[must_notice_table] where bo_table = '$bo_table' and mb_id = '$member[mb_id]' and wr_id in ($tmp_notice)";
+        $sql = "select count(*) as cnt from $mw[must_notice_table] where bo_table = '$bo_table' and mb_id = '{$member['mb_id']}' and wr_id in ($tmp_notice)";
         $row = sql_fetch($sql);
-        if ($row[cnt] != $cnt_notice)
+        if ($row['cnt'] != $cnt_notice)
             alert_close("$board[bo_subject] 공지를 모두 읽으셔야 글읽기가 가능합니다.");
     }
 }
 
 $write_error = '';
-if (!$is_member && !$is_comment_write && $mw_basic[cf_comment_write]) {
+if (!$is_member && !$is_comment_write && $mw_basic['cf_comment_write']) {
     $write_error = "readonly onclick=\"alert('로그인 하신 후 코멘트를 작성하실 수 있습니다.'); return false;\"";
 }
 
-if ($mw_basic[cf_kcb_comment] && !is_okname()) {
+if ($mw_basic['cf_kcb_comment'] && !is_okname()) {
     $is_comment_write = false;
     $write_error = '';
 }
 
 if ($is_comment_write) {
-    if ($mw_basic[cf_comment_ban] && $write[wr_comment_ban]) {
+    if ($mw_basic['cf_comment_ban'] && $write['wr_comment_ban']) {
         $is_comment_write = false;
     }
 }
 
-if ($mw_basic[cf_must_notice_comment]) {
+if ($mw_basic['cf_must_notice_comment']) {
     //$tmp_notice = str_replace($notice_div, ",", trim($board[bo_notice]));
-    $tmp_notice = implode(",", array_filter(explode($notice_div, trim($board[bo_notice])), "strlen"));
+    $tmp_notice = implode(",", array_filter(explode($notice_div, trim($board['bo_notice'])), "strlen"));
     $cnt_notice = sizeof(explode(",", $tmp_notice));
 
     if ($tmp_notice) {
-        $sql = "select count(*) as cnt from $mw[must_notice_table] where bo_table = '$bo_table' and mb_id = '$member[mb_id]' and wr_id in ($tmp_notice)";
+        $sql = "select count(*) as cnt from {$mw['must_notice_table']} where bo_table = '$bo_table' and mb_id = '{$member['mb_id']}' and wr_id in ($tmp_notice)";
         $row = sql_fetch($sql);
-        if ($row[cnt] != $cnt_notice) {
+        if ($row['cnt'] != $cnt_notice) {
             $is_comment_write = false;
-            $write_error = "readonly onclick=\"alert('$board[bo_subject] 게시판의 공지를 모두 읽으셔야 코멘트를 작성하실 수 있습니다.'); return false;\"";
+            $write_error = "readonly onclick=\"alert('{$board['bo_subject']} 게시판의 공지를 모두 읽으셔야 코멘트를 작성하실 수 있습니다.'); return false;\"";
         }
             //alert("$board[bo_subject] 공지를 모두 읽으셔야 글읽기가 가능합니다.");
     }
 }
 
-if ($mw_basic[cf_comment_write_count]) {
-    $sql = " select count(*) as cnt from $write_table where wr_num = '$write[wr_num]' and wr_is_comment = '1' ";
-    if ($board[bo_comment_level] == 1 && !$is_member)
-        $sql.= " and wr_ip = '$_SERVER[REMOTE_ADDR]' ";
+if ($mw_basic['cf_comment_write_count']) {
+    $sql = " select count(*) as cnt from $write_table where wr_num = '{$write['wr_num']}' and wr_is_comment = '1' ";
+    if ($board['bo_comment_level'] == 1 && !$is_member)
+        $sql.= " and wr_ip = '{$_SERVER['REMOTE_ADDR']}' ";
     else
-        $sql.= " and mb_id = '$member[mb_id]' ";
+        $sql.= " and mb_id = '{$member['mb_id']}' ";
 
     $tmp = sql_fetch($sql);
-    if ($tmp[cnt] >= $mw_basic[cf_comment_write_count]) {
+    if ($tmp['cnt'] >= $mw_basic['cf_comment_write_count']) {
         $is_comment_write = true;
-        $write_error = "readonly onclick=\"alert('게시물당 코멘트를  {$mw_basic[cf_comment_write_count]}번만 작성하실 수 있습니다.'); return false;\"";
+        $write_error = "readonly onclick=\"alert('게시물당 코멘트를  {$mw_basic['cf_comment_write_count']}번만 작성하실 수 있습니다.'); return false;\"";
     }
 }
 
-if (!$write_error and $mw_basic[cf_qna_enough] and $write[wr_qna_status] > 0) {
+if (!$write_error and $mw_basic['cf_qna_enough'] and $write['wr_qna_status'] > 0) {
     $write_error = "readonly onclick=\"alert('답변이 종료되었습니다.'); return false;\"";
 }
 
 // 컨텐츠샵 멤버쉽
 if (function_exists("mw_cash_is_membership")) {
-    $is_membership = @mw_cash_is_membership($member[mb_id], $bo_table, "mp_comment");
+    $is_membership = @mw_cash_is_membership($member['mb_id'], $bo_table, "mp_comment");
     if ($is_membership == "no")
         ;
     else if ($is_membership != "ok")
@@ -149,27 +149,27 @@ if ($cwin==1) {
     echo "<div id=mw_basic>";
 }
 
-if (!$is_admin && $write[wr_view_block] && $cwin)
+if (!$is_admin && $write['wr_view_block'] && $cwin)
     alert("이 게시물 보기는 차단되었습니다. 관리자만 접근 가능합니다.");
 
 // 코멘트 작성 기간
-if ($mw_basic[cf_comment_period] > 0) {
-    if ($g4[server_time] - strtotime($write[wr_datetime]) > 60*60*24*$mw_basic[cf_comment_period]) {
-        if ($mw_basic[cf_comment_default]) $mw_basic[cf_comment_default] .= "\n";
-        $mw_basic[cf_comment_default] .= "작성한지 $mw_basic[cf_comment_period]일이 지난 게시물에는 코멘트를 작성할 수 없습니다.";
+if ($mw_basic['cf_comment_period'] > 0) {
+    if ($g4['server_time'] - strtotime($write['wr_datetime']) > 60*60*24*$mw_basic['cf_comment_period']) {
+        if ($mw_basic['cf_comment_default']) $mw_basic['cf_comment_default'] .= "\n";
+        $mw_basic['cf_comment_default'] .= "작성한지 {$mw_basic['cf_comment_period']}일이 지난 게시물에는 코멘트를 작성할 수 없습니다.";
     }
 }
 
-$is_singo_admin = mw_singo_admin($member[mb_id]);
+$is_singo_admin = mw_singo_admin($member['mb_id']);
 
 echo "<div style='margin:0;padding:0;font-size:0;line-height:0;height:0;clear:both;'></div>";
 
-echo bc_code($mw_basic[cf_comment_head]);
+echo bc_code($mw_basic['cf_comment_head']);
 ?>
 <link rel="stylesheet" href="<?php echo $board_skin_path?>/mw.js/mw.star.rate/jquery.mw.star.rate.css" type="text/css">
 <script src="<?php echo $board_skin_path?>/mw.js/mw.star.rate/jquery.mw.star.rate.js"></script>
 
-<? if ($mw_basic[cf_source_copy] && $cwin) { // 출처 자동 복사 ?>
+<? if ($mw_basic['cf_source_copy'] && $cwin) { // 출처 자동 복사 ?>
 <script type="text/javascript" src="<?=$board_skin_path?>/mw.js/autosourcing.open.compact.js"></script>
 <style type="text/css">
 DIV.autosourcing-stub { display:none }
@@ -177,7 +177,7 @@ DIV.autosourcing-stub-extra { position:absolute; opacity:0 }
 </style>
 <script type="text/javascript">
 AutoSourcing.setTemplate("<p style='margin:11px 0 7px 0;padding:0'> <a href='{link}' target='_blank'> [출처] {title} - {link}</a> </p>");
-AutoSourcing.setString(<?=$wr_id?> ,"<?=$config[cf_title];//$view[wr_subject]?>", "<?=$view[wr_name]?>", "<?=$copy_url?>");
+AutoSourcing.setString(<?=$wr_id?> ,"<?=$config['cf_title'];//$view['wr_subject']?>", "<?=$view['wr_name']?>", "<?=$copy_url?>");
 AutoSourcing.init( 'view_%id%' , true);
 </script>
 <? } ?>
@@ -194,10 +194,14 @@ var char_max = parseInt(<?=$comment_max?>); // 최대
 <table width=100% cellpadding=10 align=center><tr><td>
 <?}?>
 
+<?php
+#print_r($mw_basic);
+?>
+
 <!-- 코멘트 리스트 -->
 <div id="commentContents">
 
-<?php if ($mw_basic[cf_comment_notice]) { ?>
+<?php if ($mw_basic['cf_comment_notice']) { ?>
 
 <table width=100% cellpadding=0 cellspacing=0>
 <tr>
@@ -212,14 +216,14 @@ var char_max = parseInt(<?=$comment_max?>); // 최대
             <!-- 링크 버튼, 코멘트 작성시간 -->
             <td align=right>
                 <!--
-                <span class=mw_basic_comment_datetime><?=substr($view[wr_datetime],0,10)." (".get_yoil($view[wr_datetime]).") ".substr($view[wr_datetime],11,5)?></span>-->
+                <span class=mw_basic_comment_datetime><?=substr($view['wr_datetime'],0,10)." (".get_yoil($view['wr_datetime']).") ".substr($view['wr_datetime'],11,5)?></span>-->
             </td>
         </tr>
         </table>
         <table width=100% cellpadding=0 cellspacing=0 class=mw_basic_comment_notice>
         <tr>
             <td colspan=2>
-                <div><?=mw_reg_str(nl2br($mw_basic[cf_comment_notice]))?></div>
+                <div><?=mw_reg_str(nl2br($mw_basic['cf_comment_notice']))?></div>
             </td>
         </tr>
         </table>
@@ -231,120 +235,130 @@ var char_max = parseInt(<?=$comment_max?>); // 최대
 <?php }
 
 $is_comment_best = array();
-if ($mw_basic[cf_comment_best]) {
+if ($mw_basic['cf_comment_best']) {
     $sql = " select * from $write_table where wr_parent = '$wr_id' and wr_is_comment = '1' and wr_good > 0 ";
-    if ($mw_basic[cf_comment_best_limit]) {
-        $sql .= " and wr_good >= '$mw_basic[cf_comment_best_limit]' ";
+    if ($mw_basic['cf_comment_best_limit']) {
+        $sql .= " and wr_good >= '{$mw_basic['cf_comment_best_limit']}' ";
     }
-    $sql.= " order by wr_good desc, wr_datetime asc limit $mw_basic[cf_comment_best] ";
+    $sql.= " order by wr_good desc, wr_datetime asc limit {$mw_basic['cf_comment_best']} ";
     $qry = sql_query($sql);
     while ($row = sql_fetch_array($qry)) {
     // ============================= 베플 루프 시작 =============================
 
-    $is_comment_best[] = $row[wr_id];
+    $is_comment_best[] = $row['wr_id'];
 
-    if ($mw_basic[cf_comment_best_point])
-        insert_point($row[mb_id], $mw_basic[cf_comment_best_point], '베플 선정', $bo_table, $row[wr_id], '베플');
+    if ($mw_basic['cf_comment_best_point'])
+        insert_point($row['mb_id'], $mw_basic['cf_comment_best_point'], '베플 선정', $bo_table, $row['wr_id'], '베플');
 
-    $tmp_name = get_text(cut_str($row[wr_name], $config[cf_cut_name])); // 설정된 자리수 만큼만 이름 출력
-    if ($board[bo_use_sideview])
-        $row[name] = get_sideview($row[mb_id], $tmp_name, $row[wr_email], $row[wr_homepage]);
+    $tmp_name = get_text(cut_str($row['wr_name'], $config['cf_cut_name'])); // 설정된 자리수 만큼만 이름 출력
+    if ($board['bo_use_sideview'])
+        $row['name'] = get_sideview($row['mb_id'], $tmp_name, $row['wr_email'], $row['wr_homepage']);
     else
-        $row[name] = "<span class='".($row[mb_id]?'member':'guest')."'>$tmp_name</span>";
+        $row['name'] = "<span class='".($row['mb_id']?'member':'guest')."'>$tmp_name</span>";
 
-    $row[trackback] = url_auto_link($row[wr_trackback]);
-    $row[datetime] = substr($row[wr_datetime],2,14);
+    $row['trackback'] = url_auto_link($row['wr_trackback']);
+    $row['datetime'] = substr($row['wr_datetime'],2,14);
 
-    $row[ip] = $row[wr_ip];
+    $row['ip'] = $row['wr_ip'];
     if (!$is_admin)
-        $row[ip] = preg_replace("/([0-9]+).([0-9]+).([0-9]+).([0-9]+)/", "\\1.♡.\\3.\\4", $row[wr_ip]);
-    else if ($row[mb_id] == $config[cf_admin])
-        $row[ip] = "";
+        $row['ip'] = preg_replace("/([0-9]+).([0-9]+).([0-9]+).([0-9]+)/", "\\1.♡.\\3.\\4", $row['wr_ip']);
+    else if ($row['mb_id'] == $config['cf_admin'])
+        $row['ip'] = "";
+
+	#print_r($row);
+
+	#$comment = $row[wr_content];
+	#$comment = preg_replace("/\[\<a\s.*href\=\"(http|https|ftp|mms)\:\/\/([^[:space:]]+)\.(mp3|wma|wmv|asf|asx|mpg|mpeg)\".*\<\/a\>\]/i", "<script>doc_write(obj_movie('$1://$2.$3'));</script>", $comment);
 
     include("{$board_skin_path}/view_comment_head.skin.php");
-?>
+	?>
 
-<div class="mw_basic_comment_best">
-<table width=100% cellpadding=0 cellspacing=0>
-<tr>
-<?php if (!$mw_basic['cf_comment_image_no']) { ?>
-<td valign="top" style="text-align:left;">
-    <img src="<?=$comment_image?>" class="comment_image" 
-        style="width:58px; height:58px; border:3px solid #f2f2f2; margin:0 10px 5px 0;">
-    <?php
-    if ($mw_basic[cf_icon_level] && !$view[wr_anonymous] && $mw_basic[cf_attribute] != "anonymous" && $row[mb_id] && $row[mb_id] != $config[cf_admin]) { 
-        $level = mw_get_level($row[mb_id]);
-        echo "<div class=\"icon_level".($level+1)."\">&nbsp;</div>";
-        $exp = $icon_level_mb_point[$row[mb_id]] - $level*$mw_basic[cf_icon_level_point];
-        $per = round($exp/$mw_basic[cf_icon_level_point]*100);
-        if ($per > 100) $per = 100;
-        echo "<div class=\"level_exp_bg_{$row[mb_id]}\"><div class=\"level_exp_dot_{$row[mb_id]}\">&nbsp;</div></div>";
-        echo "<style type=\"text/css\">
-            .level_exp_bg_{$row[mb_id]} { background:url($board_skin_path/img/level_exp_bg.gif); width:64px; height:3px; font-size:1px; line-height:1px; margin:5px 0 0 0; }
-            .level_exp_dot_{$row[mb_id]} { background:url($board_skin_path/img/level_exp_dot.gif); width:$per%; height:3px; }
-        </style>";
-    }
-    ?>
-</td>
-<?php } ?>
-<td width="2" bgcolor="#dedede"><div style="width:2px;"></div></td>
-<td><div style="width:10px;"></div></td>
+	<div class="mw_basic_comment_best">
+	<table width=100% cellpadding=0 cellspacing=0>
+	<tr>
+	<?php if (!$mw_basic['cf_comment_image_no']) { ?>
+	<td valign="top" style="text-align:left;">
+		<img src="<?=$comment_image?>" class="comment_image"
+			style="width:58px; height:58px; border:3px solid #f2f2f2; margin:0 10px 5px 0;">
+		<?php
+		if ($mw_basic['cf_icon_level'] && !$view['wr_anonymous'] && $mw_basic['cf_attribute'] != "anonymous" && $row['mb_id'] && $row['mb_id'] != $config['cf_admin']) {
+			$level = mw_get_level($row['mb_id']);
+			echo "<div class=\"icon_level".($level+1)."\">&nbsp;</div>";
+			$exp = $icon_level_mb_point[$row['mb_id']] - $level*$mw_basic['cf_icon_level_point'];
+			$per = round($exp/$mw_basic['cf_icon_level_point']*100);
+			if ($per > 100) $per = 100;
+			echo "<div class=\"level_exp_bg_{$row['mb_id']}\"><div class=\"level_exp_dot_{$row['mb_id']}\">&nbsp;</div></div>";
+			echo "<style type=\"text/css\">
+				.level_exp_bg_{$row['mb_id']} { background:url($board_skin_path/img/level_exp_bg.gif); width:64px; height:3px; font-size:1px; line-height:1px; margin:5px 0 0 0; }
+				.level_exp_dot_{$row['mb_id']} { background:url($board_skin_path/img/level_exp_dot.gif); width:$per%; height:3px; }
+			</style>";
+		}
+		?>
+	</td>
+	<?php } #cf_comment_image_no ?>
 
-<td width="100%" valign="top">
-    <table width=100% height="28" cellpadding=0 cellspacing=0 style="background:url(<?=$board_skin_path?>/img/co_title_bg.gif);">
-    <tr>
-        <!-- 이름, 아이피 -->
-        <td>
-            <img src="<?=$board_skin_path?>/img/comment_best.gif" align="absmiddle">
-            <? if ($mw_basic[cf_attribute] == 'qna' && $write[wr_qna_status] && $write[wr_qna_id] == $row[wr_id]) { ?> <img src="<?=$board_skin_path?>/img/icon_choose.png" align="absmiddle"> <? } ?>
-            <span class=mw_basic_comment_name><?=$row[name]?></span>
-            <? /*if ($is_ip_view && $row[ip]) { ?> <span class=mw_basic_comment_ip>(<?=$row[ip]?>)</span> <?}*/?>
-            <? if ($is_admin or $is_singo_admin) { ?>
-            <img src="<?=$board_skin_path?>/img/btn_intercept_small.gif" align=absmiddle title='접근차단' style="cursor:pointer" onclick="btn_intercept('<?=$row[mb_id]?>', '<?=$row[wr_ip]?>')">
-            <img src="<?=$board_skin_path?>/img/btn_ip.gif" class="tooltip" align=absmiddle title='<?php echo $row['ip']?> 조회' style="cursor:pointer" onclick="btn_ip('<?=$row[wr_ip]?>')">
-            <img src="<?=$board_skin_path?>/img/btn_ip_search.gif" class="tooltip" align=absmiddle title='<?php echo $row['ip']?> 검색' style="cursor:pointer" onclick="btn_ip_search('<?=$row[wr_ip]?>')">
-            <? } ?>
-            <span class="mw_basic_comment_datetime media-date"><?php echo $row['datetime2']?></span>
-            <span class="mw_basic_comment_datetime media-date-sns"><?php echo $row['datetime_sns']?></span>
+	<td width="2" bgcolor="#dedede"><div style="width:2px;"></div></td>
+	<td><div style="width:10px;"></div></td>
 
-        </td>
-        <!-- 링크 버튼, 코멘트 작성시간 -->
-        <td align=right style="margin-right:10px;">
-            <? if ($mw_basic[cf_comment_good]) { ?>
-                <span class="mw_basic_comment_good"><a onclick="mw_comment_good(<?=$row[wr_id]?>, 'good')"><img src="<?=$board_skin_path?>/img/thumbs_up.png" align="absmiddle" alt="추천"/>추천</a>
-                <span id="mw_comment_good_<?=$row[wr_id]?>"><?=$row[wr_good]?></span></span><? } ?>
-            <? if ($mw_basic[cf_comment_nogood]) { ?>
-                <span class="mw_basic_comment_nogood"><a onclick="mw_comment_good(<?=$row[wr_id]?>, 'nogood')">반대</a>
-                <span id="mw_comment_nogood_<?=$row[wr_id]?>"><?=$row[wr_nogood]?></span></span><? } ?>
-        </td>
-    </tr>
-    </table>
 
-    <table width=100% cellpadding=0 cellspacing=0 class=mw_basic_comment_content>
-    <tr>
-        <td valign="top" style="background-color:#ffecd7;">
-            <!-- 코멘트 출력 -->
-            <div id=view_<?=$row[wr_id]?>_best>
-            <?php echo $row[content] ?>
-            </div>
-            <? if ($row[trackback]) { echo "<p>".$row[trackback]."</p>"; } ?>
-            <? if ($mw_basic[cf_source_copy]) { // 출처 자동 복사 ?>
-            <? $copy_url = set_http("{$g4[url]}/{$g4[bbs]}/board.php?bo_table={$bo_table}&wr_id={$wr_id}#c_{$row[wr_id]}"); ?>
-            <script type="text/javascript">
-            AutoSourcing.setString(<?=$row[wr_id]?> ,"<?=$config[cf_title]?>", "<?=$row[wr_name]?>", "<?=$copy_url?>");
-            </script>
-            <? } ?>
-        </td>
-    </tr>
-    </table>
-</tr>
-<tr>
-<td colspan="4" height="10"></td>
-</tr>
-</table>
-</div>
+	<td width="100%" valign="top">
+		<table width=100% height="28" cellpadding=0 cellspacing=0 style="background:url(<?=$board_skin_path?>/img/co_title_bg.gif);">
+		<tr>
+			<!-- 이름, 아이피 -->
+			<td>
+				<img src="<?=$board_skin_path?>/img/comment_best.gif" align="absmiddle">
+				<? if ($mw_basic['cf_attribute'] == 'qna' && $write['wr_qna_status'] && $write['wr_qna_id'] == $row['wr_id']) { ?> <img src="<?=$board_skin_path?>/img/icon_choose.png" align="absmiddle"> <? } ?>
+				<span class=mw_basic_comment_name><?=$row['name']?></span>
+				<? /*if ($is_ip_view && $row['ip']) { ?> <span class=mw_basic_comment_ip>(<?=$row['ip']?>)</span> <?}*/?>
+				<? if ($is_admin or $is_singo_admin) { ?>
+				<img src="<?=$board_skin_path?>/img/btn_intercept_small.gif" align=absmiddle title='접근차단' style="cursor:pointer" onclick="btn_intercept('<?=$row['mb_id']?>', '<?=$row['wr_ip']?>')">
+				<img src="<?=$board_skin_path?>/img/btn_ip.gif" class="tooltip" align=absmiddle title='<?php echo $row['ip']?> 조회' style="cursor:pointer" onclick="btn_ip('<?=$row['wr_ip']?>')">
+				<img src="<?=$board_skin_path?>/img/btn_ip_search.gif" class="tooltip" align=absmiddle title='<?php echo $row['ip']?> 검색' style="cursor:pointer" onclick="btn_ip_search('<?=$row['wr_ip']?>')">
+				<? } ?>
+				<span class="mw_basic_comment_datetime media-date"><?php echo $row['datetime2']?></span>
+				<span class="mw_basic_comment_datetime media-date-sns"><?php echo $row['datetime_sns']?></span>
 
-<?  } } ?>
+			</td>
+			<!-- 링크 버튼, 코멘트 작성시간 -->
+			<td align=right style="margin-right:10px;">
+				<? if ($mw_basic['cf_comment_good']) { ?>
+					<span class="mw_basic_comment_good"><a onclick="mw_comment_good(<?=$row['wr_id']?>, 'good')"><img src="<?=$board_skin_path?>/img/thumbs_up.png" align="absmiddle" alt="추천"/>추천</a>
+					<span id="mw_comment_good_<?=$row['wr_id']?>"><?=$row['wr_good']?></span></span><? } ?>
+				<? if ($mw_basic['cf_comment_nogood']) { ?>
+					<span class="mw_basic_comment_nogood"><a onclick="mw_comment_good(<?=$row['wr_id']?>, 'nogood')">반대</a>
+					<span id="mw_comment_nogood_<?=$row['wr_id']?>"><?=$row['wr_nogood']?></span></span><? } ?>
+			</td>
+		</tr>
+		</table>
+
+		<?php #print_r($row); ?>
+
+		<table width=100% cellpadding=0 cellspacing=0 class=mw_basic_comment_content>
+		<tr>
+			<td valign="top" style="background-color:#ffecd7;">
+				<!-- 코멘트 출력 11 -->
+				<div id=view_<?=$row['wr_id']?>_best>
+					<?php echo $row['content'] ?>
+				</div>
+				<? if ($row['trackback']) { echo "<p>".$row['trackback']."</p>"; } ?>
+				<? if ($mw_basic['cf_source_copy']) { // 출처 자동 복사 ?>
+				<? $copy_url = set_http("{$g4['url']}/{$g4['bbs']}/board.php?bo_table={$bo_table}&wr_id={$wr_id}#c_{$row['wr_id']}"); ?>
+				<script type="text/javascript">
+				AutoSourcing.setString(<?=$row['wr_id']?> ,"<?=$config['cf_title']?>", "<?=$row['wr_name']?>", "<?=$copy_url?>");
+				</script>
+				<? } ?>
+			</td>
+		</tr>
+		</table>
+	</tr>
+	<tr>
+	<td colspan="4" height="10"></td>
+	</tr>
+	</table>
+	</div>
+
+	<?  } // while ?>
+<? } // cf_comment_best ?>
 
 <a id="cs" name="cs"></a>
 <br>
@@ -360,25 +374,25 @@ function comment_check(obj) {
 <label for="all_comment">코멘트 전체 선택</label>
 <br>
 <br>
-<?php } ?>
+<?php } #is_admin ?>
 
 <?php
 $total_count = count($list);
 
-if ($mw_basic[cf_comment_page]) { // 코멘트 페이지
-    $rows = $mw_basic[cf_comment_page_rows];;
+if ($mw_basic['cf_comment_page']) { // 코멘트 페이지
+    $rows = $mw_basic['cf_comment_page_rows'];
     $total_page  = @ceil($total_count / $rows);  // 전체 페이지 계산
     if (!$total_page) $total_page = 1;
-    
+
     if (!is_numeric($cpage)) { // 페이지가 없으면
-        if ($board[bo_reply_order]) {
-            if ($mw_basic[cf_comment_page_first])
+        if ($board['bo_reply_order']) {
+            if ($mw_basic['cf_comment_page_first'])
                 $cpage = 1;
             else
                 $cpage = $total_page;
         }
         else {
-            if ($mw_basic[cf_comment_page_first])
+            if ($mw_basic['cf_comment_page_first'])
                 $cpage = $total_page;
             else
                 $cpage = 1;
@@ -388,7 +402,7 @@ if ($mw_basic[cf_comment_page]) { // 코멘트 페이지
         $t_rows = 1;
         $t_page = 1;
         for ($i=0, $m=sizeof($list); $i<$m; $i++) {
-            if ($list[$i][wr_id] == $_c) {
+            if ($list[$i]['wr_id'] == $_c) {
                 $cpage = $t_page;
             } else {
                 if ($t_rows++ % $rows == 0) {
@@ -401,39 +415,41 @@ if ($mw_basic[cf_comment_page]) { // 코멘트 페이지
     $to_record = $cpage == $total_page ? $total_count : $rows * $cpage;
 
     //$qstr = preg_replace("/(\&page=.*)/", "", $qstr);
-    $comment_pages = get_paging($config[cf_write_pages], $cpage, $total_page, "{$_SERVER['SCRIPT_NAME']}?bo_table=$bo_table&wr_id=$wr_id{$qstr}&cpage=");
+    $comment_pages = get_paging($config['cf_write_pages'], $cpage, $total_page, "{$_SERVER['SCRIPT_NAME']}?bo_table=$bo_table&wr_id=$wr_id{$qstr}&cpage=");
     if (is_g5()) {
         $comment_pages = preg_replace("/&cpage=&amp;page=([0-9]+)\"/i", "&cpage=$1\"", $comment_pages);
     }
     $comment_pages = preg_replace("/(\&cpage=[0-9]+)/", "$1#cs", $comment_pages);
-    
+
 } else {
     $from_record = 0;
     $to_record = $total_count;
 }
 
-for ($i=0; $i<$to_record; $i++) {
+## for of to_record
+for ($i=0; $i < $to_record; $i++) {
     $row = $list[$i];
     $res = include("{$board_skin_path}/view_comment_head.skin.php");
     if (!$res) continue;
+
     $list[$i] = $row;
 
-    if ($mw_basic[cf_include_comment_main] && is_mw_file($mw_basic[cf_include_comment_main])) {
-        include($mw_basic[cf_include_comment_main]);
+    if ($mw_basic['cf_include_comment_main'] && is_mw_file($mw_basic['cf_include_comment_main'])) {
+        include($mw_basic['cf_include_comment_main']);
     }
 ?>
 <a name="c_<?=$comment_id?>"></a>
 
 <table width=100% height="1" cellpadding=0 cellspacing=0 style="margin-bottom:5px;">
 <tr>
-    <td style="line-height:0;"><? for ($k=0; $k<strlen($list[$i][wr_comment_reply]); $k++) echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; ?></td>
+    <td style="line-height:0;"><? for ($k=0; $k<strlen($list[$i]['wr_comment_reply']); $k++) echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; ?></td>
     <td width="100%" height="1" style="border-top:1px solid #ddd;"></td>
 </tr>
 </table>
 
 <table width=100% cellpadding=0 cellspacing=0>
 <tr>
-    <td><? for ($k=0; $k<strlen($list[$i][wr_comment_reply]); $k++) echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; ?></td>
+    <td><? for ($k=0; $k < strlen($list[$i]['wr_comment_reply']); $k++) echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; ?></td>
 
 <?php if (!$mw_basic['cf_comment_image_no']) { ?>
     <td valign="top" style="text-align:left;">
@@ -441,10 +457,10 @@ for ($i=0; $i<$to_record; $i++) {
         <img src="<?php echo $comment_image?>"
             <?php
             if ($is_comment_image) { echo "onclick='mw_image_window(this, {$tmpsize[0]}, {$tmpsize[1]});'"; }
-            else if (($is_member && $list[$i][mb_id] == $member[mb_id] && !$list[$i][wr_anonymous]) || $is_admin) { echo "onclick='mw_member_photo(\"{$list[$i]['mb_id']}\");'"; }?>>
+            else if (($is_member && $list[$i]['mb_id'] == $member['mb_id'] && !$list[$i]['wr_anonymous']) || $is_admin) { echo "onclick='mw_member_photo(\"{$list[$i]['mb_id']}\");'"; }?>>
 
-        <? if (($is_member && $list[$i][mb_id] == $member[mb_id] && !$list[$i][wr_anonymous]) || $is_admin) { ?>
-        <div><a href="javascript:mw_member_photo('<?=$list[$i][mb_id]?>')"
+        <? if (($is_member && $list[$i]['mb_id'] == $member['mb_id'] && !$list[$i]['wr_anonymous']) || $is_admin) { ?>
+        <div><a href="javascript:mw_member_photo('<?=$list[$i]['mb_id']?>')"
             style="font:normal 11px; color:#888; text-decoration:none;"><? echo $is_comment_image ? "사진변경" : "사진등록"; ?></a></div>
         <?php } ?>
         </div>
@@ -456,11 +472,11 @@ for ($i=0; $i<$to_record; $i++) {
         </script>
 
         <?
-        if ($mw_basic[cf_icon_level] && !$list[$i][wr_anonymous] && $mw_basic[cf_attribute] != "anonymous" && $list[$i][mb_id] && $list[$i][mb_id] != $config[cf_admin]) { 
-            $level = mw_get_level($list[$i][mb_id]);
+        if ($mw_basic['cf_icon_level'] && !$list[$i]['wr_anonymous'] && $mw_basic['cf_attribute'] != "anonymous" && $list[$i]['mb_id'] && $list[$i]['mb_id'] != $config['cf_admin']) {
+            $level = mw_get_level($list[$i]['mb_id']);
             echo "<div class=\"icon_level".($level+1)."\">&nbsp;</div>";
-            $exp = $icon_level_mb_point[$list[$i][mb_id]] - $level*$mw_basic[cf_icon_level_point];
-            $per = round($exp/$mw_basic[cf_icon_level_point]*100);
+            $exp = $icon_level_mb_point[$list[$i]['mb_id']] - $level*$mw_basic['cf_icon_level_point'];
+            $per = round($exp/$mw_basic['cf_icon_level_point']*100);
             if ($per > 100) $per = 100;
             echo "<div style=\"background:url($board_skin_path/img/level_exp_bg.gif); width:61px; height:3px; font-size:1px; line-height:1px; margin:5px 0 0 3px;\">";
             echo "<div style=\"background:url($board_skin_path/img/level_exp_dot.gif); width:$per%; height:3px;\">&nbsp;</div>";
@@ -470,9 +486,9 @@ for ($i=0; $i<$to_record; $i++) {
         <?php if ($is_admin or $is_singo_admin) { ?>
             <div class="division" style="padding-top:10px;"></div>
             <div class="mw_basic_comment_func user">
-                <a href="#;" title='접근차단' onclick="btn_intercept('<?=$list[$i][mb_id]?>', '<?=$list[$i][wr_ip]?>')"><i class="fa fa-user-times"></i></a>
-                <a href="#;" class="tooltip" title='<?php echo $list[$i]['ip']?> 조회' onclick="btn_ip('<?=$list[$i][wr_ip]?>')"><i class="fa fa-info-circle"></i></a>
-                <a href="#;" class="tooltip" title='<?php echo $list[$i]['ip']?> 검색' onclick="btn_ip_search('<?=$list[$i][wr_ip]?>')"><i class="fa fa-search"></i></a>
+                <a href="#;" title='접근차단' onclick="btn_intercept('<?=$list[$i]['mb_id']?>', '<?=$list[$i]['wr_ip']?>')"><i class="fa fa-user-times"></i></a>
+                <a href="#;" class="tooltip" title='<?php echo $list[$i]['ip']?> 조회' onclick="btn_ip('<?=$list[$i]['wr_ip']?>')"><i class="fa fa-info-circle"></i></a>
+                <a href="#;" class="tooltip" title='<?php echo $list[$i]['ip']?> 검색' onclick="btn_ip_search('<?=$list[$i]['wr_ip']?>')"><i class="fa fa-search"></i></a>
             </div>
             <div class="division"></div>
         <?php } ?>
@@ -487,16 +503,16 @@ for ($i=0; $i<$to_record; $i++) {
         <tr>
             <!-- 이름, 아이피 -->
             <td>
-                <? if ($list[$i][wr_is_mobile]) echo "<img src='$board_skin_path/img/icon_mobile.png' align='absmiddle' class='comment_mobile_icon'>"; ?>
-                <? if ($is_admin) { ?> <input type="checkbox" name="chk_comment_id[]" class="chk_comment_id" value="<?=$list[$i][wr_id]?>"> <? } ?>
-                <? if ($mw_basic[cf_attribute] == 'qna' && $write[wr_qna_status] && $write[wr_qna_id] == $list[$i][wr_id]) { ?> <img src="<?=$board_skin_path?>/img/icon_choose.png" align="absmiddle"> <? } ?>
-                <span class=mw_basic_comment_name><?=$list[$i][name]?></span>
+                <? if ($list[$i]['wr_is_mobile']) echo "<img src='$board_skin_path/img/icon_mobile.png' align='absmiddle' class='comment_mobile_icon'>"; ?>
+                <? if ($is_admin) { ?> <input type="checkbox" name="chk_comment_id[]" class="chk_comment_id" value="<?=$list[$i]['wr_id']?>"> <? } ?>
+                <? if ($mw_basic['cf_attribute'] == 'qna' && $write['wr_qna_status'] && $write['wr_qna_id'] == $list[$i]['wr_id']) { ?> <img src="<?=$board_skin_path?>/img/icon_choose.png" align="absmiddle"> <? } ?>
+                <span class=mw_basic_comment_name><?=$list[$i]['name']?></span>
                 <span class="mw_basic_comment_datetime media-date"><i class="fa fa-clock-o"></i> <?php echo $row['datetime2']?></span>
                 <span class="mw_basic_comment_datetime media-date-sns"><i class="fa fa-clock-o"></i> <?php echo $row['datetime_sns']?></span>
 
                 <div class="mw_basic_comment_func" style="float:right;">
-                <? if ($list[$i][is_edit]) { echo "<a href=\"javascript:comment_box('{$comment_id}', 'cu');\" title='수정'><i class='fa fa-cut fa-square-o'></i></a> "; } ?>
-                <? if ($list[$i][is_del])  { echo "<a href=\"javascript:comment_delete('{$list[$i][del_link]}');\" title='삭제'><i class='fa fa-remove'></i></a> "; } ?>
+                <? if ($list[$i]['is_edit']) { echo "<a href=\"javascript:comment_box('{$comment_id}', 'cu');\" title='수정'><i class='fa fa-cut fa-square-o'></i></a> "; } ?>
+                <? if ($list[$i]['is_del'])  { echo "<a href=\"javascript:comment_delete('{$list[$i]['del_link']}');\" title='삭제'><i class='fa fa-remove'></i></a> "; } ?>
                 </div><!--mw_basic_comment_func-->
 
             </td>
@@ -506,20 +522,20 @@ for ($i=0; $i<$to_record; $i++) {
         <table width=100% cellpadding=0 cellspacing=0 class=mw_basic_comment_content>
         <tr>
             <td valign="top">
-                <?php if (in_array($list[$i][wr_id], $is_comment_best)) { ?>
+                <?php if (in_array($list[$i]['wr_id'], $is_comment_best)) { ?>
                 <div id="info_best_reply">
                     베플로 선택된 게시물입니다.
-                    <input type="button" value="원문확인▼" id="btn_best_reply_view_<?=$list[$i][wr_id]?>">
+                    <input type="button" value="원문확인▼" id="btn_best_reply_view_<?=$list[$i]['wr_id']?>">
                 </div>
                 <style>
                 #info_best_reply { margin:0 0 20px 0; color:#F56C07; }
-                #view_<?=$list[$i][wr_id]?> { display:none; } 
-                #btn_best_reply_view_<?=$list[$i][wr_id]?> {
+                #view_<?=$list[$i]['wr_id']?> { display:none; }
+                #btn_best_reply_view_<?=$list[$i]['wr_id']?> {
                     background-color:#fff; color:#444; cursor:pointer; font-size:12px; border:0; }
                 </style>
                 <script>
-                $("#btn_best_reply_view_<?=$list[$i][wr_id]?>").click(function () {
-                    $("#view_<?=$list[$i][wr_id]?>").toggle('slow');
+                $("#btn_best_reply_view_<?=$list[$i]['wr_id']?>").click(function () {
+                    $("#view_<?=$list[$i]['wr_id']?>").toggle('slow');
                     if ($("#btn_best_reply_view").val() == "원문확인▲")
                         $("#btn_best_reply_view").val("원문확인▼");
                     else
@@ -528,15 +544,18 @@ for ($i=0; $i<$to_record; $i++) {
                 </script>
                 <? } ?>
                 <!-- 코멘트 출력 -->
-                <div id=view_<?=$list[$i][wr_id]?>>
-                <?php echo $row[content] ?>
+                <div id='view_<?=$list[$i]['wr_id']?>'>
+                <?php #echo $row[wr_content] ?>
+                <?php echo $row['content'] ?>
+                <?php #print_r($row); ?>
+                <?php #print_r($list[$i]); ?>
                 </div>
-                <?php if ($list[$i][trackback]) { echo "<p>".$list[$i][trackback]."</p>"; } ?>
-                <?php if ($mw_basic[cf_source_copy]) { // 출처 자동 복사 ?>
-                <?php $copy_url = set_http("{$g4[url]}/{$g4[bbs]}/board.php?bo_table={$bo_table}&wr_id={$wr_id}#c_{$list[$i][wr_id]}"); ?>
+                <?php if ($list[$i]['trackback']) { echo "<p>".$list[$i]['trackback']."</p>"; } ?>
+                <?php if ($mw_basic['cf_source_copy']) { // 출처 자동 복사 ?>
+                <?php $copy_url = set_http("{$g4['url']}/{$g4['bbs']}/board.php?bo_table={$bo_table}&wr_id={$wr_id}#c_{$list[$i]['wr_id']}"); ?>
                 <script>
-                AutoSourcing.setString(<?=$list[$i][wr_id]?>,
-                    "<?=$config[cf_title]?>", "<?=$list[$i][wr_name]?>", "<?=$copy_url?>");
+                AutoSourcing.setString(<?=$list[$i]['wr_id']?>,
+                    "<?=$config['cf_title']?>", "<?=$list[$i]['wr_name']?>", "<?=$copy_url?>");
                 </script>
                 <? } ?>
             </td>
@@ -558,49 +577,49 @@ for ($i=0; $i<$to_record; $i++) {
 
             <?php if ($is_member and $list[$i]['singo_href']) { ?>
             <span class="button">
-                <a href="<?=$list[$i][singo_href]?>">
+                <a href="<?=$list[$i]['singo_href']?>">
                     <i class="fa fa-warning"></i>
                     <span class='media-comment-button'>신고</span>
                 </a>
             </span>
             <?php } ?>
 
-            <span class="mw_basic_comment_url button" value="<?=$list[$i][wr_id]?>">
+            <span class="mw_basic_comment_url button" value="<?=$list[$i]['wr_id']?>">
                 <i class="fa fa-anchor"></i>
                 <span class='media-comment-button'>주소</span>
             </span>
             <?php
-            if ($mw_basic[cf_attribute] == 'qna'
-                && ($is_admin || !$write[wr_qna_status])
-                && $member[mb_id]
-                && ($member[mb_id] == $write[mb_id] || $is_admin)
-                && !$view[is_notice]) { ?>
+            if ($mw_basic['cf_attribute'] == 'qna'
+                && ($is_admin || !$write['wr_qna_status'])
+                && $member['mb_id']
+                && ($member['mb_id'] == $write['mb_id'] || $is_admin)
+                && !$view['is_notice']) { ?>
                 <span class="mw_basic_qna_choose button">
-                    <a onclick="mw_qna_choose(<?=$list[$i][wr_id]?>)">
+                    <a onclick="mw_qna_choose(<?=$list[$i]['wr_id']?>)">
                         <i class="fa fa-graduation-cap"></i>
                         <span class='media-comment-button'>채택</span>
                     </a>
                 </span>
             <?php } ?>
-            <?php if ($mw_basic[cf_comment_good]) { ?>
+            <?php if ($mw_basic['cf_comment_good']) { ?>
                 <span class="mw_basic_comment_good button">
-                    <a onclick="mw_comment_good(<?=$list[$i][wr_id]?>, 'good')">
+                    <a onclick="mw_comment_good(<?=$list[$i]['wr_id']?>, 'good')">
                         <i class="fa fa-thumbs-o-up"></i>
                         <span class='media-comment-button'>추천</span>
-                        <span id="mw_comment_good_<?=$list[$i][wr_id]?>"><?=$list[$i][wr_good]?></span>
+                        <span id="mw_comment_good_<?=$list[$i]['wr_id']?>"><?=$list[$i]['wr_good']?></span>
                     </a>
                 </span>
             <?php } ?>
-            <?php if ($mw_basic[cf_comment_nogood]) { ?>
+            <?php if ($mw_basic['cf_comment_nogood']) { ?>
                 <span class="mw_basic_comment_nogood button">
-                    <a onclick="mw_comment_good(<?=$list[$i][wr_id]?>, 'nogood')">
+                    <a onclick="mw_comment_good(<?=$list[$i]['wr_id']?>, 'nogood')">
                         <i class="fa fa-thumbs-o-down"></i>
                         <span class='media-comment-button'>반대</span>
-                        <span id="mw_comment_nogood_<?=$list[$i][wr_id]?>"><?=$list[$i][wr_nogood]?></span>
+                        <span id="mw_comment_nogood_<?=$list[$i]['wr_id']?>"><?=$list[$i]['wr_nogood']?></span>
                     </a>
                 </span>
             <?php } ?>
-            <?php if ($list[$i][is_reply]) { ?>
+            <?php if ($list[$i]['is_reply']) { ?>
                 <span class="mw_basic_comment_reply button">
                     <a href="javascript:comment_box('<?php echo $comment_id?>', 'c', '<?php echo $list[$i]['wr_name']?>');">
                     <i class='fa fa-reply fa-rotate-180'></i>
@@ -614,11 +633,11 @@ for ($i=0; $i<$to_record; $i++) {
         <div id='edit_<?=$comment_id?>' style='display:none;'></div><!-- 수정 -->
         <div id='reply_<?=$comment_id?>' style='display:none;'></div><!-- 답변 -->
         <input type="hidden" id='secret_<?=$comment_id?>'
-            value="<?=strstr($list[$i][wr_option], 'secret')?'1':'';?>"><!-- 비밀글 -->
+            value="<?=strstr($list[$i]['wr_option'], 'secret')?'1':'';?>"><!-- 비밀글 -->
         <input type="hidden" id='html_<?=$comment_id?>'
-            value="<?=strstr($list[$i][wr_option], 'html2')?'1':'';?>"><!-- html -->
+            value="<?=strstr($list[$i]['wr_option'], 'html2')?'1':'';?>"><!-- html -->
         <textarea id="save_comment_<?php echo $comment_id?>"
-            style="display:none;"><?php if ($is_admin or $list[$i]['mb_id'] == $member['mb_id']) echo get_text($list[$i][content1], 0)?></textarea>
+            style="display:none;"><?php if ($is_admin or $list[$i]['mb_id'] == $member['mb_id']) echo get_text($list[$i]['content1'], 0)?></textarea>
         <?php } ?>
     </td>
 </tr>
@@ -626,18 +645,18 @@ for ($i=0; $i<$to_record; $i++) {
     <td colspan="4" height="10"></td>
 </tr>
 </table>
-<? } ?>
+<? } # for of to_record  ?>
 </div>
 <!-- 코멘트 리스트 -->
 
-<? if ($mw_basic[cf_kcb_comment] && !is_okname()) { ?>
+<? if ($mw_basic['cf_kcb_comment'] && !is_okname()) { ?>
 <div style="text-align:center; padding:20px 0 20px 0; margin:10px 0 10px 0; border:1px solid #eaeaea; color:#777;">
-    <?=$mw_basic[cf_kcb_type]=='okname'?'실명인증':'성인인증'?> 후 댓글을 입력하실 수 있습니다.
+    <?=$mw_basic['cf_kcb_type']=='okname'?'실명인증':'성인인증'?> 후 댓글을 입력하실 수 있습니다.
     <a style="cursor:pointer; color:#777;" onclick="window.open('<?=$board_skin_path?>/mw.okname/?bo_table=<?=$bo_table?>', 'okname', 'width=600,height=500')">[인증하기]</a>
 </div>
 <? } ?>
 
-<? if ($mw_basic[cf_comment_page]) { // 코멘트 페이지 ?>
+<? if ($mw_basic['cf_comment_page']) { // 코멘트 페이지 ?>
 <div class="mw_basic_comment_page">
 <?
 /*
@@ -655,29 +674,29 @@ echo $comment_pages;
 
 <!-- 질문 보류 -->
 <?
-if ($mw_basic[cf_attribute] == 'qna' && ($member[mb_id] == $write[mb_id] || $is_admin) && $write[mb_id] && $write[wr_qna_status] == 0 && !$view[is_notice]) {
-    $hold_point = round($write[wr_qna_point] * $mw_basic[cf_qna_hold]/100, 0);
+if ($mw_basic['cf_attribute'] == 'qna' && ($member['mb_id'] == $write['mb_id'] || $is_admin) && $write['mb_id'] && $write['wr_qna_status'] == 0 && !$view['is_notice']) {
+    $hold_point = round($write['wr_qna_point'] * $mw_basic['cf_qna_hold']/100, 0);
 ?>
 <div class="mw_basic_qna_info">
     <div>
-        <b><?=$write[wr_name]?></b>님! 원하시는 답변이 없으면 질문을 보류상태로 변경하실 수 있습니다.
+        <b><?=$write['wr_name']?></b>님! 원하시는 답변이 없으면 질문을 보류상태로 변경하실 수 있습니다.
         <a href="javascript:mw_qna_choose(0)">[보류하기]</a>
     </div>
-    <? if ($mw_basic[cf_qna_hold]) { ?>
+    <? if ($mw_basic['cf_qna_hold']) { ?>
     <div class="info2">
-        질문을 보류하면 질문 포인트의 <span class="num"><?=$mw_basic[cf_qna_hold]?>% (<b><?=$hold_point?></b> 포인트)</span> 만 되돌려드립니다.
+        질문을 보류하면 질문 포인트의 <span class="num"><?=$mw_basic['cf_qna_hold']?>% (<b><?=$hold_point?></b> 포인트)</span> 만 되돌려드립니다.
     </div>
     <? } ?>
 </div>
 <? } ?>
 
-<?php echo bc_code($mw_basic[cf_comment_tail]); ?>
+<?php echo bc_code($mw_basic['cf_comment_tail']); ?>
 
 <!-- 코멘트 입력 -->
 
 <?
 // 에디터
-if (($mw_basic[cf_comment_editor] && $is_comment_write) || ($mw_basic[cf_admin_dhtml_comment] && $is_admin))
+if (($mw_basic['cf_comment_editor'] && $is_comment_write) || ($mw_basic['cf_admin_dhtml_comment'] && $is_admin))
     $is_comment_editor = true;
 else
     $is_comment_editor = false;
@@ -687,14 +706,14 @@ if (mw_agent_mobile()) {
     $is_comment_editor = false;
 }
 
-if (!$mw_basic[cf_comment_default])
-    $mw_basic[cf_comment_default] = trim($mw_basic[cf_comment_write_notice]);
+if (!$mw_basic['cf_comment_default'])
+    $mw_basic['cf_comment_default'] = trim($mw_basic['cf_comment_write_notice']);
 
-if ($mw_basic[cf_comment_default] && $is_comment_editor)
-    $mw_basic[cf_comment_default] = nl2br($mw_basic[cf_comment_default]);
+if ($mw_basic['cf_comment_default'] && $is_comment_editor)
+    $mw_basic['cf_comment_default'] = nl2br($mw_basic['cf_comment_default']);
 
-if (!$mw_basic[cf_editor])
-    $mw_basic[cf_editor] = "cheditor";
+if (!$mw_basic['cf_editor'])
+    $mw_basic['cf_editor'] = "cheditor";
 
 if (is_g5())
 {
@@ -708,9 +727,9 @@ if (is_g5())
     $editor_js .= chk_editor_js('wr_content', $is_comment_editor);*/
 
 }
-else if ($is_comment_editor && $mw_basic[cf_editor] == "cheditor") {
-    include_once("$g4[path]/lib/cheditor4.lib.php");
-    echo "<script src='$g4[cheditor4_path]/cheditor.js'></script>";
+else if ($is_comment_editor && $mw_basic['cf_editor'] == "cheditor") {
+    include_once("{$g4['path']}/lib/cheditor4.lib.php");
+    echo "<script src='{$g4['cheditor4_path']}/cheditor.js'></script>";
     echo cheditor1('wr_content', '100%', '100');
 }
 ?>
@@ -825,7 +844,7 @@ if (!$is_member) {
             <td width=85>
                 <?
                 // 이미지 생성이 가능한 경우 자동등록체크코드를 이미지로 만든다.
-                if (function_exists("imagecreate") && $mw_basic[cf_norobot_image]) {
+                if (function_exists("imagecreate") && $mw_basic['cf_norobot_image']) {
                     echo "<img src=\"$g4[bbs_path]/norobot_image.php?{$g4['server_time']}\" border=0 align=absmiddle>";
                     $norobot_msg = "* 왼쪽의 자동등록방지 코드를 입력하세요.";
                 }
@@ -848,11 +867,11 @@ if (!$is_member) {
 <tr>
     <td colspan="2" style="line-height:30px;">
         <? if (!$is_comment_editor) { ?>
-        <? if ($mw_basic[cf_comment_html]) echo "<input type=\"checkbox\" id=\"wr_html\" name=\"html\" value=\"html2\"> <label for='wr_html'>html</label>"; ?>
+        <? if ($mw_basic['cf_comment_html']) echo "<input type=\"checkbox\" id=\"wr_html\" name=\"html\" value=\"html2\"> <label for='wr_html'>html</label>"; ?>
         <? } ?>
 
         <? if (!$write_error && $mw_basic['cf_comment_secret_no'] <= $member['mb_level']) { ?>
-        <input type=checkbox id="wr_secret" name="wr_secret" value="secret" <? if ($mw_basic[cf_comment_secret]) echo "checked" ?>>
+        <input type=checkbox id="wr_secret" name="wr_secret" value="secret" <? if ($mw_basic['cf_comment_secret']) echo "checked" ?>>
         <label for="wr_secret">비밀글 </label>
         <? } else { ?>
         <span id="secret_reply" style="display:none">
@@ -860,11 +879,11 @@ if (!$is_member) {
         </span>
         <? } ?>
 
-        <? if ($mw_basic[cf_anonymous]) {?>
+        <? if ($mw_basic['cf_anonymous']) {?>
         <input type="checkbox" name="wr_anonymous" id="wr_anonymous" value="1">
         <label for="wr_anonymous">익명</label>
         <? } ?>
-        
+
         <?php
         if (!$is_comment_editor && ($comment_min || $comment_max)) {
             echo "<input type='checkbox' disabled>";
@@ -882,12 +901,12 @@ if (!$is_member) {
 <table width=98% cellpadding=0 cellspacing=0 border=0>
 <tr>
     <td>
-        <?//php if (!is_g5() && (!$is_comment_editor || $mw_basic[cf_editor] != "cheditor")) { ?>
-        <?php if ((!$is_comment_editor || $mw_basic[cf_editor] != "cheditor")) { ?>
+        <?//php if (!is_g5() && (!$is_comment_editor || $mw_basic['cf_editor'] != "cheditor")) { ?>
+        <?php if ((!$is_comment_editor || $mw_basic['cf_editor'] != "cheditor")) { ?>
         <textarea id="wr_content" name="wr_content" rows="6" itemname="내용" required
             <?php
-            if (!$write_error) { 
-                if ($is_comment_editor && $mw_basic[cf_editor] == "geditor") echo "geditor gtag=off "; //mode=off";
+            if (!$write_error) {
+                if ($is_comment_editor && $mw_basic['cf_editor'] == "geditor") echo "geditor gtag=off "; //mode=off";
             }
             else
                 echo $write_error;
@@ -896,23 +915,23 @@ if (!$is_member) {
                 echo " onkeyup=\"check_byte('wr_content', 'char_count');\" ";
             }
             ?>
-            class=mw_basic_textarea style="width:100%; word-break:break-all;"><?=$mw_basic[cf_comment_default]?></textarea>
+            class=mw_basic_textarea style="width:100%; word-break:break-all;"><?=$mw_basic['cf_comment_default']?></textarea>
         <?php if (!$is_comment_editor && ($comment_min || $comment_max)) { ?>
         <script> check_byte('wr_content', 'char_count'); </script><?}?>
         <?php } ?>
         <?php
         if (is_g5())
             ;//echo $editor_html;
-        else if ($is_comment_editor && $mw_basic[cf_editor] == "cheditor")
-            echo "<textarea name='wr_content' id='tx_wr_content'>{$mw_basic[cf_comment_default]}</textarea>\n";
+        else if ($is_comment_editor && $mw_basic['cf_editor'] == "cheditor")
+            echo "<textarea name='wr_content' id='tx_wr_content'>{$mw_basic['cf_comment_default']}</textarea>\n";
         ?>
     </td>
 </tr>
 </table>
 
 <?php
-if (trim($mw_basic[cf_comment_write_notice])) { 
-    $comment_write_notice = $mw_basic[cf_comment_write_notice];
+if (trim($mw_basic['cf_comment_write_notice'])) {
+    $comment_write_notice = $mw_basic['cf_comment_write_notice'];
     $comment_write_notice = addslashes($comment_write_notice);
 
     $comment_write_notice_html = $comment_write_notice;
@@ -928,7 +947,7 @@ if (!is_g5()) {
 <script>
 $(document).ready(function () {
 <?php if ($is_comment_editor) { ?>
-    <?php if ($mw_basic[cf_editor] == "cheditor") { ?>
+    <?php if ($mw_basic['cf_editor'] == "cheditor") { ?>
     ed_wr_content.editArea.blur();
     ed_wr_content.editArea.onfocus = function () {
         var ed = ed_wr_content.outputBodyHTML();
@@ -936,7 +955,7 @@ $(document).ready(function () {
             ed_wr_content.doc.body.innerHTML = '';
         }
     }
-    <?php } else if ($mw_basic[cf_editor] == 'geditor') { ?>
+    <?php } else if ($mw_basic['cf_editor'] == 'geditor') { ?>
     ged = document.getElementById("geditor_wr_content_frame").contentWindow.document.body;
     ged.onfocus = function () {
         var ed = document.getElementById('wr_content').value;
@@ -967,7 +986,7 @@ $(document).ready(function () {
     </div>
 
     <div class="comment_function">
-    <?php if ($mw_basic[cf_comment_emoticon] && !$is_comment_editor && !$write_error) {?>
+    <?php if ($mw_basic['cf_comment_emoticon'] && !$is_comment_editor && !$write_error) {?>
     <button type="button" class="fa-button" name="btn_emoticon" style="*margin-right:10px;"><i class="fa fa-smile-o"></i> <span class="media-comment-button">이모티콘</span></button>
     <script>
     board_skin_path = '<?php echo $board_skin_path?>';
@@ -986,13 +1005,13 @@ $(document).ready(function () {
     <script src="<?php echo $board_skin_path?>/mw.js/mw.specialchars.js"></script>
     <?php }//comment_specialchars ?>
 
-    <?php if ($mw_basic[cf_comment_file] && $mw_basic[cf_comment_file] <= $member['mb_level'] && !$write_error) { ?>
+    <?php if ($mw_basic['cf_comment_file'] && $mw_basic['cf_comment_file'] <= $member['mb_level'] && !$write_error) { ?>
     <button type="button" class="fa-button" onclick="$('#comment_file_layer').toggle('slow');"><i class="fa fa-save"></i> <span class="media-comment-button">첨부파일</span></button>
     <?php } // comment_file ?>
     </div>
 </div>
 
-<? if ($mw_basic[cf_comment_file] && $mw_basic[cf_comment_file] <= $member['mb_level']) { ?>
+<? if ($mw_basic['cf_comment_file'] && $mw_basic['cf_comment_file'] <= $member['mb_level']) { ?>
 <div id="comment_file_layer" style="padding:5px 0 5px 5px; display:none;">
     <input type="file" name="bf_file" size="50" title='파일 용량 <?=$upload_max_filesize?> 이하만 업로드 가능'>
     <input type="checkbox" name="bf_file_del" value="1"> 첨부파일 삭제
@@ -1011,7 +1030,7 @@ $(document).ready(function () {
 var save_before = '';
 var save_html = document.getElementById('mw_basic_comment_write').innerHTML;
 function good_submit(f, good) {
-    <? if (!is_g5() && $is_comment_editor && $mw_basic[cf_editor] == "cheditor") { ?>
+    <? if (!is_g5() && $is_comment_editor && $mw_basic['cf_editor'] == "cheditor") { ?>
     var ed = ed_wr_content.outputBodyHTML();
     <? } else { ?>
     var ed = document.getElementById('wr_content').value;
@@ -1019,7 +1038,7 @@ function good_submit(f, good) {
 
     if (is_empty(ed)) {
          alert("내용을 입력해주세요.");
-         return false;   
+         return false;
     }
 
     if (!fviewcomment_submit(f)) return false;
@@ -1032,7 +1051,7 @@ function good_submit(f, good) {
 function is_empty(ed)
 {
     ed = ed.replace(/(^\s*)|(\s*$)/g, "");
-    ed = ed.replace(/[&]nbsp[;]/gi,""); 
+    ed = ed.replace(/[&]nbsp[;]/gi,"");
     ed = ed.replace(/[<]br[^>]*[>]/gi, "");
     ed = ed.replace(/[<]div[^>]*[>]/gi, "");
     ed = ed.replace(/[<][\/]div[^>]*[>]/gi, "");
@@ -1065,20 +1084,20 @@ function fviewcomment_submit(f)
     <?php
     if (is_g5())
         echo $editor_js;
-    elseif ($is_comment_editor && $mw_basic[cf_editor] == "cheditor")
+    elseif ($is_comment_editor && $mw_basic['cf_editor'] == "cheditor")
         echo cheditor3('wr_content');
     ?>
 
     <?php if (!is_g5()) { ?>
     if (document.getElementById('tx_wr_content')) {
-        if (is_empty(ed_wr_content.outputBodyHTML())) { 
-            alert('내용을 입력하십시오.'); 
+        if (is_empty(ed_wr_content.outputBodyHTML())) {
+            alert('내용을 입력하십시오.');
             ed_wr_content.returnFalse();
             return false;
         }
     }
     <?php } ?>
- 
+
     var subject = "";
     var content = "";
     $.ajax({
@@ -1158,8 +1177,6 @@ function fviewcomment_submit(f)
     }
     <?php } ?>
 
-    <?php if (is_g5()) {?> set_comment_token(f); <?php } ?>
-
     var geditor_status = document.getElementById("geditor_wr_content_geditor_status");
     if (geditor_status != null) {
         if (geditor_status.value == "TEXT") {
@@ -1169,6 +1186,8 @@ function fviewcomment_submit(f)
             f.html.value = "html1";
         }
     }
+
+	set_comment_token(f);
 
     //$("#btn_submit").html($("#loading").html());
     $(".comment_submit_button i").addClass("fa-spin fa-circle-o-notch");
@@ -1218,7 +1237,7 @@ function comment_box(comment_id, work, mb_nick)
         // 코멘트 수정
         if (work == 'cu')
         {
-            <?php if (!is_g5() && ($is_comment_editor && $mw_basic[cf_editor] == "cheditor")) { ?>
+            <?php if (!is_g5() && ($is_comment_editor && $mw_basic['cf_editor'] == "cheditor")) { ?>
                 $("#tx_wr_content").val($("#save_comment_" + comment_id).val());
             <?php } else if (is_g5() && $is_comment_editor) { ?>
                 g5_editor_to_text();
@@ -1230,7 +1249,7 @@ function comment_box(comment_id, work, mb_nick)
                 $("#btn_comment_submit").removeAttr("readonly");
                 $("#btn_comment_submit").removeAttr("onclick");
 
-                <?php if (!$mw_basic[cf_comment_editor] && ($comment_min || $comment_max)) { ?>
+                <?php if (!$mw_basic['cf_comment_editor'] && ($comment_min || $comment_max)) { ?>
                 if (typeof char_count != 'undefined')
                     check_byte('wr_content', 'char_count');
                 <?php } ?>
@@ -1251,7 +1270,7 @@ function comment_box(comment_id, work, mb_nick)
 
         save_before = el_id;
 
-        <? if (!is_g5() && $is_comment_editor && $mw_basic[cf_editor] == "cheditor") { ?> ed_wr_content.run(); <? } ?> 
+        <? if (!is_g5() && $is_comment_editor && $mw_basic['cf_editor'] == "cheditor") { ?> ed_wr_content.run(); <? } ?>
     }
 
     if (typeof geditor_textareas != "undefined") {
@@ -1316,7 +1335,7 @@ function comment_delete(url)
 }
 </script>
 
-<? if ($mw_basic[cf_attribute] == 'qna' && ($is_admin || !$write[wr_qna_status]) && $member[mb_id] && ($member[mb_id] == $write[mb_id] || $is_admin) && !$view[is_notice]) { ?>
+<? if ($mw_basic['cf_attribute'] == 'qna' && ($is_admin || !$write['wr_qna_status']) && $member['mb_id'] && ($member['mb_id'] == $write['mb_id'] || $is_admin) && !$view[is_notice]) { ?>
 <script type="text/javascript">
 function mw_qna_choose(wr_id) {
     if (wr_id) {
@@ -1334,7 +1353,7 @@ function mw_qna_choose(wr_id) {
 </script>
 <? } ?>
 
-<?  if ($mw_basic[cf_comment_good] || $mw_basic[cf_comment_nogood]) { ?>
+<?  if ($mw_basic['cf_comment_good'] || $mw_basic['cf_comment_nogood']) { ?>
 <script type="text/javascript">
 function mw_comment_good(wr_id, good) {
     $.get("<?=$board_skin_path?>/mw.proc/mw.comment.good.php?bo_table=<?=$bo_table?>&parent_id=<?=$wr_id?>&wr_id="+wr_id+"&good="+good, function (data) {
@@ -1350,14 +1369,14 @@ function mw_comment_good(wr_id, good) {
 </script>
 <? } ?>
 
-<? if ($is_comment_editor && $mw_basic[cf_editor] == "geditor") { ?>
+<? if ($is_comment_editor && $mw_basic['cf_editor'] == "geditor") { ?>
 <script type="text/javascript">
 var g4_skin_path = "<?=$board_skin_path?>";
 </script>
 <script type="text/javascript" src="<?=$board_skin_path?>/mw.geditor/geditor.js"></script>
 <? } ?>
 
-<? if ($mw_basic[cf_icon_level]) { ?>
+<? if ($mw_basic['cf_icon_level']) { ?>
 <style type="text/css">
 <? for ($i=0; $i<=99; $i++) { ?>
 #mw_basic .icon_level<?=$i?> { background:url(<?=$board_skin_path?>/img/icon_level.png) 0 -<?=($i*10)?>px no-repeat; width:50px; height:10px; font-size:10px; line-height:10px; }
@@ -1416,20 +1435,20 @@ $(document).ready(function () {
 </div>
 
 <? if ($cwin) { ?>
-<script type="text/javascript"> document.title = "<?=mw_reg_str(addslashes($write[wr_subject]))?>"; </script>
+<script type="text/javascript"> document.title = "<?=mw_reg_str(addslashes($write['wr_subject']))?>"; </script>
 <script type="text/javascript">
 function btn_ip_search(ip) {
-    window.open("<?=$g4[admin_path]?>/member_list.php?sfl=mb_ip&stx=" + ip);
+    window.open("<?=$g4['admin_path']?>/member_list.php?sfl=mb_ip&stx=" + ip);
 }
 </script>
-<? if ($mw_basic[cf_post_history]) { ?>
+<? if ($mw_basic['cf_post_history']) { ?>
 <script type="text/javascript">
 function btn_history(wr_id) {
     window.open("<?=$board_skin_path?>/mw.proc/mw.history.list.php?bo_table=<?=$bo_table?>&wr_id=" + wr_id, "mw_history", "width=500, height=300, scrollbars=yes");
 }
 </script>
 <? } ?>
-<? if ($mw_basic[cf_singo]) { ?>
+<? if ($mw_basic['cf_singo']) { ?>
 <script type="text/javascript">
 function btn_singo(wr_id, parent_id) {
     //if (confirm("이 게시물을 정말 신고하시겠습니까?")) {
@@ -1474,8 +1493,8 @@ function btn_intercept(mb_id, wr_ip) {
 <style type="text/css">
 /* 댓글 img */
 #mw_basic .mw_basic_comment_content img {
-    max-width:<?=$board[bo_image_width]?>px;
-    height:auto; 
+    max-width:<?=$board['bo_image_width']?>px;
+    height:auto;
 }
 #loading { display:none; }
 </style>

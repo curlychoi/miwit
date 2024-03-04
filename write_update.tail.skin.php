@@ -19,16 +19,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가 
+if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 
-if ($mw_basic[cf_contents_shop_write] && $w == "") {
-    mw_buy_contents2($member[mb_id], $mw_basic[cf_contents_shop_write_cash], "$board[bo_subject] 게시물 작성", $bo_table, $wr_id);
+if ($mw_basic['cf_contents_shop_write'] && $w == "") {
+    mw_buy_contents2($member['mb_id'], $mw_basic['cf_contents_shop_write_cash'], "$board[bo_subject] 게시물 작성", $bo_table, $wr_id);
     $write_run_time = mw_time_log($write_run_time, "[write-tail] mw_buy_contents2");
 }
 
 //if (function_exists('mw_moa_insert') && !$wr_anonymous && $mw_basic[cf_attribute] != 'anonymous') {
 if (function_exists('mw_moa_insert')) {
-    mw_moa_insert($write[wr_id], $wr_id, $write[mb_id], $member[mb_id]);
+    mw_moa_insert($write['wr_id'], $wr_id, $write['mb_id'], $member['mb_id']);
     $write_run_time = mw_time_log($write_run_time, "[write-tail] mw_moa_insert");
 }
 
@@ -37,15 +37,15 @@ if (function_exists('mw_lucky_writing') && $w == '') {
     $write_run_time = mw_time_log($write_run_time, "[write-tail] mw_lucky_writing");
 }
 
-sql_query(" delete from $mw[temp_table] where bo_table = '$bo_table' and mb_id = '$member[mb_id]' ", false);
+sql_query(" delete from {$mw['temp_table']} where bo_table = '$bo_table' and mb_id = '{$member['mb_id']}' ", false);
 $write_run_time = mw_time_log($write_run_time, "[write-tail] delete temp");
 
-if ($mw_basic[cf_content_align] && $wr_align) {
+if ($mw_basic['cf_content_align'] && $wr_align) {
     sql_query(" update $write_table set wr_align = '$wr_align' where wr_id = '$wr_id' ");
     $write_run_time = mw_time_log($write_run_time, "[write-tail] update wr_align");
 }
 
-if ($is_admin && $contents_shop_id && $mw_basic[cf_contents_shop]) {
+if ($is_admin && $contents_shop_id && $mw_basic['cf_contents_shop']) {
     $tmp = sql_fetch("select * from $g4[member_table] where mb_id = '$contents_shop_id'");
     if ($tmp) {
         sql_query("update $write_table set mb_id = '$contents_shop_id' where wr_id = '$wr_id'");
@@ -53,8 +53,8 @@ if ($is_admin && $contents_shop_id && $mw_basic[cf_contents_shop]) {
     $write_run_time = mw_time_log($write_run_time, "[write-tail] update contentes_shop_id");
 }
 
-if ($is_admin && $wr_to_id && $mw_basic[cf_attribute] == "1:1") {
-    $tmp = sql_fetch("select * from $g4[member_table] where mb_id = '$wr_to_id'");
+if ($is_admin && $wr_to_id && $mw_basic['cf_attribute'] == "1:1") {
+    $tmp = sql_fetch("select * from {$g4['member_table']} where mb_id = '$wr_to_id'");
     if ($tmp) {
         sql_query("update $write_table set wr_to_id = '$wr_to_id' where wr_id = '$wr_id'");
     }
@@ -63,7 +63,7 @@ if ($is_admin && $wr_to_id && $mw_basic[cf_attribute] == "1:1") {
 
 if ($mw_basic['cf_image_outline']) {
     for ($i=0, $m=count($upload); $i<$m; ++$i) {
-        $dest_file = "$g4[path]/data/file/{$bo_table}/" . $upload[$i][file];
+        $dest_file = "$g4[path]/data/file/{$bo_table}/" . $upload[$i]['file'];
         if (is_mw_file($dest_file)) {
             mw_image_outline($dest_file, null, $mw_basic['cf_image_outline_color']);
         }

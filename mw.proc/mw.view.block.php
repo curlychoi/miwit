@@ -31,7 +31,7 @@ if (!$token or get_session("ss_delete_token") != $token)
 if (!$bo_table) die("bo_table 이 없습니다.");
 if (!$wr_id) die("wr_id 이 없습니다.");
 
-if ($write[wr_view_block]) {
+if ($write['wr_view_block']) {
     sql_query(" update $write_table set wr_view_block = '' where wr_id = '$wr_id' ");
     die ("이 게시물 보기차단을 해제했습니다.");
 } else {

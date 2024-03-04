@@ -22,24 +22,24 @@
 include_once("_common.php");
 include_once("$board_skin_path/mw.lib/mw.skin.basic.lib.php");
 
-header("Content-Type: text/html; charset=$g4[charset]");
+header("Content-Type: text/html; charset={$g4['charset']}");
  
-if (!($is_admin or ($write[mb_id] && $member[mb_id] && $write[mb_id] == $member[mb_id]))) {
+if (!($is_admin or ($write['mb_id'] && $member['mb_id'] && $write['mb_id'] == $member['mb_id']))) {
     die("권한이 없습니다.");
 }
 
-$vote = sql_fetch("select * from $mw[vote_table] where bo_table = '$bo_table' and wr_id = '$wr_id'");
+$vote = sql_fetch("select * from {$mw['vote_table']} where bo_table = '$bo_table' and wr_id = '$wr_id'");
 
 if (!$vote)
     die("설문이 존재하지 않습니다.");
 
-$sql = "select * from $mw[vote_log_table] where vt_id = '$vote[vt_id]' ";
+$sql = "select * from $mw[vote_log_table] where vt_id = '{$vote['vt_id']}' ";
 $qry = sql_query($sql);
 while ($row = sql_fetch_array($qry)) {
-    delete_point($row[mb_id], $bo_table, $wr_id, "설문");
+    delete_point($row['mb_id'], $bo_table, $wr_id, "설문");
 }
 
-sql_query("delete from $mw[vote_log_table] where vt_id = '$vote[vt_id]'");
-sql_query("update $mw[vote_item_table] set vt_hit = 0 where vt_id = '$vote[vt_id]'");
-sql_query("update $mw[vote_table] set vt_total = 0 where vt_id = '$vote[vt_id]'");
+sql_query("delete from {$mw['vote_log_table']} where vt_id = '{$vote['vt_id']}'");
+sql_query("update {$mw['vote_item_table']} set vt_hit = 0 where vt_id = '{$vote['vt_id']}'");
+sql_query("update {$mw['vote_table']} set vt_total = 0 where vt_id = '{$vote['vt_id']}'");
 

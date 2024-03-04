@@ -26,7 +26,7 @@ if (!$is_admin) {
     alert_close("로그를 열람할 권한이 없습니다.");
 }
 
-$sql_common = " from $mw[download_log_table] ";
+$sql_common = " from {$mw['download_log_table']} ";
 $sql_order = " order by dl_id desc ";
 $sql_search = " where bo_table = '$bo_table' and wr_id = '$wr_id' ";
 
@@ -34,9 +34,9 @@ $sql = "select count(*) as cnt
         $sql_common
         $sql_search";
 $row = sql_fetch($sql);
-$total_count = $row[cnt];
+$total_count = $row['cnt'];
 
-$rows = $config[cf_page_rows];
+$rows = $config['cf_page_rows'];
 $total_page  = ceil($total_count / $rows);  // 전체 페이지 계산
 if ($page == "") { $page = 1; } // 페이지가 없으면 첫 페이지 (1 페이지)
 $from_record = ($page - 1) * $rows; // 시작 열을 구함
@@ -52,18 +52,18 @@ $list = array();
 for ($i=0; $row = sql_fetch_array($qry); ++$i) {
     $list[$i] = $row;
     $list[$i][num] = $total_count - ($page - 1) * $rows - $i;
-    if (!$row[mb_name])
-        $list[$i][mb_name] = $row[mb_id];
+    if (!$row['mb_name'])
+        $list[$i]['mb_name'] = $row['mb_id'];
 }
 
-$write_pages = get_paging($config[cf_write_pages], $page, $total_page, "./mw.download.log.php?bo_table={$bo_table}&wr_id={$wr_id}{$qstr}&page=");
+$write_pages = get_paging($config['cf_write_pages'], $page, $total_page, "./mw.download.log.php?bo_table={$bo_table}&wr_id={$wr_id}{$qstr}&page=");
 
 $colspan = 5;
 
-$g4[title] = "다운로드 기록";
-include_once("$g4[path]/head.sub.php");
+$g4['title'] = "다운로드 기록";
+include_once($g4['path']."/head.sub.php");
 ?>
-<script language="javascript" src="<?=$g4[path]?>/js/sideview.js"></script>
+<script language="javascript" src="<?=$g4['path']?>/js/sideview.js"></script>
 
 <link rel="stylesheet" href="<?=$board_skin_path?>/style.common.css" type="text/css">
 
@@ -76,7 +76,7 @@ table caption { font-size:13px; color:#555; font-weight:bold; text-decoration:no
 </style>
 
 <table border=0 cellpadding=0 cellspacing=1 style="width:95%; margin:10px; border:1px solid #ddd;">
-<caption> 다운로드 기록 : <?=cut_str($write[wr_subject], 50)?> </caption>
+<caption> 다운로드 기록 : <?=cut_str($write['wr_subject'], 50)?> </caption>
 <tr style="text-align:center; font-weight:bold; height:30px; background-color:#f8f8f8;">
     <td width=40> 번호 </td>
     <td width=40> 파일 </td>
@@ -87,11 +87,11 @@ table caption { font-size:13px; color:#555; font-weight:bold; text-decoration:no
 <tr><td colspan=<?=$colspan?> bgcolor="#dddddd"></td></tr>
 <? for ($i=0; $i<count($list); $i++) { ?>
 <tr style="text-align:center; height:25px;">
-    <td> <?=$list[$i][num]?> </td>
-    <td> <?=$list[$i][bf_no]+1?> </td>
-    <td> <?=get_sideview($list[$i][mb_id], $list[$i][dl_name])?> </td>
-    <td> <?=$list[$i][dl_ip]?> </td>
-    <td> <?=$list[$i][dl_datetime]?> </td>
+    <td> <?=$list[$i]['num']?> </td>
+    <td> <?=$list[$i]['bf_no']+1?> </td>
+    <td> <?=get_sideview($list[$i]['mb_id'], $list[$i]['dl_name'])?> </td>
+    <td> <?=$list[$i]['dl_ip']?> </td>
+    <td> <?=$list[$i]['dl_datetime']?> </td>
 </tr>
 <tr><td colspan=<?=$colspan?> bgcolor="#f8f8f8"></td></tr>
 <? } ?>
@@ -113,7 +113,7 @@ table caption { font-size:13px; color:#555; font-weight:bold; text-decoration:no
     <input type="hidden" name="wr_id" value="<?=$wr_id?>"/>
     <textarea name="me_memo" style="width:100%; height:70px">아래 프로그램을 다운로드 받으신 분께 전송하는 쪽지입니다.
 
-  제목 : <?=get_text($write[wr_subject])?>
+  제목 : <?=get_text($write['wr_subject'])?>
 
   주소 : <?=mw_seo_url($bo_table, $wr_id)?>
 </textarea>
@@ -132,4 +132,4 @@ table caption { font-size:13px; color:#555; font-weight:bold; text-decoration:no
 <br/>
 
 <?
-include_once("$g4[path]/tail.sub.php");
+include_once($g4['path']."/tail.sub.php");

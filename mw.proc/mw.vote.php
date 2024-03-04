@@ -25,7 +25,7 @@ $mw_is_view = true;
 
 include_once("$board_skin_path/mw.lib/mw.skin.basic.lib.php");
 
-header("Content-Type: text/html; charset=$g4[charset]");
+header("Content-Type: text/html; charset={$g4['charset']}");
 $gmnow = gmdate("D, d M Y H:i:s") . " GMT";
 header("Expires: 0"); // rfc2616 - Section 14.21
 header("Last-Modified: " . $gmnow);
@@ -41,25 +41,25 @@ if (!$width) {
         $width = 200;
 }
 
-if ($mw_basic[cf_vote]) {
-    $vote = sql_fetch("select * from $mw[vote_table] where bo_table = '$bo_table' and wr_id = '$wr_id'");
+if ($mw_basic['cf_vote']) {
+    $vote = sql_fetch("select * from {$mw['vote_table']} where bo_table = '$bo_table' and wr_id = '$wr_id'");
     $vote_list = array();
 
     $max = 0;
-    $sql = "select * from $mw[vote_item_table] where vt_id = '$vote[vt_id]'";
+    $sql = "select * from {$mw['vote_item_table']} where vt_id = '$vote[vt_id]'";
     $qry = sql_query($sql);
     for ($i=0; $row=sql_fetch_array($qry); $i++) {
         //$row[vt_rate] = @round($row[vt_hit] / $vote[vt_total], 4) * 100;
         if ($max < $row['vt_hit'])
             $max = $row['vt_hit'];
-        $row[vt_rate] = @round($row[vt_hit] / $vote[vt_total], 2) * 100;
-        if ($row[vt_rate])
-            $row[vt_rate] = "$row[vt_rate]% <span class='count'> (".number_format($row[vt_hit]).") </span>";
+        $row['vt_rate'] = @round($row['vt_hit'] / $vote['vt_total'], 2) * 100;
+        if ($row['vt_rate'])
+            $row['vt_rate'] = "$row[vt_rate]% <span class='count'> (".number_format($row['vt_hit']).") </span>";
         else
-            $row[vt_rate] = "<span class='zero'>0</span>";
+            $row['vt_rate'] = "<span class='zero'>0</span>";
 
-        $row[vt_width] = @intval($width * ($row[vt_rate] / 100));
-        $row[vt_item] = cut_str(get_text(strip_tags($row[vt_item])), 50);
+        $row['vt_width'] = @intval($width * ($row['vt_rate'] / 100));
+        $row['vt_item'] = cut_str(get_text(strip_tags($row['vt_item'])), 50);
         $vote_list[$i] = $row;
     }
 
@@ -68,25 +68,25 @@ if ($mw_basic[cf_vote]) {
         $vote_list[$i]['vt_width'] = @round($width*$row['vt_hit']/$max);
     }
 
-    if ($vote[vt_multi]) {
+    if ($vote['vt_multi']) {
         $qry = sql_query("select count(*) as cnt from $mw[vote_log_table] where vt_id = '$vote[vt_id]' group by mb_id");
         $vt_total = sql_num_rows($qry);
     }
     else {
-        $vt_total = $vote[vt_total];
+        $vt_total = $vote['vt_total'];
     }
 
-    if ($write[mb_id] == $member[mb_id]) { // 자신의 글은 그냥 출력
+    if ($write['mb_id'] == $member['mb_id']) { // 자신의 글은 그냥 출력
         $is_vote = true;
     } else {
         $is_vote = false;
-        if ($vote[vt_sdate] != "0000-00-00 00:00:00" && $g4[time_ymdhis] < $vote[vt_sdate]) {
+        if ($vote['vt_sdate'] != "0000-00-00 00:00:00" && $g4['time_ymdhis'] < $vote['vt_sdate']) {
             $is_vote = true;
-        } else if ($vote[vt_edate] != "0000-00-00 00:00:00" && $g4[time_ymdhis] > $vote[vt_edate]) {
+        } else if ($vote['vt_edate'] != "0000-00-00 00:00:00" && $g4['time_ymdhis'] > $vote['vt_edate']) {
             $is_vote = true;
         } else  {
-            if ($is_member) $row = sql_fetch("select * from $mw[vote_log_table] where vt_id = '$vote[vt_id]' and mb_id = '$member[mb_id]'");
-            else $row = sql_fetch("select * from $mw[vote_log_table] where vt_id = '$vote[vt_id]' and vt_ip = '$_SERVER[REMOTE_ADDR]'");
+            if ($is_member) $row = sql_fetch("select * from {$mw['vote_log_table']} where vt_id = '{$vote['vt_id']}' and mb_id = '{$member['mb_id']}'");
+            else $row = sql_fetch("select * from {$mw['vote_log_table']} where vt_id = '{$vote['vt_id']}' and vt_ip = '{$_SERVER['REMOTE_ADDR']}'");
             if ($row)
                 $is_vote = true;
         }
@@ -99,20 +99,20 @@ shuffle($gr);
 
 $img_path = "$g4[url]/skin/board/$board[bo_skin]/img/";
 
-if ($mw_basic[cf_vote] && $vote && sizeof($vote_list)) {
+if ($mw_basic['cf_vote'] && $vote && sizeof($vote_list)) {
 ?>
-    <h3><img src="<?=$img_path?>/vote.png" align="absmiddle"> 설문조사 
+    <h3><img src="<?=$img_path?>/vote.png" align="absmiddle"> 설문조사
         <span class="info">(<?
-            if ($vote[vt_sdate] != "0000-00-00 00:00:00") echo substr($vote[vt_sdate], 0, 13)."시 시작, ";
-            if ($vote[vt_edate] != "0000-00-00 00:00:00") echo substr($vote[vt_edate], 0, 13)."시 종료, ";
-            if ($vote[vt_point]) echo number_format($vote[vt_point])." 포인트 지급, ";
-            if ($vote[vt_multi]) echo $vote[vt_multi]."개까지 복수선택 가능, ";
+            if ($vote['vt_sdate'] != "0000-00-00 00:00:00") echo substr($vote['vt_sdate'], 0, 13)."시 시작, ";
+            if ($vote['vt_edate'] != "0000-00-00 00:00:00") echo substr($vote['vt_edate'], 0, 13)."시 종료, ";
+            if ($vote['vt_point']) echo number_format($vote['vt_point'])." 포인트 지급, ";
+            if ($vote['vt_multi']) echo $vote['vt_multi']."개까지 복수선택 가능, ";
             echo number_format($vt_total)."명 참여";
         ?>)
         <? if ($is_admin) { ?>
         [<a href="#;" onclick="window.open('<?=$board_skin_path?>/mw.proc/mw.vote.list.php?bo_table=<?=$bo_table?>&wr_id=<?=$wr_id?>', 'vote_list', 'width=600,height=500,scrollbars=1');">참여목록</a>]
         <? } ?>
-        <? if ($is_admin or ($write[mb_id] && $member[mb_id] && $write[mb_id] == $member[mb_id])) { ?>
+        <? if ($is_admin or ($write['mb_id'] && $member['mb_id'] && $write['mb_id'] == $member['mb_id'])) { ?>
         [<a href="#;" onclick="mw_vote_init()">초기화</a>]
         <? } ?>
         </span>
@@ -122,12 +122,12 @@ if ($mw_basic[cf_vote] && $vote && sizeof($vote_list)) {
         <div class="mw_vote_list">
             <? for ($i=0; $i<sizeof($vote_list); $i++) { ?>
             <div class="item">
-                <? if (!$vote[vt_multi]) { ?>
+                <? if (!$vote['vt_multi']) { ?>
                 <input type="radio" id="vt_num_<?=$i?>" name="vt_num" value="<?=$i?>">
                 <? } else { ?>
                 <input type="checkbox" id="vt_num_<?=$i?>" name="vt_num" value="<?=$i?>">
                 <? } ?>
-                <label for="vt_num_<?=$i?>"><?=$vote_list[$i][vt_item]?></label>
+                <label for="vt_num_<?=$i?>"><?=$vote_list[$i]['vt_item']?></label>
             </div>
             <? } ?>
             <div class="btns">
@@ -140,11 +140,11 @@ if ($mw_basic[cf_vote] && $vote && sizeof($vote_list)) {
             <div class="mw_vote_result">
             <? for ($i=0, $m=sizeof($vote_list); $i<$m; $i++) { ?>
             <div>
-                <span class="item"><?=$vote_list[$i][vt_item]?> </span>
+                <span class="item"><?=$vote_list[$i]['vt_item']?> </span>
                 <span class="graph">
                 <img src="<?=$img_path?>/vote_<?=$gr[abs($i%9)]?>.gif"
-                     width="<?=$vote_list[$i][vt_width]?>" height="5" align="absmiddle"/>
-                <span class="rate"> <nobr><?=$vote_list[$i][vt_rate]?></nobr> </span>
+                     width="<?=$vote_list[$i]['vt_width']?>" height="5" align="absmiddle"/>
+                <span class="rate"> <nobr><?=$vote_list[$i]['vt_rate']?></nobr> </span>
                 </span>
             </div>
             <? } ?>

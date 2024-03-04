@@ -21,31 +21,31 @@ if ($move_memo_use) {
         if ($i>0) $bo_list .= ", ";
         $bo_list .= $row[bo_subject];
     }
-    $memo = " 회원님의 아래 게시물이 [{$board[bo_subject]}] 게시판에서 ";
+    $memo = " 회원님의 아래 게시물이 [{$board['bo_subject']}] 게시판에서 ";
     $memo.= " [{$bo_list}] 게시판으로 {$sw_msg} 조치 되었습니다.\n\n";
 
     $list = array();
     $sql = "select wr_subject, mb_id from $write_table where wr_id in ('".implode("','", explode(",",$wr_id_list))."')";
     $qry = sql_query($sql);
     while ($row = sql_fetch_array($qry)) {
-        $list[$row[mb_id]] .= "- ".htmlspecialchars($row[wr_subject])."\n";
+        $list[$row['mb_id']] .= "- ".htmlspecialchars($row['wr_subject'])."\n";
     }
 
     foreach ((array)$list as $mb_id => $bo_list) {
         $me_memo = $memo . $bo_list;
 
-        $tmp_row = sql_fetch(" select max(me_id) as max_me_id from $g4[memo_table] ");
-        $me_id = $tmp_row[max_me_id] + 1;
+		$tmp_row = sql_fetch(" select max(me_id) as max_me_id from {$g4['memo_table']} ");
+        $me_id = $tmp_row['max_me_id'] + 1;
 
         // 쪽지 INSERT
-        $sql = " insert into $g4[memo_table]
+		$sql = " insert into {$g4['memo_table']}
                         ( me_id, me_recv_mb_id, me_send_mb_id, me_send_datetime, me_memo )
-                 values ( '$me_id', '{$mb_id}', '$member[mb_id]', '$g4[time_ymdhis]', '$me_memo' ) ";
+				values ( '$me_id', '{$mb_id}', '{$member['mb_id']}', '{$g4['time_ymdhis']}', '$me_memo' ) ";
         sql_query($sql);
 
         // 실시간 쪽지 알림 기능
-        $sql = " update $g4[member_table]
-                    set mb_memo_call = '$member[mb_id]'
+		$sql = " update {$g4['member_table']}
+			set mb_memo_call = '{$member['mb_id']}'
                   where mb_id = '$mb_id' ";
         sql_query($sql);
     }

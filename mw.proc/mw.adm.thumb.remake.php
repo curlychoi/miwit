@@ -21,7 +21,7 @@
 
 include_once("_common.php");
 include_once("$board_skin_path/mw.lib/mw.skin.basic.lib.php");
-header("Content-Type: text/html; charset=$g4[charset]");
+header("Content-Type: text/html; charset={$g4['charset']}");
 
 if ($is_admin != 'super')
     die("로그인 해주세요.");
@@ -29,7 +29,7 @@ if ($is_admin != 'super')
 if (!$bo_table)
     die("bo_table 값이 없습니다.");
 
-if (!$token or get_session("ss_config_token") != $token) 
+if (!$token or get_session("ss_config_token") != $token)
     die("토큰 에러로 실행 불가합니다.");
 
 // 원본 이미지 크기 다시 계산
@@ -55,8 +55,8 @@ $files = glob("{$thumb5_path}/*"); array_map('unlink', $files);
 $sql = "select wr_id, wr_content, wr_datetime, wr_link1, wr_link2 from $write_table where wr_is_comment = '0' order by wr_num";
 $qry = sql_query($sql);
 while ($write = sql_fetch_array($qry)) {
-    $wr_id = $write[wr_id];
-    $wr_content = $write[wr_content];
+    $wr_id = $write['wr_id'];
+    $wr_content = $write['wr_content'];
 
     $thumb_file = mw_thumb_jpg($thumb_path.'/'.$wr_id);
     $thumb2_file = mw_thumb_jpg($thumb2_path.'/'.$wr_id);

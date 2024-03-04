@@ -24,7 +24,7 @@ include_once($board_skin_path."/mw.lib/mw.skin.basic.lib.php");
 
 // 임시 저장
 
-header("Content-Type: text/html; charset=$g4[charset]");
+header("Content-Type: text/html; charset={$g4['charset']}");
 $gmnow = gmdate("D, d M Y H:i:s") . " GMT";
 header("Expires: 0"); // rfc2616 - Section 14.21
 header("Last-Modified: " . $gmnow);
@@ -46,21 +46,21 @@ if ($work == "save")
 
     $sql_common = " tp_subject = '$wr_subject' ";
     $sql_common.= ", tp_content = '$wr_content' ";
-    $sql_common.= ", tp_datetime = '$g4[time_ymdhis]' ";
+	$sql_common.= ", tp_datetime = '{$g4['time_ymdhis']}' ";
 
-    $sql = " select * from $mw[temp_table] where bo_table = '$bo_table' and mb_id = '$member[mb_id]' ";
+	$sql = " select * from {$mw['temp_table']} where bo_table = '$bo_table' and mb_id = '{$member['mb_id']}' ";
     $row = sql_fetch($sql);
     if ($row) {
-        $sql = " update $mw[temp_table] set $sql_common where bo_table = '$bo_table' and mb_id = '$member[mb_id]' ";
+        $sql = " update {$mw['temp_table']} set $sql_common where bo_table = '$bo_table' and mb_id = '{$member['mb_id']}' ";
         sql_query($sql);
     } else {
-        $sql = " insert into $mw[temp_table] set $sql_common, bo_table = '$bo_table', mb_id = '$member[mb_id]' ";
+		$sql = " insert into {$mw['temp_table']} set $sql_common, bo_table = '$bo_table', mb_id = '{$member['mb_id']}' ";
         sql_query($sql);
     }
 }
 else if ($work == "get")
 {
-    $row = sql_fetch(" select * from $mw[temp_table] where bo_table = '$bo_table' and mb_id = '$member[mb_id]' ");
-    echo "$row[tp_subject]-mw-basic-temp-return-$row[tp_content]";
+	$row = sql_fetch(" select * from {$mw['temp_table']} where bo_table = '$bo_table' and mb_id = '{$member['mb_id']}' ");
+	echo "{$row['tp_subject']}-mw-basic-temp-return-{$row['tp_content']}";
 }
 

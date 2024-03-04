@@ -29,7 +29,7 @@ $head = ob_get_clean();
 $head = str_replace("<head>", "<head>\n{$viewport}", $head);
 echo $head;
 
-if (!mw_singo_admin($member[mb_id]))
+if (!mw_singo_admin($member['mb_id']))
     alert_close("접근 권한이 없습니다.");
 
 if (preg_match("/^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/", $mb_id)) {
@@ -40,19 +40,19 @@ else {
     if (!$mb)
         alert_close("존재하지 않는 회원ID 입니다.");
 
-    $mb_name = get_sideview($mb[mb_id], $mb[mb_nick], $mb[mb_homepage], $mb[mb_email]);
+    $mb_name = get_sideview($mb['mb_id'], $mb['mb_nick'], $mb['mb_homepage'], $mb['mb_email']);
     $mb_name.= " ($mb[mb_id]) ";
 }
 
-if ($config[cf_admin] == $mb_id)
+if ($config['cf_admin'] == $mb_id)
     alert_close("최고관리자는 접근 차단할 수 없습니다.");
 
-$token = md5(session_id().$member[mb_today_login].$member[mb_login_ip]);
+$token = md5(session_id().$member['mb_today_login'].$member['mb_login_ip']);
 set_session("ss_token", $token);
 ?>
 
 <style type="text/css">
-.container { padding:10px; text-align:center; } 
+.container { padding:10px; text-align:center; }
 .title { font-weight:bold; font-size:13px; text-align:center; margin:20px 0 20px 0; }
 .content { margin:0 0 20px 0; text-align:left; }
 .text {
@@ -65,7 +65,7 @@ set_session("ss_token", $token);
     width:95%;
     height:50px;
 }
-.input { 
+.input {
     border-top:1px solid #9a9a9a;
     border-left:1px solid #9a9a9a;
     border-right:1px solid #d8d8d8;
@@ -79,7 +79,7 @@ set_session("ss_token", $token);
 .buttons { text-align:center; }
 .btn1 { background-color:#efefef; cursor:pointer; }
 </style>
-<script src="<?=$g4[path]?>/js/sideview.js"></script>
+<script src="<?=$g4['path']?>/js/sideview.js"></script>
 <script type="text/javascript">
 function form_check() {
     if (!confirm("정말 접근차단 하시겠습니까?")) return false;
@@ -113,7 +113,7 @@ function is_all_moving() {
 
     <div class="content">
         <div> 관리자 메모 </div>
-        <textarea name="mb_memo" class="text"><?=$mb[mb_memo]?></textarea>
+        <textarea name="mb_memo" class="text"><?=$mb['mb_memo']?></textarea>
     </div>
 
     <div class="content">

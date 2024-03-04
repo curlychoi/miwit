@@ -34,7 +34,7 @@ if (defined("_MW_MOBILE_"))
 $pc_skin_path = $board_skin_path;
 
 if (!defined("_MW_BOARD_")) {
-    include_once("$board_skin_path/mw.lib/mw.function.lib.php");
+    include_once($board_skin_path."/mw.lib/mw.function.lib.php");
     $basic_run_time = mw_time_log($basic_run_time, "[basic] include /mw.lib/mw.function.lib.php");
 }
 
@@ -507,7 +507,7 @@ if ($mw_basic['cf_cash_grade_use'] && !$is_admin)
 }
 
 // 쓰기버튼 항상 출력
-if ($mw_basic[cf_write_button])
+if ($mw_basic['cf_write_button'])
     $write_href = "./write.php?bo_table=$bo_table";
 
 include($board_skin_path.'/mw.proc/mw.seo.php');

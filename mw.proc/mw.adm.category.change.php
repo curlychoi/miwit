@@ -29,7 +29,7 @@ if ($is_admin != 'super')
 if (!$bo_table)
     die("bo_table 값이 없습니다.");
 
-if (!$token or get_session("ss_config_token") != $token) 
+if (!$token or get_session("ss_config_token") != $token)
     die("토큰 에러로 실행 불가합니다.");
 
 $ca_new = urldecode($_POST['ca_new']);
@@ -41,7 +41,7 @@ if (!preg_match("/utf/i", $g4['charset'])) {
 }
 
 $flag = false;
-$cate = explode("|", $board[bo_category_list]);
+$cate = explode("|", $board['bo_category_list']);
 for ($i=0, $m=count($cate); $i<$m; $i++) {
     $cate[$i] = trim($cate[$i]);
     if (!$cate[$i]) continue;
@@ -55,11 +55,11 @@ if ($ca_old && !$flag)
     die("{$ca_old} 분류명이 잘못되었습니다.");
 
 if ($ca_old) {
-    $sql = "update $g4[board_table] set bo_category_list = replace (bo_category_list, '$ca_old', '$ca_new') where bo_table = '$bo_table'";
+    $sql = "update {$g4['board_table']} set bo_category_list = replace (bo_category_list, '$ca_old', '$ca_new') where bo_table = '$bo_table'";
     $qry = sql_query($sql);
 }
 
-$sql = "update $mw[category_table] set ca_name = replace (ca_name, '$ca_old', '$ca_new') where bo_table = '$bo_table'";
+$sql = "update {$mw['category_table']} set ca_name = replace (ca_name, '$ca_old', '$ca_new') where bo_table = '$bo_table'";
 $qry = sql_query($sql);
 
 $sql = "update $write_table set ca_name = '$ca_new' where ca_name = '$ca_old'";

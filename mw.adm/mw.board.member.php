@@ -29,7 +29,7 @@ sql_query($sql, false);
 if ($is_admin != "super")
     alert("접근 권한이 없습니다.");
 
-$admin_menu[board_member] = "select";
+$admin_menu['board_member'] = "select";
 
 $sfl = "mb_id";
 $colspan = 6;
@@ -40,7 +40,7 @@ $sql_search = " where bo_table = '$bo_table' ";
 
 if ($sfl && $stx) {
     $tmp = sql_fetch("select mb_id from $g4[member_table] where mb_nick = '$stx' ");
-    if ($tmp[mb_id])
+    if ($tmp['mb_id'])
         $stx = $tmp[mb_id];
 
     $sql_search .= " and mb_id like '%$stx%' ";
@@ -50,9 +50,9 @@ $sql = "select count(*) as cnt
         $sql_common
         $sql_search";
 $row = sql_fetch($sql);
-$total_count = $row[cnt];
+$total_count = $row['cnt'];
 
-$rows = $config[cf_write_pages];
+$rows = $config['cf_write_pages'];
 $total_page  = ceil($total_count / $rows);  // 전체 페이지 계산
 if ($page == "") { $page = 1; } // 페이지가 없으면 첫 페이지 (1 페이지)
 $from_record = ($page - 1) * $rows; // 시작 열을 구함
@@ -66,13 +66,13 @@ $qry = sql_query($sql);
 
 $list = array();
 for ($i=0; $row = sql_fetch_array($qry); ++$i) {
-    $row[num] = $total_count - ($page - 1) * $rows - $i;
+    $row['num'] = $total_count - ($page - 1) * $rows - $i;
 
-    $mb = get_member($row[mb_id], "mb_id, mb_nick, mb_homepage, mb_email");
-    $row[name] = get_sideview($mb[mb_id], $mb[mb_nick], $mb[mb_homepage], $mb[mb_email]);
+    $mb = get_member($row['mb_id'], "mb_id, mb_nick, mb_homepage, mb_email");
+    $row[name] = get_sideview($mb['mb_id'], $mb['mb_nick'], $mb['mb_homepage'], $mb['mb_email']);
 
-    if (!$row[bm_limit][0])
-        $row[bm_limit] = '';
+    if (!$row['bm_limit'][0])
+        $row['bm_limit'] = '';
 
     $list[$i] = $row;
 }
@@ -198,12 +198,12 @@ input.bt { background-color:#efefef; height:20px; cursor:pointer; font-size:11px
 </tr>
 <? foreach ($list as $row) {?>
 <tr align=center height=30 bgcolor="#ffffff">
-    <td> <?=$row[num]?> </td>
-    <td> <?=$row[mb_id]?> </td>
-    <td> <?=$row[name]?> </td>
-    <td> <?=$row[bm_datetime]?> </td>
-    <td> <?=$row[bm_limit]?> </td>
-    <td> <a href="javascript:mw_del('<?=$row[mb_id]?>');"><i class="fa fa-cut"></i></a> </td>
+    <td> <?=$row['num']?> </td>
+    <td> <?=$row['mb_id']?> </td>
+    <td> <?=$row['name']?> </td>
+    <td> <?=$row['bm_datetime']?> </td>
+    <td> <?=$row['bm_limit']?> </td>
+    <td> <a href="javascript:mw_del('<?=$row['mb_id']?>');"><i class="fa fa-cut"></i></a> </td>
 </tr>
 <? } ?>
 <? if (!$total_count) { ?>

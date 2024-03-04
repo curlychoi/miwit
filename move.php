@@ -15,28 +15,28 @@ else
 if ($is_admin != "board" && $is_admin != "group" && $is_admin != "super") 
     alert_close("게시판 관리자 이상 접근이 가능합니다.");
 
-$g4[title] = "게시물 " . $act;
-include_once("$g4[path]/head.sub.php");
+$g4['title'] = "게시물 " . $act;
+include_once($g4['path']."/head.sub.php");
 
 $wr_id_list = "";
 if ($wr_id)
     $wr_id_list = $wr_id;
 else {
     $comma = "";
-    for ($i=0; $i<count($_POST[chk_wr_id]); $i++) {
-        $wr_id_list .= $comma . $_POST[chk_wr_id][$i];
+    for ($i=0; $i<count($_POST['chk_wr_id']); $i++) {
+        $wr_id_list .= $comma . $_POST['chk_wr_id'][$i];
         $comma = ",";
     }
 }
 
 $sql = " select * 
-           from $g4[board_table] a, 
-                $g4[group_table] b
+           from {$g4['board_table']} a, 
+			   {$g4['group_table']} b
           where a.gr_id = b.gr_id ";// and bo_table <> '$bo_table' ";
 if ($is_admin == 'group') 
-    $sql .= " and b.gr_admin = '$member[mb_id]' ";
+    $sql .= " and b.gr_admin = '{$member['mb_id']}' ";
 else if ($is_admin == 'board') 
-    $sql .= " and a.bo_admin = '$member[mb_id]' ";
+    $sql .= " and a.bo_admin = '{$member['mb_id']}' ";
 $sql .= " order by a.gr_id, a.bo_order_search, a.bo_table ";
 $result = sql_query($sql, false);
 if (!$result) {
@@ -50,14 +50,14 @@ for ($i=0; $row=sql_fetch_array($result); $i++)
 }
 
 // 파워팩 관리자
-$sql = "select * from $mwp[admin_table] where mb_id = '$member[mb_id]' order by ad_grade desc, ad_permission asc";
+$sql = "select * from $mwp[admin_table] where mb_id = '{$member['mb_id']}' order by ad_grade desc, ad_permission asc";
 $qry = sql_query($sql, false);
 while ($row = sql_fetch_array($qry))
 {
     if ($row[ad_grade] == 'group')
     {
-        $sql2 = " select * from $g4[group_table] g, $g4[board_table] b where g.gr_id = b.gr_id ";
-        $sql2.= " and g.gr_id = '$row[ad_permission]' ";
+        $sql2 = " select * from {$g4['group_table']} g, ${g4['board_table']} b where g.gr_id = b.gr_id ";
+        $sql2.= " and g.gr_id = '{$row['ad_permission']}' ";
         $qry2 = sql_query($sql2);
         for ($i=$i; $row2=sql_fetch_array($qry2); $i++) {
             $list[$i] = $row2;
@@ -65,8 +65,8 @@ while ($row = sql_fetch_array($qry))
     }
     if ($row[ad_grade] == 'board')
     {
-        $sql2 = " select * from $g4[group_table] g, $g4[board_table] b where g.gr_id = b.gr_id ";
-        $sql2.= " and bo_table = '$row[ad_permission]' ";
+        $sql2 = " select * from {$g4['group_table']} g, $g4[board_table] b where g.gr_id = b.gr_id ";
+        $sql2.= " and bo_table = '{$row['ad_permission']}' ";
         $qry2 = sql_query($sql2);
         for ($i=$i; $row2=sql_fetch_array($qry2); $i++) {
             $list[$i] = $row2;
@@ -131,20 +131,20 @@ while ($row = sql_fetch_array($qry))
         
         <? for ($i=0; $i<count($list); $i++) { ?>
         <tr> 
-            <td width="39" height="25" align="center"><input type=checkbox id='chk<?=$i?>' name='chk_bo_table[]' value="<?=$list[$i][bo_table]?>"></td>
-            <td width="10" valign="bottom"><img src="<?=$g4[bbs_img_path]?>/l.gif" width="1" height="8"></td>
+            <td width="39" height="25" align="center"><input type=checkbox id='chk<?=$i?>' name='chk_bo_table[]' value="<?=$list[$i]['bo_table']?>"></td>
+            <td width="10" valign="bottom"><img src="<?=$g4['bbs_img_path']?>/l.gif" width="1" height="8"></td>
             <td width="490">
                 <span style="cursor:pointer;" onclick="document.getElementById('chk<?=$i?>').checked=document.getElementById('chk<?=$i?>').checked?'':'checked';">
                     <?
-                    if ($save_gr_subject==$list[$i][gr_subject])
+                    if ($save_gr_subject==$list[$i]['gr_subject'])
                         echo "<span style='color:#cccccc;'>";
                     else
                         echo "<span>";
-                    echo $list[$i][gr_subject] . " > ";
+                    echo $list[$i]['gr_subject'] . " > ";
                     echo "</span>";
-                    $save_gr_subject = $list[$i][gr_subject];
+                    $save_gr_subject = $list[$i]['gr_subject'];
                     ?>
-                    <?=$list[$i][bo_subject]?> (<?=$list[$i][bo_table]?>)</span>
+                    <?=$list[$i]['bo_subject']?> (<?=$list[$i]['bo_table']?>)</span>
             </td>
         </tr>
         <tr> 
@@ -163,7 +163,7 @@ while ($row = sql_fetch_array($qry))
     <td height="2" bgcolor="#E6E6E6"></td>
 </tr>
 <tr> 
-    <td height="40" align="center" valign="bottom"><input id="btn_submit" type=image src='<?=$g4[bbs_img_path]?>/ok_btn.gif' border=0>&nbsp;&nbsp;<a href="javascript:window.close();"><img src="<?=$g4[bbs_img_path]?>/btn_close.gif" width="48" height="20" border="0"></a></td>
+    <td height="40" align="center" valign="bottom"><input id="btn_submit" type=image src='<?=$g4['bbs_img_path']?>/ok_btn.gif' border=0>&nbsp;&nbsp;<a href="javascript:window.close();"><img src="<?=$g4['bbs_img_path']?>/btn_close.gif" width="48" height="20" border="0"></a></td>
 </tr>
 </table>
 
@@ -205,5 +205,5 @@ function fboardmoveall_submit(f)
 </td></tr></table>
 
 <?
-include_once("$g4[path]/tail.sub.php");
+include_once($g4['path']."/tail.sub.php");
 ?>

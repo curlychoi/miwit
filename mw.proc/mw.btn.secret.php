@@ -22,7 +22,7 @@
 include_once("_common.php");
 include_once("$board_skin_path/mw.lib/mw.skin.basic.lib.php");
 
-/*function alert_only($msg) 
+/*function alert_only($msg)
 {
     global $g4;
     echo "<meta http-equiv=\"content-type\" content=\"text/html; charset=$g4[charset]\">";
@@ -33,25 +33,25 @@ include_once("$board_skin_path/mw.lib/mw.skin.basic.lib.php");
 if (!$is_admin)
     die("접근권한이 없습니다.");
 
-if (!$token or get_session("ss_delete_token") != $token) 
+if (!$token or get_session("ss_delete_token") != $token)
     die("토큰 에러로 실행 불가합니다.");
 
-if ($flag == 'no') 
+if ($flag == 'no')
 {
-    if (!strstr($write[wr_option], "secret"))
+    if (!strstr($write['wr_option'], "secret"))
         die("비밀글이 아닙니다.");
 
-    $wr_option = str_replace("secret", "", $write[wr_option]);
+    $wr_option = str_replace("secret", "", $write['wr_option']);
 
     $msg = "비밀글 설정을 해제하였습니다.";
-} 
-else 
+}
+else
 {
-    if (strstr($write[wr_option], "secret"))
+    if (strstr($write['wr_option'], "secret"))
         die("이미 잠겨져 있는 게시물입니다.");
 
-    if ($write[wr_option]) {
-        $wr_option = "$write[wr_option],secret";
+    if ($write['wr_option']) {
+        $wr_option = "{$write['wr_option']},secret";
     } else {
         $wr_option = "secret";
     }

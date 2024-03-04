@@ -24,10 +24,10 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 include_once("$board_skin_path/mw.lib/mw.skin.basic.lib.php");
 
 // 게시물 삭제 금지
-if ($mw_basic[cf_no_delete] && !$is_admin) {
+if ($mw_basic['cf_no_delete'] && !$is_admin) {
     alert("관리자만 게시물을 삭제할 수 있습니다.");
 }
 
-if (!$is_admin && $write[wr_view_block] && $cwin)
+if (!$is_admin && $write['wr_view_block'] && $cwin)
     alert("이 게시물 보기는 차단되었습니다. 관리자만 접근 가능합니다.");
 

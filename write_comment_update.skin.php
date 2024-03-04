@@ -19,16 +19,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가 
+if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 
 $sql = "update $write_table set wr_option = '$wr_option' where wr_id = '$comment_id'";
 sql_query($sql);
 
 // 익명
-if ($mw_basic[cf_anonymous]) {
+if ($mw_basic['cf_anonymous']) {
     sql_query(" update $write_table set wr_anonymous = '$wr_anonymous' where wr_id = '$comment_id' ");
-    if ($mw_basic[cf_anonymous_nopoint] && $wr_anonymous && $w == 'c') {
-        delete_point($member[mb_id], $bo_table, $comment_id, '코멘트');
+    if ($mw_basic['cf_anonymous_nopoint'] && $wr_anonymous && $w == 'c') {
+        delete_point($member['mb_id'], $bo_table, $comment_id, '코멘트');
     }
 }
 
@@ -41,9 +41,9 @@ if ($w == 'c') {
 
 // 비회원 이름 쿠키 저장
 if (!$is_member) {
-    set_cookie("mw_cookie_name", $wr_name, -1*$g4[server_time]);
-    set_cookie("mw_cookie_email", $wr_email, -1*$g4[server_time]);
-    set_cookie("mw_cookie_homepage", $wr_homepage, -1*$g4[server_time]);
+    set_cookie("mw_cookie_name", $wr_name, -1*$g4['server_time']);
+    set_cookie("mw_cookie_email", $wr_email, -1*$g4['server_time']);
+    set_cookie("mw_cookie_homepage", $wr_homepage, -1*$g4['server_time']);
 }
 
 if ($w == 'c' && mw_is_rate($bo_table, $write['wr_id']) == '' && $wr_rate) {

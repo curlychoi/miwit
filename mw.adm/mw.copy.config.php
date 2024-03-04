@@ -1,4 +1,4 @@
-<?
+<?php 
 /**
  * Bechu-Basic Skin for Gnuboard4
  *
@@ -25,13 +25,13 @@ include_once("$board_skin_path/mw.lib/mw.skin.basic.lib.php");
 if ($is_admin != "super")
     alert_close("접근 권한이 없습니다.");
 
-$g4[title] = "배추 BASIC SKIN 관리자";
-include_once("$g4[path]/head.sub.php");
+$g4['title'] = "배추 BASIC SKIN 관리자";
+include_once("${g4['path']}/head.sub.php");
 
 $sql = " select * 
-           from $g4[board_table] a, 
-                $g4[group_table] b, 
-                $mw[basic_config_table] c
+           from ${g4['board_table']} a, 
+                ${g4['group_table']} b, 
+                ${mw['basic_config_table']} c
           where c.gr_id = b.gr_id and a.bo_table = c.bo_table  ";
 $sql .= " order by c.gr_id, c.bo_table ";
 $result = sql_query($sql);
@@ -49,7 +49,7 @@ for ($i=0; $row=sql_fetch_array($result); $i++)
     <td align="center" valign="middle" bgcolor="#EBEBEB" style="padding:5px;">
         <table width="100%" height="40" border="0" cellspacing="0" cellpadding="0">
         <tr> 
-            <td width="25" align="center" bgcolor="#FFFFFF" ><img src="<?=$g4[bbs_img_path]?>/icon_01.gif" width="5" height="5"></td>
+            <td width="25" align="center" bgcolor="#FFFFFF" ><img src="<?=$g4['bbs_img_path']?>/icon_01.gif" width="5" height="5"></td>
             <td width="" align="left" bgcolor="#FFFFFF" ><font color="#666666"><b>배추 베이직 스킨 환경설정 복사</b></font></td>
         </tr>
         </table></td>
@@ -90,20 +90,20 @@ for ($i=0; $row=sql_fetch_array($result); $i++)
         
         <? for ($i=0; $i<count($list); $i++) { ?>
         <tr> 
-            <td width="39" height="25" align="center"><input type=radio id='chk<?=$i?>' name='chk_bo_table' value="<?=$list[$i][bo_table]?>" style="cursor:pointer"></td>
-            <td width="10" valign="bottom"><img src="<?=$g4[bbs_img_path]?>/l.gif" width="1" height="8"></td>
+            <td width="39" height="25" align="center"><input type=radio id='chk<?=$i?>' name='chk_bo_table' value="<?=$list[$i]['bo_table']?>" style="cursor:pointer"></td>
+            <td width="10" valign="bottom"><img src="<?=$g4['bbs_img_path']?>/l.gif" width="1" height="8"></td>
             <td width="490">
                 <span style="cursor:pointer;" onclick="document.getElementById('chk<?=$i?>').checked=document.getElementById('chk<?=$i?>').checked?'':'checked';">
                     <?
-                    if ($save_gr_subject==$list[$i][gr_subject])
+                    if ($save_gr_subject==$list[$i]['gr_subject'])
                         echo "<span style='color:#cccccc;'>";
                     else
                         echo "<span>";
-                    echo $list[$i][gr_subject] . " > ";
+                    echo $list[$i]['gr_subject'] . " > ";
                     echo "</span>";
-                    $save_gr_subject = $list[$i][gr_subject];
+                    $save_gr_subject = $list[$i]['gr_subject'];
                     ?>
-                    <?=$list[$i][bo_subject]?> (<?=$list[$i][bo_table]?>)</span>
+                    <?=$list[$i]['bo_subject']?> (<?=$list[$i]['bo_table']?>)</span>
             </td>
         </tr>
         <tr> 
@@ -122,7 +122,7 @@ for ($i=0; $row=sql_fetch_array($result); $i++)
     <td height="2" bgcolor="#E6E6E6"></td>
 </tr>
 <tr> 
-    <td height="40" align="center" valign="bottom"><input id="btn_submit" type=image src='<?=$g4[bbs_img_path]?>/ok_btn.gif' border=0>&nbsp;&nbsp;<a href="javascript:window.close();"><img src="<?=$g4[bbs_img_path]?>/btn_close.gif" width="48" height="20" border="0"></a></td>
+    <td height="40" align="center" valign="bottom"><input id="btn_submit" type=image src='<?=$g4['bbs_img_path']?>/ok_btn.gif' border=0>&nbsp;&nbsp;<a href="javascript:window.close();"><img src="<?=$g4['bbs_img_path']?>/btn_close.gif" width="48" height="20" border="0"></a></td>
 </tr>
 </table>
 
@@ -163,6 +163,6 @@ function fboardmoveall_submit(f)
 
 </td></tr></table>
 
-<?
-include_once("$g4[path]/tail.sub.php");
+<?php 
+include_once("${g4['path']}/tail.sub.php");
 ?>

@@ -1,4 +1,5 @@
 <?php
+
 // common.php 의 상대 경로
 $g4_path = "../../..";
 if (is_file($g4_path."/common.php")) {

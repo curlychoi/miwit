@@ -24,7 +24,7 @@ include_once("$board_skin_path/mw.lib/mw.skin.basic.lib.php");
 
 if (!$is_admin) exit;
 
-$url = "$g4[url]/$g4[bbs]/board.php?bo_table=$bo_table&wr_id=$wr_id";
+$url = "{$g4['url']}/{$g4['bbs']}/board.php?bo_table=$bo_table&wr_id=$wr_id";
 $umz = umz_get_url($url);
 
 sql_query("update $write_table set wr_umz = '$umz' where wr_id = '$wr_id'");

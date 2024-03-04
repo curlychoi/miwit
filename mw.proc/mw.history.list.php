@@ -22,11 +22,11 @@
 include_once("_common.php");
 include_once("$board_skin_path/mw.lib/mw.skin.basic.lib.php");
 
-if (!($mw_basic[cf_post_history] && $member[mb_level] >= $mw_basic[cf_post_history_level])) {
+if (!($mw_basic['cf_post_history'] && $member['mb_level'] >= $mw_basic['cf_post_history_level'])) {
     alert_close("로그를 열람할 권한이 없습니다.");
 }
 
-$sql_common = " from $mw[post_history_table] ";
+$sql_common = " from {$mw['post_history_table']} ";
 $sql_order = " order by ph_id desc ";
 $sql_search = " where bo_table = '$bo_table' and wr_id = '$wr_id' ";
 
@@ -34,9 +34,9 @@ $sql = "select count(*) as cnt
         $sql_common
         $sql_search";
 $row = sql_fetch($sql);
-$total_count = $row[cnt];
+$total_count = $row['cnt'];
 
-$rows = $config[cf_page_rows];
+$rows = $config['cf_page_rows'];
 $total_page  = ceil($total_count / $rows);  // 전체 페이지 계산
 if ($page == "") { $page = 1; } // 페이지가 없으면 첫 페이지 (1 페이지)
 $from_record = ($page - 1) * $rows; // 시작 열을 구함
@@ -51,19 +51,19 @@ $qry = sql_query($sql);
 $list = array();
 for ($i=0; $row = sql_fetch_array($qry); ++$i) {
     $list[$i] = $row;
-    $list[$i][num] = $total_count - ($page - 1) * $rows - $i;
-    $list[$i][href] = "mw.history.view.php?bo_table={$row[bo_table]}&wr_id={$row[wr_id]}&ph_id={$row[ph_id]}{$qstr}";
+    $list[$i]['num'] = $total_count - ($page - 1) * $rows - $i;
+    $list[$i]['href'] = "mw.history.view.php?bo_table={$row['bo_table']}&wr_id={$row['wr_id']}&ph_id={$row['ph_id']}{$qstr}";
 }
 
-$write_pages = get_paging($config[cf_write_pages], $page, $total_page, "./mw.history.list.php?bo_table={$bo_table}&wr_id={$wr_id}{$qstr}&page=");
+$write_pages = get_paging($config['cf_write_pages'], $page, $total_page, "./mw.history.list.php?bo_table={$bo_table}&wr_id={$wr_id}{$qstr}&page=");
 
 $colspan = 3;
 
-$g4[title] = "변경기록";
+$g4['title'] = "변경기록";
 include_once("$g4[path]/head.sub.php");
 ?>
 
-<script language="javascript" src="<?=$g4[path]?>/js/sideview.js"></script>
+<script language="javascript" src="<?=$g4['path']?>/js/sideview.js"></script>
 
 <link rel="stylesheet" href="<?=$board_skin_path?>/style.common.css" type="text/css">
 
@@ -76,7 +76,7 @@ table caption { font-size:13px; color:#555; font-weight:bold; text-decoration:no
 </style>
 
 <table border=0 cellpadding=0 cellspacing=1 style="width:95%; margin:10px; border:1px solid #ddd;">
-<caption> 변경기록 : <?=cut_str($write[wr_subject], 50)?> </caption>
+<caption> 변경기록 : <?=cut_str($write['wr_subject'], 50)?> </caption>
 <tr style="text-align:center; font-weight:bold; height:30px; background-color:#f8f8f8;">
     <td width=10%> 번호 </td>
     <td width=40%> 변경한이 </td>
@@ -85,9 +85,9 @@ table caption { font-size:13px; color:#555; font-weight:bold; text-decoration:no
 <tr><td colspan=<?=$colspan?> bgcolor="#dddddd"></td></tr>
 <? for ($i=0; $i<count($list); $i++) { ?>
 <tr style="text-align:center; height:25px;">
-    <td> <?=$list[$i][num]?> </td>
-    <td> <?=get_sideview($list[$i][mb_id], $list[$i][ph_name])?> </td>
-    <td> <a href="<?=$list[$i][href]?>"><?=$list[$i][ph_datetime]?></a> </td>
+    <td> <?=$list[$i]['num']?> </td>
+    <td> <?=get_sideview($list[$i]['mb_id'], $list[$i]['ph_name'])?> </td>
+    <td> <a href="<?=$list[$i]['href']?>"><?=$list[$i]['ph_datetime']?></a> </td>
 </tr>
 <tr><td colspan=<?=$colspan?> bgcolor="#f8f8f8"></td></tr>
 <? } ?>
@@ -112,5 +112,5 @@ table caption { font-size:13px; color:#555; font-weight:bold; text-decoration:no
 <br/>
 
 <?
-include_once("$g4[path]/tail.sub.php");
+include_once("{$g4['path']}/tail.sub.php");
 ?>

@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가 
+if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 
 include_once($board_skin_path."/mw.lib/mw.skin.basic.lib.php");
 
@@ -29,20 +29,20 @@ if (is_g5()) {
     if (!get_session("ss_view_{$bo_table}_{$wr_id}"))
         alert("잘못된 접근입니다.");
 
-    $sql = " select bf_source, bf_file from $g4[board_file_table] where bo_table = '$bo_table' and wr_id = '$wr_id' and bf_no = '$no' ";
+    $sql = " select bf_source, bf_file from {$g4['board_file_table']} where bo_table = '$bo_table' and wr_id = '$wr_id' and bf_no = '$no' ";
     $file = sql_fetch($sql);
-    if (!$file[bf_file])
+    if (!$file['bf_file'])
         alert_close("파일 정보가 존재하지 않습니다.");
 
-    if ($member[mb_level] < $board[bo_download_level]) {
+    if ($member['mb_level'] < $board['bo_download_level']) {
         $alert_msg = "다운로드 권한이 없습니다.";
-        if ($member[mb_id])
+        if ($member['mb_id'])
             alert($alert_msg);
         else
-            alert($alert_msg . "\\n\\n회원이시라면 로그인 후 이용해 보십시오.", "./login.php?wr_id=$wr_id&$qstr&url=".urlencode("$g4[bbs_path]/board.php?bo_table=$bo_table&wr_id=$wr_id"));
+            alert($alert_msg . "\\n\\n회원이시라면 로그인 후 이용해 보십시오.", "./login.php?wr_id=$wr_id&$qstr&url=".urlencode("{$g4['bbs_path']}/board.php?bo_table=$bo_table&wr_id=$wr_id"));
     }
 
-    $filepath = "$g4[path]/data/file/$bo_table/$file[bf_file]";
+    $filepath = "{$g4['path']}/data/file/$bo_table/{$file['bf_file']}";
     $filepath = addslashes($filepath);
     if (!is_file($filepath) || !file_exists($filepath))
         alert("파일이 존재하지 않습니다.");

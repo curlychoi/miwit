@@ -22,11 +22,11 @@
 include_once("_common.php");
 
 // 게시판 관리자 이상 복사, 이동 가능
-if (!($member[mb_id] && ($is_admin == "super" || $group[gr_admin] == $member[mb_id] || $board[bo_admin] == $member[mb_id]))) 
+if (!($member['mb_id'] && ($is_admin == "super" || $group['gr_admin'] == $member['mb_id'] || $board['bo_admin'] == $member['mb_id']))) 
     alert_close("게시판 관리자 이상 접근이 가능합니다.");
 
-$g4[title] = "분류이동";
-include_once("$g4[path]/head.sub.php");
+$g4['title'] = "분류이동";
+include_once("{$g4['path']}/head.sub.php");
 
 $wr_id_list = "";
 if ($wr_id)
@@ -41,7 +41,7 @@ else {
     }
 }
 
-$category_list = explode("|", $board[bo_category_list]);
+$category_list = explode("|", $board['bo_category_list']);
 
 ?>
 <table width="100%" border="0" cellpadding="2" cellspacing="0"><tr><td>
@@ -51,7 +51,7 @@ $category_list = explode("|", $board[bo_category_list]);
     <td align="center" valign="middle" bgcolor="#EBEBEB" style="padding:5px;">
         <table width="100%" height="40" border="0" cellspacing="0" cellpadding="0">
         <tr> 
-            <td width="25" align="center" bgcolor="#FFFFFF" ><img src="<?=$g4[bbs_img_path]?>/icon_01.gif" width="5" height="5"></td>
+            <td width="25" align="center" bgcolor="#FFFFFF" ><img src="<?=$g4['bbs_img_path']?>/icon_01.gif" width="5" height="5"></td>
             <td width="" align="left" bgcolor="#FFFFFF" ><font color="#666666"><b>게시물 분류이동</b></font></td>
         </tr>
         </table></td>
@@ -107,7 +107,7 @@ $category_list = explode("|", $board[bo_category_list]);
     <td height="2" bgcolor="#E6E6E6"></td>
 </tr>
 <tr> 
-    <td height="40" align="center" valign="bottom"><input id="btn_submit" type=image src='<?=$g4[bbs_img_path]?>/ok_btn.gif' border=0>&nbsp;&nbsp;<a href="javascript:window.close();"><img src="<?=$g4[bbs_img_path]?>/btn_close.gif" width="48" height="20" border="0"></a></td>
+    <td height="40" align="center" valign="bottom"><input id="btn_submit" type=image src='<?=$g4['bbs_img_path']?>/ok_btn.gif' border=0>&nbsp;&nbsp;<a href="javascript:window.close();"><img src="<?=$g4['bbs_img_path']?>/btn_close.gif" width="48" height="20" border="0"></a></td>
 </tr>
 </form>
 </table>
@@ -150,5 +150,5 @@ function fboardmoveall_submit(f)
 
 
 <?
-include_once("$g4[path]/tail.sub.php");
+include_once("{$g4['path']}/tail.sub.php");
 ?>

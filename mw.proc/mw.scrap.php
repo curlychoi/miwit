@@ -26,13 +26,13 @@ if (!$bo_table or !$wr_id) die("false|데이터가 없습니다.");
 
 include_once("$board_skin_path/mw.lib/mw.skin.basic.lib.php");
 
-$sql = " select count(*) as cnt from $g4[scrap_table]
-          where mb_id = '$member[mb_id]'
+$sql = " select count(*) as cnt from {$g4['scrap_table']}
+          where mb_id = '{$member['mb_id']}'
             and bo_table = '$bo_table'
             and wr_id = '$wr_id' ";
 $row = sql_fetch($sql);
 
-if ($row[cnt])
+if ($row['cnt'])
     die("false|이미 스크랩 하신 글 입니다.");
 
 $sql = " insert into $g4[scrap_table] ( mb_id, bo_table, wr_id, ms_datetime )
@@ -41,10 +41,10 @@ sql_query($sql);
 
 $ms_id = sql_insert_id();
 
-$ms_subject = addslashes($write[wr_subject]);
-sql_query(" update $g4[scrap_table] set ms_subject = '$ms_subject' where ms_id = '$ms_id'", false);
+$ms_subject = addslashes($write['wr_subject']);
+sql_query(" update {$g4['scrap_table']} set ms_subject = '$ms_subject' where ms_id = '$ms_id'", false);
 
-$sql = " select count(*) as cnt from $g4[scrap_table] where bo_table = '$bo_table' and wr_id = '$wr_id' ";
+$sql = " select count(*) as cnt from {$g4['scrap_table']} where bo_table = '$bo_table' and wr_id = '$wr_id' ";
 $row = sql_fetch($sql);
 
-echo $row[cnt];
+echo $row['cnt'];

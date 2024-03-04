@@ -20,7 +20,7 @@
  */
 
 include_once("_common.php");
-header("Content-Type: text/html; charset=$g4[charset]");
+header("Content-Type: text/html; charset={$g4['charset']}");
 
 if (!$bo_table)
     die("bo_table 이 없습니다.");
@@ -35,10 +35,10 @@ include_once("$board_skin_path/mw.lib/mw.skin.basic.lib.php");
 
 $chk_comment_id = explode(",", $comment_id);
 
-for ($i=0, $m=count($chk_comment_id); $i<$m; $i++) 
+for ($i=0, $m = count($chk_comment_id); $i < $m; $i++) 
 {
     $write = sql_fetch(" select * from $write_table where wr_id = '{$chk_comment_id[$i]}' ");
-    if ($write[wr_id])
+    if ($write['wr_id'])
         mw_delete_row($board, $write, 'no');
 }
 
