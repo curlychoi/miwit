@@ -291,7 +291,7 @@ if (!($w == "u" || $w == "cu") && $config['cf_email_use'])
         //$link_url = "$g4[url]/$g4[bbs]/board.php?bo_table=$bo_table&wr_id=$wr_id&$qstr";
         $link_url = mw_seo_url($bo_table, $wr_id);
 
-        include_once("$g4[path]/lib/mailer.lib.php");
+        include_once("{$g4['path']}/lib/mailer.lib.php");
 
         ob_start();
         include ("$g4[bbs_path]/write_update_mail.php");
@@ -304,7 +304,7 @@ if (!($w == "u" || $w == "cu") && $config['cf_email_use'])
             if (!$email) continue;
             if ($email == "test@test.com") continue;
             mailer($wr_name, $wr_email, $email, $subject, $content, 1);
-	    //write_log("$g4[path]/data/mail.log", "$email\n");
+	    //write_log("{$g4['path']}/data/mail.log", "$email\n");
         }
     }
     $write_run_time = mw_time_log($write_run_time, "[write] mail");

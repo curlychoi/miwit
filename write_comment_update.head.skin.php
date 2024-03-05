@@ -177,7 +177,7 @@ if ($mw_basic['cf_comment_file']) // 코멘트 첨부파일
         $upload['del_check'] = true;
 
         $row = sql_fetch(" select bf_file from {$mw['comment_file_table']} where bo_table = '$bo_table' and wr_id = '$comment_id' and bf_no = '0' ");
-        @unlink("$g4[path]/data/file/$bo_table/{$row['bf_file']}");
+        @unlink("{$g4['path']}/data/file/$bo_table/{$row['bf_file']}");
     }
     else
         $upload['del_check'] = false;

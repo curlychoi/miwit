@@ -43,16 +43,16 @@ if ($mw_basic['cf_comment_file']) {
         // 삭제에 체크가 있거나 파일이 있다면 업데이트를 합니다.
         // 그렇지 않다면 내용만 업데이트 합니다.
         if ($upload['del_check'] || $upload['file']) {
-            $sql = " update $mw[comment_file_table]
+            $sql = " update {$mw['comment_file_table']}
                         set bf_source = '{$upload['source']}',
-								= '{$upload['file']}',
+                            bf_file	= '{$upload['file']}',
                             bf_content = '{$bf_content}',
                             bf_filesize = '{$upload['filesize']}',
                             bf_width = '{$upload['image'][0]}',
                             bf_height = '{$upload['image'][1]}',
                             bf_type = '{$upload['image'][2]}',
                             bf_datetime = '{$g4['time_ymdhis']}'
-                      where bo_table = '$bo_table'
+                        where bo_table = '$bo_table'
                         and wr_id = '$comment_id'
                         and bf_no = '$i' ";
             sql_query($sql);
@@ -69,11 +69,11 @@ if ($mw_basic['cf_comment_file']) {
                     set bo_table = '$bo_table',
                         wr_id = '$comment_id',
                         bf_no = '$i',
-                        bf_source = '{$upload[source]}',
+                        bf_source = '{$upload['source']}',
                         bf_file = '{$upload['file']}',
                         bf_content = '{$bf_content}',
                         bf_download = 0,
-                        bf_filesize = '{$upload[filesize]}',
+                        bf_filesize = '{$upload['filesize']}',
                         bf_width = '{$upload['image'][0]}',
                         bf_height = '{$upload['image'][1]}',
                         bf_type = '{$upload['image'][2]}',

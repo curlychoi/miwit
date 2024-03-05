@@ -67,7 +67,7 @@ for ($i=$file_start; $i<=$view['file']['count']; $i++) {
         echo $m;
 
         $movie_viewer .= $m;
-    } 
+    }
     else if ($view['file'][$i]['view'])
     {
         if (is_g5()) {
@@ -95,7 +95,7 @@ for ($i=$file_start; $i<=$view['file']['count']; $i++) {
             $img_width = $board['bo_image_width'];
             $img_class = " class=\"content-image\" ";
         } else {
-            $img_width = $view['file'][$i][image_width];
+            $img_width = $view['file'][$i]['image_width'];
             $img_class = "";
         }
         $view['file'][$i]['view'] = str_replace("<img", "<img {$img_class} width=\"{$img_width}\"", $view['file'][$i]['view']);
@@ -123,15 +123,15 @@ for ($i=$file_start; $i<=$view['file']['count']; $i++) {
 		}
         else {
             if (is_g5()) {
-                $view['file'][$i]['view'] = str_replace($img_class, 
+                $view['file'][$i]['view'] = str_replace($img_class,
                     $img_class." onclick='mw_image_window(this, {$view['file'][$i]['image_width']}, {$view['file'][$i]['image_height']});'", $view['file'][$i]['view']);
             }
-			
-	    $view['file'][$i]['view'] = str_replace("onclick='image_window(this);'", 
+
+	    $view['file'][$i]['view'] = str_replace("onclick='image_window(this);'",
 		"onclick='mw_image_window(this, {$view['file'][$i]['image_width']}, {$view['file'][$i]['image_height']});'", $view['file'][$i]['view']);
 	}
         echo $view['file'][$i]['view'] . "<br/><br/>";
-		
+
         if (trim($view['file'][$i]['content']))
             echo $view['file'][$i]['content'] . "<br/><br/>";
     }
@@ -174,16 +174,16 @@ for ($i=1; $i<=$g4['link_count']; $i++) {
         $view['link'][$i] = '';
     }
 }
-$view['content'] = mw_video_wrapper($link_file_viewer) . $view['content']; 
+$view['content'] = mw_video_wrapper($link_file_viewer) . $view['content'];
 
 // 웹에디터 첨부 이미지 워터마크 처리
 if ($mw_basic['cf_watermark_use'] && is_mw_file($mw_basic['cf_watermark_path']))
     $view['content'] = mw_create_editor_image_watermark($view['content']);
 
-if (!$mw_basic['cf_zzal'] && !strstr($view['content'], "{이미지:") && !$write['wr_lightbox']) // 파일 출력  
+if (!$mw_basic['cf_zzal'] && !strstr($view['content'], "{이미지:") && !$write['wr_lightbox']) // 파일 출력
     $view['content'] = $file_viewer . $view['content'];
 else if (!strstr($view['content'], "{동영상:"))
-    $view['content'] = $movie_viewer . $view['content']; 
+    $view['content'] = $movie_viewer . $view['content'];
 else {
     $jwplayer = false;
     $jwplayer_count = 0;
@@ -217,7 +217,7 @@ else {
         } elseif (strstr($match, $no_www)) {
             $path = str_replace($no_www, $g4['path'], $match);
         } elseif (substr($match, 0, 1) == "/") {
-            $path = $_SERVER[DOCUMENT_ROOT].$match;
+            $path = $_SERVER['DOCUMENT_ROOT'].$match;
         //} else { $path = $match;
         }
         $size = null;
@@ -244,8 +244,8 @@ else {
             if ($mw_basic['cf_image_save_close'])
                 $replacement .= "oncontextmenu=\"return false\" style=\"-webkit-touch-callout:none\"";
 
-            if ($size[0] > $board[bo_image_width])
-                $replacement .= " class=\"content-image\" width=\"$board[bo_image_width]\"";
+            if ($size[0] > $board['bo_image_width'])
+                $replacement .= " class=\"content-image\" width=\"{$board['bo_image_width']}\"";
             $data = @preg_replace($pattern, $replacement, $data);
         }
     }
@@ -353,7 +353,7 @@ if ($mw_basic['cf_exam']) {
 
 $ob_marketdb = '';
 $ob_marketdb_flag = false;
-if ($mw_basic['cf_marketdb'] and $write['wr_marketdb']) { 
+if ($mw_basic['cf_marketdb'] and $write['wr_marketdb']) {
     if (is_mw_file("{$marketdb_path}/view.skin.php")) {
         ob_start();
         include("{$marketdb_path}/view.skin.php");

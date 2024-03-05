@@ -54,4 +54,3 @@ if ($w == 'c' && mw_is_rate($bo_table, $write['wr_id']) == '' && $wr_rate) {
     mw_rate($bo_table, $write['wr_id']);
 }
 
-

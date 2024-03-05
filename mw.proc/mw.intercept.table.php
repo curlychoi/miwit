@@ -9,7 +9,7 @@ if (!mw_singo_admin($member['mb_id']))
     alert_close("접근 권한이 없습니다.");
 
 $g4['title'] = "게시물 " . $act;
-include_once("$g4[path]/head.sub.php");
+include_once("{$g4['path']}/head.sub.php");
 
 $wr_id_list = "";
 if ($wr_id)
@@ -191,5 +191,5 @@ while ($row = sql_fetch_array($qry)) {
 </table>
 
 <?
-include_once("$g4[path]/tail.sub.php");
+include_once("{$g4['path']}/tail.sub.php");
 ?>

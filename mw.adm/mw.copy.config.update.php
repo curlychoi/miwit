@@ -28,15 +28,15 @@ if ($is_admin != "super")
 $sql = "desc $mw[basic_config_table] ";
 $qry = sql_query($sql);
 while ($row = sql_fetch_array($qry)) {
-    if ($row[Field] == 'gr_id') continue;
-    if ($row[Field] == 'bo_table') continue;
-    $list[] = $row[Field];
+    if ($row['Field'] == 'gr_id') continue;
+    if ($row['Field'] == 'bo_table') continue;
+    $list[] = $row['Field'];
 }
 
-$sql = "select * from $mw[basic_config_table] where bo_table = '$chk_bo_table'";
+$sql = "select * from {$mw['basic_config_table']} where bo_table = '$chk_bo_table'";
 $row = sql_fetch($sql);
 
-$sql = " update $mw[basic_config_table] set ";
+$sql = " update {$mw['basic_config_table']} set ";
 for ($i=0, $m=count($list); $i<$m; $i++) {
     $sql .= " {$list[$i]} = '".addslashes($row[$list[$i]])."' ";
     if ($i<$m-1) $sql .= ", ";

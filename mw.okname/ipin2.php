@@ -153,14 +153,14 @@ foreach($out as $a => $b) {
    "authInfo       ",	// 12
    );
 
-   echo "encPsnlInfo=$encPsnlInfo<br>";	
+   echo "encPsnlInfo=$encPsnlInfo<br>";
 // 추출된 값 프린트
 foreach($field as $a => $b) {
 echo $field_name_IPIN_DEC[$a].": ".$field[$a]."<br>";
 }
  */
 
-include_once("$g4[path]/head.sub.php");
+include_once("{$g4['path']}/head.sub.php");
 ?>
 
 <script type="text/javascript">
@@ -171,5 +171,5 @@ $(document).ready(function () {
 </script>
 
 <?
-include_once("$g4[path]/tail.sub.php");
+include_once("{$g4['path']}/tail.sub.php");
 

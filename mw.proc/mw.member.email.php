@@ -22,7 +22,7 @@
 include_once("_common.php");
 include_once("$board_skin_path/mw.lib/mw.skin.basic.lib.php");
 
-header("Content-Type: text/html; charset=$g4[charset]");
+header("Content-Type: text/html; charset={$g4['charset']}");
 
 if ($is_admin != 'super')
     die("로그인 해주세요.");

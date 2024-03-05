@@ -2,7 +2,7 @@
 include_once("./_common.php");
 
 // 게시판 관리자 이상 복사, 이동 가능
-if ($is_admin != 'board' && $is_admin != 'group' && $is_admin != 'super') 
+if ($is_admin != 'board' && $is_admin != 'group' && $is_admin != 'super')
     alert_close("게시판 관리자 이상 접근이 가능합니다.");
 
 if ($sw != "move" && $sw != "copy")
@@ -27,23 +27,23 @@ if ($move_memo_use) {
     $qry = sql_query($sql);
     for ($i=0; $row=sql_fetch_array($qry); ++$i) {
         if ($i>0) $bo_list .= ", ";
-        $bo_list .= $row[bo_subject];
+        $bo_list .= $row['bo_subject'];
     }
-    $memo = " 회원님의 아래 게시물이 [{$board[bo_subject]}] 게시판에서 ";
+    $memo = " 회원님의 아래 게시물이 [{$board['bo_subject']}] 게시판에서 ";
     $memo.= " [{$bo_list}] 게시판으로 {$sw_msg} 조치 되었습니다.\n\n";
 
     $list = array();
     $sql = "select wr_subject, mb_id from $write_table where wr_id in ('".implode("','", explode(",",$wr_id_list))."')";
     $qry = sql_query($sql);
     while ($row = sql_fetch_array($qry)) {
-        $list[$row[mb_id]] .= "- ".htmlspecialchars($row[wr_subject])."\n";
+        $list[$row['mb_id']] .= "- ".htmlspecialchars($row['wr_subject'])."\n";
     }
 
     foreach ((array)$list as $mb_id => $bo_list) {
         $me_memo = $memo . $bo_list;
 
         $tmp_row = sql_fetch(" select max(me_id) as max_me_id from $g4[memo_table] ");
-        $me_id = $tmp_row[max_me_id] + 1;
+        $me_id = $tmp_row['max_me_id'] + 1;
 
         // 쪽지 INSERT
         $sql = " insert into $g4[memo_table]
@@ -71,7 +71,7 @@ if ($sw == 'move')
 $script = "";
 
 echo <<<HEREDOC
-<meta http-equiv='content-type' content='text/html; charset={$g4['charset']}'> 
+<meta http-equiv='content-type' content='text/html; charset={$g4['charset']}'>
 <script type="text/javascript">
 alert("{$msg}");
 {$script}

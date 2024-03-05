@@ -7,7 +7,7 @@ $file = sql_fetch($sql);
 if (!$file['bf_file'])
     alert_close("파일 정보가 존재하지 않습니다.");
 
-if ($member['mb_level'] < $board['bo_download_level']) { 
+if ($member['mb_level'] < $board['bo_download_level']) {
     $alert_msg = "다운로드 권한이 없습니다.";
     if ($member['mb_id'])
         alert($alert_msg);
@@ -22,7 +22,7 @@ if (!is_mw_file($filepath) || !@file_exists($filepath))
 
 // 이미 다운로드 받은 파일인지를 검사한 후 게시물당 한번만 포인트를 차감하도록 수정
 $ss_name = "ss_down_{$bo_table}_{$wr_id}";
-if (!get_session($ss_name)) 
+if (!get_session($ss_name))
 {
     // 자신의 글이라면 통과
     // 관리자인 경우 통과
@@ -45,7 +45,7 @@ if (!get_session($ss_name))
     set_session($ss_name, TRUE);
 }
 
-$g4[title] = "{$group['gr_subject']} > {$board['bo_subject']} > " . conv_subject($write['wr_subject'], 255) . " > 다운로드";
+$g4['title'] = "{$group['gr_subject']} > {$board['bo_subject']} > " . conv_subject($write['wr_subject'], 255) . " > 다운로드";
 
 if (preg_match("/^utf/i", $g4['charset']))
     $original = urlencode($file['bf_source']);
@@ -75,10 +75,10 @@ $fp = fopen("$filepath", "rb");
 //    fclose($fp);
 //}
 
-while(!feof($fp)) { 
-    echo fread($fp, 100*1024); 
-    flush(); 
-} 
-fclose ($fp); 
+while(!feof($fp)) {
+    echo fread($fp, 100*1024);
+    flush();
+}
+fclose ($fp);
 flush();
 ?>

@@ -40,7 +40,7 @@ $sql.= " or right(lower(bf_source), 3) = 'gif' ";
 $sql.= " or right(lower(bf_source), 3) = 'png') ";
 $qry = sql_query($sql);
 while ($row = sql_fetch_array($qry)) {
-    $file = "$g4[path]/data/file/$bo_table/$row[bf_file]";
+    $file = "{$g4['path']}/data/file/$bo_table/$row[bf_file]";
     $size = @getImageSize($file);
     sql_query(" update $g4[board_file_table] set bf_width = '$size[0]', bf_height = '$size[1]', bf_type = '$size[2]' where bo_table = '$bo_table' and wr_id = '$row[wr_id]' and bf_no = '$row[bf_no]' ");
 }

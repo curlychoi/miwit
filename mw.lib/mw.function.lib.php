@@ -941,7 +941,7 @@ function get_comment_file($bo_table, $wr_id)
 		$file[$no]['path'] = "{$g4['path']}/data/file/$bo_table";
         //$file[$no]['size'] = get_filesize("{$file[$no][path]}/$row[bf_file]");
         $file[$no]['size'] = get_filesize($row['bf_filesize']);
-        //$file[$no][datetime] = date("Y-m-d H:i:s", @filemtime("$g4[path]/data/file/$bo_table/$row[bf_file]"));
+        //$file[$no][datetime] = date("Y-m-d H:i:s", @filemtime("{$g4['path']}/data/file/$bo_table/$row[bf_file]"));
         $file[$no]['datetime'] = $row['bf_datetime'];
         $file[$no]['source'] = $row['bf_source'];
         $file[$no]['bf_content'] = $row['bf_content'];
@@ -1637,7 +1637,7 @@ function mw_delete_row($board, $write, $save_log=false, $save_message='삭제되
     if (!$row)
         return;
 
-    //$board_skin_path = "$g4[path]/skin/board/$board[bo_skin]";
+    //$board_skin_path = "{$g4['path']}/skin/board/$board[bo_skin]";
     $lib_file_path = "$board_skin_path/mw.lib/mw.skin.basic.lib.php";
     if (is_mw_file($lib_file_path)) include($lib_file_path);
 
@@ -1730,7 +1730,7 @@ function mw_delete_row($board, $write, $save_log=false, $save_message='삭제되
 			$sql = " select * from {$mw['comment_file_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$write['wr_id']}' ";
             $qry = sql_query($sql);
             while ($row = sql_fetch_array($qry))
-                @unlink("$g4[path]/data/file/{$board['bo_table']}/{$row['bf_file']}");
+                @unlink("{$g4['path']}/data/file/{$board['bo_table']}/{$row['bf_file']}");
 
             // 파일테이블 행 삭제
 			sql_query(" delete from {$mw['comment_file_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$write['wr_id']}' ");
@@ -1766,7 +1766,7 @@ function mw_delete_row($board, $write, $save_log=false, $save_message='삭제되
 				$sql2 = " select * from {$g4['board_file_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$row['wr_id']}' ";
                 $result2 = sql_query($sql2);
                 while ($row2 = sql_fetch_array($result2))
-                    @unlink("$g4[path]/data/file/{$board['bo_table']}/{$row2['bf_file']}");
+                    @unlink("{$g4['path']}/data/file/{$board['bo_table']}/{$row2['bf_file']}");
 
                 // 파일테이블 행 삭제
 				sql_query(" delete from {$g4['board_file_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$row['wr_id']}' ");
@@ -1784,7 +1784,7 @@ function mw_delete_row($board, $write, $save_log=false, $save_message='삭제되
 					$sql2 = " select * from {$mw['comment_file_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$row['wr_id']}' ";
                     $qry2 = sql_query($sql2);
                     while ($row2 = sql_fetch_array($qry2))
-						@unlink("$g4[path]/data/file/{$board['bo_table']}/{$row2['bf_file']}");
+						@unlink("{$g4['path']}/data/file/{$board['bo_table']}/{$row2['bf_file']}");
 
                     // 파일테이블 행 삭제
 					sql_query(" delete from {$mw['comment_file_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$row['wr_id']}' ");
@@ -1792,7 +1792,7 @@ function mw_delete_row($board, $write, $save_log=false, $save_message='삭제되
 
                 // 코멘트 추천
                 if ($mw[comment_good_table])
-					sql_query(" delete from ${mw['comment_good_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$write['wr_id']}' ");
+					sql_query(" delete from {$mw['comment_good_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$write['wr_id']}' ");
 
                 // 코멘트 포인트 삭제
 				if (!delete_point($row['mb_id'], $board['bo_table'], $row['wr_id'], '코멘트'))
@@ -2135,8 +2135,8 @@ function mw_move($board, $wr_id_list, $chk_bo_table, $sw)
             $move_bo_table = $chk_bo_table[$i];
             $move_write_table = $g4['write_prefix'] . $move_bo_table;
 
-            $src_dir = "$g4[path]/data/file/$bo_table"; // 원본 디렉토리
-            $dst_dir = "$g4[path]/data/file/$move_bo_table"; // 복사본 디렉토리
+            $src_dir = "{$g4['path']}/data/file/$bo_table"; // 원본 디렉토리
+            $dst_dir = "{$g4['path']}/data/file/$move_bo_table"; // 복사본 디렉토리
 
             $count_write = 0;
             $count_comment = 0;
@@ -2696,7 +2696,7 @@ function mw_bomb()
                     $sql.= " where bo_table = '{$board['bo_table']}' and wr_id = '{$write['wr_id']}' order by bf_no";
                     $qry = sql_query($sql);
                     while ($row = sql_fetch_array($qry)) {
-                        @unlink("$g4[path]/data/file/{$board['bo_table']}/{$row['bf_file']}");
+                        @unlink("{$g4['path']}/data/file/{$board['bo_table']}/{$row['bf_file']}");
                         @unlink("$watermark_path/{$row['bf_file']}");
                     }
                     sql_query("delete from {$g4['board_file_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$write['wr_id']}' ");

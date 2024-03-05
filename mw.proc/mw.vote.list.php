@@ -76,7 +76,7 @@ $write_pages = get_paging($config['cf_write_pages'], $page, $total_page, "$_SERV
 $colspan = 5;
 
 $g4['title'] = "설문 참여 목록";
-include_once("$g4[path]/head.sub.php");
+include_once("{$g4['path']}/head.sub.php");
 ?>
 <script src="<?=$g4['path']?>/js/sideview.js"></script>
 
@@ -124,4 +124,4 @@ table caption { font-size:13px; color:#555; font-weight:bold; text-decoration:no
 <br/>
 
 <?
-include_once("$g4[path]/tail.sub.php");
+include_once("{$g4['path']}/tail.sub.php");

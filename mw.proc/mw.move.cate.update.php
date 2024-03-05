@@ -22,7 +22,7 @@
 include_once("_common.php");
 
 // 게시판 관리자 이상 복사, 이동 가능
-if (!($member['mb_id'] && ($is_admin == "super" || $group['gr_admin'] == $member['mb_id'] || $board['bo_admin'] == $member['mb_id']))) 
+if (!($member['mb_id'] && ($is_admin == "super" || $group['gr_admin'] == $member['mb_id'] || $board['bo_admin'] == $member['mb_id'])))
     alert_close("게시판 관리자 이상 접근이 가능합니다.");
 
 if (!$chk_category) alert("분류를 선택해주세요.");
@@ -31,7 +31,7 @@ $sql = "update $write_table set ca_name = '$chk_category' where wr_parent in (".
 $qry = sql_query($sql);
 
 $g4['title'] = "분류이동";
-include_once("$g4[path]/head.sub.php");
+include_once("{$g4['path']}/head.sub.php");
 ?>
 <script type="text/javascript">
 alert("분류이동 하였습니다.");

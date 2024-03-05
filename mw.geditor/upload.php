@@ -11,10 +11,10 @@ function get_safe_filename($name)
     return $name;
 }
 // --
-// 첨부 이미지 저장 디렉토리 
+// 첨부 이미지 저장 디렉토리
 // --
 
-$path = "$g4[path]/data/$g4[geditor]";
+$path = "{$g4['path']}/data/$g4[geditor]";
 
 $byte = 1024*1024 * 1; // 1메가
 
@@ -28,7 +28,7 @@ $work  = $_POST[work];
 
 if (!$token) exit;
 
-if (!$obj) 
+if (!$obj)
     alert_only('오브젝트 변수가 없습니다.');
 
 if ($work == 'delete') {
@@ -108,7 +108,7 @@ function alert_only($msg='', $url='') {
 
 function make_dir($path)
 {
-    if (!is_dir($path)) 
+    if (!is_dir($path))
     {
         @mkdir($path, 0707);
         @chmod($path, 0707);

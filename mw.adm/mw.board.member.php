@@ -79,8 +79,8 @@ for ($i=0; $row = sql_fetch_array($qry); ++$i) {
 
 $write_pages = get_paging($rows, $page, $total_page, "{$_SERVER['SCRIPT_NAME']}?bo_table={$bo_table}{$qstr}&page=");
 
-//$g4[title] = "배추 BASIC SKIN 접근권한 설정";
-//include_once("$g4[path]/head.sub.php");
+//$g4['title'] = "배추 BASIC SKIN 접근권한 설정";
+//include_once("{$g4['path']}/head.sub.php");
 ?>
 <!doctype html>
 <html lang="ko">
@@ -148,7 +148,7 @@ jQuery(function($){
         changeYear: true,
         showButtonPanel: true,
         yearRange: 'c-99:c+99'
-    }); 
+    });
 });
 </script>
 
@@ -220,7 +220,7 @@ function mw_send() {
     $.post("mw.board.member.update.php", $("#fwrite").serialize(), function (str) {
         if (str) { alert(str); }
         location.reload();
-    }); 
+    });
     return false;
 }
 function mw_del(mb_id) {

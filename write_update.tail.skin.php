@@ -63,7 +63,7 @@ if ($is_admin && $wr_to_id && $mw_basic['cf_attribute'] == "1:1") {
 
 if ($mw_basic['cf_image_outline']) {
     for ($i=0, $m=count($upload); $i<$m; ++$i) {
-        $dest_file = "$g4[path]/data/file/{$bo_table}/" . $upload[$i]['file'];
+        $dest_file = "{$g4['path']}/data/file/{$bo_table}/" . $upload[$i]['file'];
         if (is_mw_file($dest_file)) {
             mw_image_outline($dest_file, null, $mw_basic['cf_image_outline_color']);
         }

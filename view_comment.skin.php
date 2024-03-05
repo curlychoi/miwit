@@ -51,11 +51,11 @@ if ($cwin && $mw_basic['cf_comment_level'] && $mw_basic['cf_comment_level'] > $m
 if ($cwin && ($mw_basic['cf_must_notice_read'] || $mw_basic['cf_must_notice_comment'])) // 공지 읽기 필수
 {
     //$tmp_notice = str_replace($notice_div, ",", trim($board[bo_notice]));
-    $tmp_notice = implode(",", array_filter(explode($notice_div, trim($board['bo_notice'])), "strlen"));
+    $tmp_notice = implode(",", array_filter(explode($notice_div, trim($board[''bo_notice''])), "strlen"));
     $cnt_notice = sizeof(explode(",", $tmp_notice));
 
     if ($tmp_notice) {
-        $sql = "select count(*) as cnt from $mw[must_notice_table] where bo_table = '$bo_table' and mb_id = '{$member['mb_id']}' and wr_id in ($tmp_notice)";
+        $sql = "select count(*) as cnt from {$mw['must_notice_table']} where bo_table = '$bo_table' and mb_id = '{$member['mb_id']}' and wr_id in ($tmp_notice)";
         $row = sql_fetch($sql);
         if ($row['cnt'] != $cnt_notice)
             alert_close("$board[bo_subject] 공지를 모두 읽으셔야 글읽기가 가능합니다.");
@@ -987,7 +987,7 @@ $(document).ready(function () {
 
     <div class="comment_function">
     <?php if ($mw_basic['cf_comment_emoticon'] && !$is_comment_editor && !$write_error) {?>
-    <button type="button" class="fa-button" name="btn_emoticon" style="*margin-right:10px;"><i class="fa fa-smile-o"></i> <span class="media-comment-button">이모티콘</span></button>
+    <button type="button" class="fa-button" name="btn_emoticon" style="*margin-right: 10px;"><i class="fa fa-smile-o"></i> <span class="media-comment-button">이모티콘</span></button>
     <script>
     board_skin_path = '<?php echo $board_skin_path?>';
     bo_table = '<?php echo $bo_table?>';
@@ -1024,7 +1024,7 @@ $(document).ready(function () {
 <div style="height:7px; line-height:0; font-size:0; clear:both;"></div>
 </div> <!-- 코멘트 입력 끝 -->
 
-<script src="<?="$g4[path]/js/jquery.kcaptcha.js"?>"></script>
+<script src="<?="{$g4['path']}/js/jquery.kcaptcha.js"?>"></script>
 
 <script>
 var save_before = '';

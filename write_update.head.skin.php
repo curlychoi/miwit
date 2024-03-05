@@ -39,7 +39,7 @@ $write_run_time = mw_time_log($write_run_time, "[write-head] include /mw.lib/mw.
 include_once("$board_skin_path/mw.lib/mw.sms.lib.php");
 $write_run_time = mw_time_log($write_run_time, "[write-head] include /mw.lib/mw.sms.lib.php");
 
-include_once("$g4[path]/lib/etc.lib.php");
+include_once("{$g4['path']}/lib/etc.lib.php");
 $write_run_time = mw_time_log($write_run_time, "[write-head] include /lib/etc.lib.php");
 
 $is_head = true;

@@ -51,7 +51,7 @@ $qry = sql_query($sql);
 $list = array();
 for ($i=0; $row = sql_fetch_array($qry); ++$i) {
     $list[$i] = $row;
-    $list[$i][num] = $total_count - ($page - 1) * $rows - $i;
+    $list[$i]['num'] = $total_count - ($page - 1) * $rows - $i;
     if (!$row['mb_name'])
         $list[$i]['mb_name'] = $row['mb_id'];
 }

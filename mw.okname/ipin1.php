@@ -80,7 +80,7 @@ $curtime=$out[2];
 
 set_session("ss_ipin_bo_table", $bo_table);
 
-include_once("$g4[path]/head.sub.php");
+include_once("{$g4['path']}/head.sub.php");
 ?>
 <script type="text/javascript">
 $(document).ready(function () {
@@ -125,5 +125,5 @@ $(document).ready(function () {
 </form>
 
 <?
-include_once("$g4[path]/tail.sub.php");
+include_once("{$g4['path']}/tail.sub.php");
 

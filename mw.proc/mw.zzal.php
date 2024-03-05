@@ -12,3 +12,4 @@ include_once("{$board_skin_path}/view_head.skin.php");
 
 echo str_replace("../../../../", "../", $file_viewer);
 
+

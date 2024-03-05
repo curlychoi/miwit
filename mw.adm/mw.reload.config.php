@@ -32,8 +32,8 @@ header("Pragma: no-cache"); // HTTP/1.0
 if ($is_admin != "super")
     die("접근 권한이 없습니다.");
 
-$mw_basic_config_path = "$g4[path]/data/mw.basic.config";
-$files = glob("$g4[path]/data/mw.basic.config/*");
+$mw_basic_config_path = "{$g4['path']}/data/mw.basic.config";
+$files = glob("{$g4['path']}/data/mw.basic.config/*");
 @array_map('unlink', $files);
 
 die("설정다시읽기 완료");

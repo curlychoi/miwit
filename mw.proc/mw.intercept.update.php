@@ -98,14 +98,15 @@ if (is_mw_file($mw_syndi_path.'/_config.php')) {
 }
 
 if ($is_all_delete or $is_all_move) {
-    $all_board_sql = "select * from $g4[board_table] ";
+    $all_board_sql = "select * from {$g4['board_table']} ";
     $all_board_qry = sql_query($all_board_sql);
     while ($all_board_row = sql_fetch_array($all_board_qry)) {
         if ($is_ip)
-            $all_write_sql = "select * from $g4[write_prefix]$all_board_row[bo_table] where mb_id = '' and wr_ip = '$mb_id' order by wr_num";
+            $all_write_sql = "select * from {$g4['write_prefix']}{$all_board_row['bo_table']} where mb_id = '' and wr_ip = '$mb_id' order by wr_num";
         else
-            $all_write_sql = "select * from $g4[write_prefix]$all_board_row[bo_table] where mb_id = '$mb_id' order by wr_num";
+            $all_write_sql = "select * from {$g4['write_prefix']}{$all_board_row['bo_table']} where mb_id = '$mb_id' order by wr_num";
         $all_write_qry = sql_query($all_write_sql);
+
         while ($all_write_row = sql_fetch_array($all_write_qry)) {
             if ($is_all_delete or $all_write_row['wr_is_comment']) {
                 mw_delete_row($all_board_row, $all_write_row, "no");
@@ -114,9 +115,10 @@ if ($is_all_delete or $is_all_move) {
                 if ($all_board_row['bo_table'] == $move_table) continue;
                 mw_move($all_board_row, $all_write_row['wr_id'], $move_table, 'move');
             }
+
             if ($intercept_ip and !strstr($config['cf_intercept_ip'], $all_write_row['wr_ip'])) {
-                $config['cf_intercept_ip'] = trim($config['cf_intercept_ip']) . "\n$all_write_row[wr_ip]";
-                sql_query("update $g4[config_table] set cf_intercept_ip = '$config[cf_intercept_ip]'");
+                $config['cf_intercept_ip'] = trim($config['cf_intercept_ip']) . "\n{$all_write_row['wr_ip']}";
+                sql_query("update {$g4['config_table']} set cf_intercept_ip = '{$config['cf_intercept_ip']}'");
             }
 
             if (function_exists('mw_syndi_set_feed'))

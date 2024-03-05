@@ -238,7 +238,7 @@ if ($mw_basic['cf_attribute'] != "anonymous" && !$view['wr_anonymous'] && $membe
 
     </form>
 
-    <script type="text/javascript" src="<?= "$g4[path]/js/jquery.kcaptcha.js" ?>"></script>
+    <script type="text/javascript" src="<?= "{$g4['path']}/js/jquery.kcaptcha.js" ?>"></script>
     <script type="text/javascript">
         function html_auto_br(obj) {
             if (obj.checked) {
@@ -328,7 +328,7 @@ if ($mw_basic['cf_attribute'] != "anonymous" && !$view['wr_anonymous'] && $membe
         }
     </script>
 
-    <script type="text/javascript" src="<?= "$g4[path]/js/board.js" ?>"></script>
+    <script type="text/javascript" src="<?= "{$g4['path']}/js/board.js" ?>"></script>
 
     <? if ($is_dhtml_editor && $mw_basic['cf_editor'] == "geditor") { ?>
         <script type="text/javascript">

@@ -21,7 +21,7 @@
 
 include_once("_common.php");
 include_once("$board_skin_path/mw.lib/mw.skin.basic.lib.php");
-//include_once("$g4[path]/head.sub.php");
+//include_once("{$g4['path']}/head.sub.php");
 
 function week_begin($d) {
     $t = strtotime("$d 00:00:00");
@@ -113,7 +113,7 @@ jQuery(function($){
         changeYear: true,
         showButtonPanel: true,
         yearRange: 'c-99:c+99'
-    }); 
+    });
 
     $('#edate').datepicker({
         showOn: 'button',
@@ -124,7 +124,7 @@ jQuery(function($){
         changeYear: true,
         showButtonPanel: true,
         yearRange: 'c-99:c+99'
-    }); 
+    });
 });
 
 function change_date(sd, ed) {
@@ -144,7 +144,7 @@ textarea { border:1px solid #9A9A9A; border-right:1px solid #D8D8D8; border-bott
 input.bt { background-color:#efefef; height:20px; cursor:pointer; font-size:11px; font-family:dotum; }
 
 .ui-datepicker { font:12px dotum; }
-.ui-datepicker select.ui-datepicker-month, 
+.ui-datepicker select.ui-datepicker-month,
 .ui-datepicker select.ui-datepicker-year { width: 70px;}
 .ui-datepicker-trigger { margin:0 0 -5px 2px; }
 </style>
@@ -177,7 +177,7 @@ input.bt { background-color:#efefef; height:20px; cursor:pointer; font-size:11px
         onclick="change_date('<?=week_begin($d)?>','<?=week_end($d)?>')">
 </div>
 <div style="height:30px;">
-    통계 : 
+    통계 :
     <select name="stype" required itemname="통계">
     <option value=""> </option>
     <option value="1"> 최다 글+댓글 작성 </option>

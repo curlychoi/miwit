@@ -20,11 +20,11 @@
  */
 
 include_once("_common.php");
-include_once("$g4[path]/head.sub.php");
+include_once("{$g4['path']}/head.sub.php");
 
 include_once("$board_skin_path/mw.lib/mw.skin.basic.lib.php");
 
-if ($mw_basic[cf_kcb_comment] && is_okname()) {
+if ($mw_basic['cf_kcb_comment'] && is_okname()) {
     ?>
     <script type="text/javascript">
     opener.location.reload();
@@ -33,14 +33,14 @@ if ($mw_basic[cf_kcb_comment] && is_okname()) {
     <?
 }
 
-if (!$mw_basic[cf_kcb_id]) die("KCB ID 를 입력해주세요.");
+if (!$mw_basic['cf_kcb_id']) die("KCB ID 를 입력해주세요.");
 
 echo "<link rel='stylesheet' href='$board_skin_path/style.common.css' type='text/css'>\n";
 echo "<style type='text/css'> #mw_basic { display:none; } </style>\n";
 
 $req_file = null;
 
-if ($mw_basic[cf_kcb_type] == "19ban")
+if ($mw_basic['cf_kcb_type'] == "19ban")
     $req_file = "$board_skin_path/mw.proc/mw.19ban.php"; // 19금
 else
     $req_file = "$board_skin_path/mw.proc/mw.okname.php"; // 실명인증

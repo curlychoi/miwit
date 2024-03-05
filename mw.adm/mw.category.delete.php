@@ -19,6 +19,5 @@ while ($write = sql_fetch_array($qry)) {
     $cnt++;
 }
 
-
 echo "{$ca_name}분류의 게시물 {$cnt}건을 삭제했습니다.";
 exit;

@@ -22,16 +22,16 @@
 include_once("./_common.php");
 
 // 게시판 관리자 이상 복사, 이동 가능
-if ($is_admin != 'board' && $is_admin != 'group' && $is_admin != 'super') 
+if ($is_admin != 'board' && $is_admin != 'group' && $is_admin != 'super')
     die("false|게시판 관리자 이상 접근이 가능합니다.");
 
-if (!$token or get_session("ss_delete_token") != $token) 
+if (!$token or get_session("ss_delete_token") != $token)
     die("false|토큰 에러로 실행 불가합니다.");
 
 include_once("$board_skin_path/mw.lib/mw.skin.basic.lib.php");
 
 // 원본 파일 디렉토리
-$src_dir = "$g4[path]/data/file/$bo_table";
+$src_dir = "{$g4['path']}/data/file/$bo_table";
 
 $save = array();
 $save_count_write = 0;
@@ -93,7 +93,7 @@ sql_query(" update $move_write_table set wr_parent = '$save_parent' where wr_id 
 
 $sql3 = " select * from {$g4['board_file_table']} where bo_table = '$bo_table' and wr_id = '{$write['wr_id']}' order by bf_no ";
 $result3 = sql_query($sql3);
-for ($k=0; $row3 = sql_fetch_array($result3); $k++) 
+for ($k=0; $row3 = sql_fetch_array($result3); $k++)
 {
     $chars_array = array_merge(range(0,9), range('a','z'), range('A','Z'));
 
@@ -102,9 +102,9 @@ for ($k=0; $row3 = sql_fetch_array($result3); $k++)
     shuffle($chars_array);
     $shuffle = implode("", $chars_array);
 
-    $filename = abs(ip2long($_SERVER['REMOTE_ADDR'])).'_'.substr($shuffle,0,8).'_'.str_replace('%', '', urlencode(str_replace(' ', '_', $filename))); 
+    $filename = abs(ip2long($_SERVER['REMOTE_ADDR'])).'_'.substr($shuffle,0,8).'_'.str_replace('%', '', urlencode(str_replace(' ', '_', $filename)));
 
-    if ($row3['bf_file']) 
+    if ($row3['bf_file'])
     {
         // 원본파일을 복사하고 퍼미션을 변경
 		@copy("$src_dir/{$row3['bf_file']}", "$dst_dir/$filename");
@@ -112,12 +112,12 @@ for ($k=0; $row3 = sql_fetch_array($result3); $k++)
     }
 
 	$sql = " insert into {$g4['board_file_table']}
-                set bo_table = '$move_bo_table', 
-                    wr_id = '$insert_id', 
-					bf_no = '{$row3['bf_no']}', 
-                    bf_source = '".addslashes($row3['bf_source'])."', 
-                    bf_file = '$filename', 
-                    bf_download = '0', 
+                set bo_table = '$move_bo_table',
+                    wr_id = '$insert_id',
+					bf_no = '{$row3['bf_no']}',
+                    bf_source = '".addslashes($row3['bf_source'])."',
+                    bf_file = '$filename',
+                    bf_download = '0',
                     bf_content = '".addslashes($row3['bf_content'])."',
 					bf_filesize = '{$row3['bf_filesize']}',
                     bf_width = '{$row3['bf_width']}',
