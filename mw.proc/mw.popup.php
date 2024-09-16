@@ -21,7 +21,7 @@
 
 include_once("_common.php");
 include_once("$board_skin_path/mw.lib/mw.skin.basic.lib.php");
-header("Content-Type: text/html; charset=$g4[charset]");
+header("Content-Type: text/html; charset={$g4['charset']}");
 
 if (!$is_admin) 
     die("접근 권한이 없습니다.");
@@ -32,20 +32,20 @@ if (!$token or get_session("ss_delete_token") != $token) {
     }
 }
 
-$sql = "create table if not exists $mw[popup_notice_table] (
-bo_table varchar(20) not null,
-wr_id int not null,
-primary key (bo_table, wr_id)
-) $default_charset ";
+$sql = "create table if not exists {$mw['popup_notice_table']} (
+	bo_table varchar(20) not null,
+	wr_id int not null,
+	primary key (bo_table, wr_id)
+	) $default_charset ";
 sql_query($sql);
 
-$sql = "select * from $mw[popup_notice_table] where bo_table = '$bo_table' and wr_id = '$wr_id' ";
+$sql = "select * from {$mw['popup_notice_table']} where bo_table = '$bo_table' and wr_id = '$wr_id' ";
 $row = sql_fetch($sql);
 if (!$row) {
-    sql_query("insert into $mw[popup_notice_table] set bo_table = '$bo_table', wr_id = '$wr_id' ");
+    sql_query("insert into {$mw['popup_notice_table']} set bo_table = '$bo_table', wr_id = '$wr_id' ");
     die("팝업공지로 등록되었습니다. ");
 } else {
-    sql_query("delete from $mw[popup_notice_table] where bo_table = '$bo_table' and wr_id = '$wr_id' ");
+	sql_query("delete from {$mw['popup_notice_table']} where bo_table = '$bo_table' and wr_id = '$wr_id' ");
     die("팝업공지를 내렸습니다. ");
 }
 

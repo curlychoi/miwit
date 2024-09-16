@@ -22,7 +22,7 @@
 if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 
 $notice_list = array();
-$tmp = explode($notice_div, trim($board[bo_notice]));
+$tmp = explode($notice_div, trim($board['bo_notice']));
 for ($i=0, $m=sizeof($tmp); $i<$m; $i++) {
     if (trim($tmp[$i])) {
         $notice_list[] = $tmp[$i];
@@ -31,7 +31,7 @@ for ($i=0, $m=sizeof($tmp); $i<$m; $i++) {
 
 if ($wr_id) return;
 
-if ($mw_basic[cf_notice_top])
+if ($mw_basic['cf_notice_top'])
 {
     if (sizeof($notice_list)) {
     ?>
@@ -43,18 +43,18 @@ if ($mw_basic[cf_notice_top])
             $sql = "select * from $write_table where wr_id = '{$notice_list[$i]}'";
             $qry = sql_query($sql);
             while ($row = sql_fetch_array($qry)) {
-                $notice = get_list($row, $board, $board_skin_path, $mw_basic[cf_notice_top_length]);
-                $notice[subject] = mw_reg_str($notice[subject]);
-                $notice[subject] = bc_code($notice[subject], 0);
+                $notice = get_list($row, $board, $board_skin_path, $mw_basic['cf_notice_top_length']);
+                $notice['subject'] = mw_reg_str($notice['subject']);
+                $notice['subject'] = bc_code($notice['subject'], 0);
 
                 $notice = mw_list_link($notice);
                 ?>
                 <li>
                     <i class="fa fa-bullhorn"></i>&nbsp;
-                    <span class="subject"><a href="<?=$notice[href]?>"><?=$notice[subject]?></a></span>
-                    <? if ($notice[comment_cnt]) { ?> <span class=mw_basic_list_comment_count><?=$notice[wr_comment]?></span> <? } ?>
-                    <?=$notice[icon_new]?>
-                    <!--<span class="datetime"><?=$notice[datetime]?></span>-->
+                    <span class="subject"><a href="<?=$notice['href']?>"><?=$notice['subject']?></a></span>
+                    <? if ($notice['comment_cnt']) { ?> <span class='mw_basic_list_comment_count'><?=$notice['wr_comment']?></span> <? } ?>
+                    <?=$notice['icon_new']?>
+                    <!--<span class="datetime"><?=$notice['datetime']?></span>-->
                 </li>
                 <?
             }

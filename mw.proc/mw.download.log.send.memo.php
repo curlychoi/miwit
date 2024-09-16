@@ -28,29 +28,27 @@ if (!$is_admin)
 if (!trim($me_memo))
     alert("내용을 입력해주세요.");
 
-$sql = "select mb_id from $mw[download_log_table] where bo_table = '$bo_table' and wr_id = '$wr_id' and mb_id <> '' group by mb_id ";
+$sql = "select mb_id from {$mw['download_log_table']} where bo_table = '$bo_table' and wr_id = '$wr_id' and mb_id <> '' group by mb_id ";
 $qry = sql_query($sql);
 while ($row = sql_fetch_array($qry))
 {
-    if (!$row[mb_id]) continue;
+    if (!$row['mb_id']) continue;
 
-    $tmp_row = sql_fetch(" select max(me_id) as max_me_id from $g4[memo_table] ");
-    $me_id = $tmp_row[max_me_id] + 1;
+	$tmp_row = sql_fetch(" select max(me_id) as max_me_id from {$g4['memo_table']} ");
+    $me_id = $tmp_row['max_me_id'] + 1;
 
     // 쪽지 INSERT
-    $sql = " insert into $g4[memo_table]
+    $sql = " insert into {$g4['memo_table']}
                     ( me_id, me_recv_mb_id, me_send_mb_id, me_send_datetime, me_memo )
-             values ( '$me_id', '{$row[mb_id]}', '$member[mb_id]', '$g4[time_ymdhis]', '$me_memo' ) ";
+			values ( '$me_id', '{$row['mb_id']}', '{$member['mb_id']}', '{$g4['time_ymdhis']}', '$me_memo' ) ";
     sql_query($sql);
 
     // 실시간 쪽지 알림 기능
-    $sql = " update $g4[member_table]
-                set mb_memo_call = '$member[mb_id]'
-              where mb_id = '$row[mb_id]' ";
+	$sql = " update {$g4['member_table']} set mb_memo_call = '{$member['mb_id']}' where mb_id = '$row[mb_id]' ";
     sql_query($sql);
 }
 
-include_once("$g4[path]/head.sub.php");
+include_once($g4['path']."/head.sub.php");
 ?>
 <script type="text/javascript">
 $(document).ready(function () {
@@ -59,5 +57,5 @@ $(document).ready(function () {
 });
 </script>
 <?
-include_once("$g4[path]/tail.sub.php");
+include_once($g4['path']."/tail.sub.php");
 

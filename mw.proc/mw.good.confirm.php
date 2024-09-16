@@ -31,22 +31,22 @@ header("Cache-Control: no-store, no-cache, must-revalidate"); // HTTP/1.1
 header("Cache-Control: pre-check=0, post-check=0, max-age=0"); // HTTP/1.1
 header("Pragma: no-cache"); // HTTP/1.0
 
-if ($good == "good" && !$mw_basic[cf_good_level] && !$is_member) {
+if ($good == "good" && !$mw_basic['cf_good_level'] && !$is_member) {
     die("회원만 가능합니다.");
 }
-if ($good == "nogood" && !$mw_basic[cf_nogood_level] && !$is_member) {
+if ($good == "nogood" && !$mw_basic['cf_nogood_level'] && !$is_member) {
     die("회원만 가능합니다.");
 }
-if ($good == "good" && $member[mb_level] < $mw_basic[cf_good_level]) {
+if ($good == "good" && $member['mb_level'] < $mw_basic['cf_good_level']) {
     die("추천 권한이 없습니다.");
 }
-if ($good == "nogood" && $member[mb_level] < $mw_basic[cf_nogood_level]) {
+if ($good == "nogood" && $member['mb_level'] < $mw_basic['cf_nogood_level']) {
     die("비추천 권한이 없습니다.");
 }
 
-$mb_id = $member[mb_id];
+$mb_id = $member['mb_id'];
 if (!$is_member)
-    $mb_id = $_SERVER[REMOTE_ADDR];
+    $mb_id = $_SERVER['REMOTE_ADDR'];
 
 if (!($bo_table && $wr_id))
     die("값이 제대로 넘어오지 않았습니다.");
@@ -57,14 +57,14 @@ if (!get_session($ss_name))
 
 include_once("$board_skin_path/mw.lib/mw.skin.basic.lib.php");
 
-$row = sql_fetch(" select count(*) as cnt from {$g4[write_prefix]}{$bo_table} ", FALSE);
-if (!$row[cnt])
+$row = sql_fetch(" select count(*) as cnt from {$g4['write_prefix']}{$bo_table} ", FALSE);
+if (!$row['cnt'])
     die("존재하는 게시판이 아닙니다.");
 
-$sql = " select * from $g4[board_good_table]
+$sql = " select * from {$g4['board_good_table']}
           where bo_table = '$bo_table'
-            and wr_id = '$wr_id' 
-            and mb_id = '$mb_id' 
+            and wr_id = '$wr_id'
+            and mb_id = '$mb_id'
             and bg_flag = 'nogood' ";
 $row = sql_fetch($sql);
 

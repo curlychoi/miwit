@@ -21,7 +21,7 @@
 
 include_once("_common.php");
 
-header("Content-Type: text/html; charset=$g4[charset]");
+header("Content-Type: text/html; charset={$g4['charset']}");
 $gmnow = gmdate("D, d M Y H:i:s") . " GMT";
 header("Expires: 0"); // rfc2616 - Section 14.21
 header("Last-Modified: " . $gmnow);
@@ -35,10 +35,10 @@ include("{$board_skin_path}/mw.lib/mw.skin.basic.lib.php");
 
 $readonly = mw_is_rate($bo_table, $wr_id);
 ?>
-<div class="rate_box"> 
+<div class="rate_box">
     <div>이 게시물을 평가해주세요.</div>
     <div class="comment_rate"></div>
-</div> 
+</div>
 
 <script>
 $(".comment_rate").mw_star_rate({

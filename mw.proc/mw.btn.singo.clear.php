@@ -22,12 +22,12 @@
 include_once("_common.php");
 include_once("$board_skin_path/mw.lib/mw.skin.basic.lib.php");
 
-header("Content-Type: text/html; charset=$g4[charset]");
+header("Content-Type: text/html; charset={$g4['charset']}");
 
 if (!$is_admin)
     die("권한이 없습니다.");
 
-if (!$token or get_session("ss_delete_token") != $token) 
+if (!$token or get_session("ss_delete_token") != $token)
     die("토큰 에러로 초기화 불가합니다.");
 
 sql_query("update $write_table set wr_singo = 0 where wr_id = '$wr_id'");

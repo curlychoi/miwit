@@ -26,7 +26,7 @@ if (!$bo_table or !$wr_id)
 
 include_once("$board_skin_path/mw.lib/mw.skin.basic.lib.php");
 
-if (!$mw_basic[cf_view_good] or $member[mb_level] < $mw_basic[cf_view_good])
+if (!$mw_basic['cf_view_good'] or $member['mb_level'] < $mw_basic['cf_view_good'])
     alert_close("권한이 없습니다.");
 
 $sql_common = " from $g4[board_good_table] ";
@@ -37,9 +37,9 @@ $sql = "select count(*) as cnt
         $sql_common
         $sql_search";
 $row = sql_fetch($sql);
-$total_count = $row[cnt];
+$total_count = $row['cnt'];
 
-$rows = $config[cf_page_rows];
+$rows = $config['cf_page_rows'];
 $total_page  = ceil($total_count / $rows);  // 전체 페이지 계산
 if ($page == "") { $page = 1; } // 페이지가 없으면 첫 페이지 (1 페이지)
 $from_record = ($page - 1) * $rows; // 시작 열을 구함
@@ -53,28 +53,28 @@ $qry = sql_query($sql);
 
 $list = array();
 for ($i=0; $row = sql_fetch_array($qry); ++$i) {
-    $row[num] = $total_count - ($page - 1) * $rows - $i;
-    $mb = get_member($row[mb_id], "mb_nick, mb_name, mb_email, mb_homepage");
+    $row['num'] = $total_count - ($page - 1) * $rows - $i;
+    $mb = get_member($row['mb_id'], "mb_nick, mb_name, mb_email, mb_homepage");
     if ($mb) {
-        $row[name] = get_sideview($row[mb_id], $board[bo_use_name]?$mb[mb_name]:$mb[mb_nick], $mb[mb_email], $mb[mb_homepage]);
+        $row['name'] = get_sideview($row['mb_id'], $board['bo_use_name']?$mb['mb_name']:$mb['mb_nick'], $mb['mb_email'], $mb['mb_homepage']);
     }
     else {
         if ($is_admin)
-            $row[name] = $row[mb_id];
-        else 
-            $row[name] = preg_replace("/([0-9]+).([0-9]+).([0-9]+).([0-9]+)/", "\\1.♡.\\3.\\4", $row[mb_id]);
+            $row['name'] = $row['mb_id'];
+        else
+            $row['name'] = preg_replace("/([0-9]+).([0-9]+).([0-9]+).([0-9]+)/", "\\1.♡.\\3.\\4", $row['mb_id']);
     }
     $list[$i] = $row;
 }
 
-$write_pages = get_paging($config[cf_write_pages], $page, $total_page, "$_SERVER[SCRIPT_NAME]?bo_table={$bo_table}&wr_id={$wr_id}{$qstr}&page=");
+$write_pages = get_paging($config['cf_write_pages'], $page, $total_page, "{$_SERVER['SCRIPT_NAME']}?bo_table={$bo_table}&wr_id={$wr_id}{$qstr}&page=");
 
 $colspan = 5;
 
-$g4[title] = "추천/비추천 회원목록";
-include_once("$g4[path]/head.sub.php");
+$g4['title'] = "추천/비추천 회원목록";
+include_once("{$g4['path']}/head.sub.php");
 ?>
-<script language="javascript" src="<?=$g4[path]?>/js/sideview.js"></script>
+<script language="javascript" src="<?=$g4['path']?>/js/sideview.js"></script>
 
 <link rel="stylesheet" href="<?=$board_skin_path?>/style.common.css" type="text/css">
 
@@ -87,7 +87,7 @@ table caption { font-size:13px; color:#555; font-weight:bold; text-decoration:no
 </style>
 
 <table border=0 cellpadding=0 cellspacing=1 style="width:95%; margin:10px; border:1px solid #ddd;">
-<caption> 추천/비추천 목록 : <?=cut_str($write[wr_subject], 50)?> </caption>
+<caption> 추천/비추천 목록 : <?=cut_str($write['wr_subject'], 50)?> </caption>
 <tr style="text-align:center; font-weight:bold; height:30px; background-color:#f8f8f8;">
     <td width=40> 번호 </td>
     <td width=''> 회원 </td>
@@ -97,10 +97,10 @@ table caption { font-size:13px; color:#555; font-weight:bold; text-decoration:no
 <tr><td colspan=<?=$colspan?> bgcolor="#dddddd"></td></tr>
 <? for ($i=0; $i<count($list); $i++) { ?>
 <tr style="text-align:center; height:25px;">
-    <td> <?=$list[$i][num]?> </td>
-    <td> <?=$list[$i][name]?> </td>
-    <td> <?=$list[$i][bg_flag]?> </td>
-    <td> <?=$list[$i][bg_datetime]?> </td>
+    <td> <?=$list[$i]['num']?> </td>
+    <td> <?=$list[$i]['name']?> </td>
+    <td> <?=$list[$i]['bg_flag']?> </td>
+    <td> <?=$list[$i]['bg_datetime']?> </td>
 </tr>
 <tr><td colspan=<?=$colspan?> bgcolor="#f8f8f8"></td></tr>
 <? } ?>
@@ -120,4 +120,4 @@ table caption { font-size:13px; color:#555; font-weight:bold; text-decoration:no
 <br/>
 
 <?
-include_once("$g4[path]/tail.sub.php");
+include_once("{$g4['path']}/tail.sub.php");

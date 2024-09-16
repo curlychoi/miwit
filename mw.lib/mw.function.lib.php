@@ -49,9 +49,9 @@ function mw_related($related, $field="wr_id, wr_subject, wr_content, wr_datetime
     $bo_table2 = $bo_table;
     $write_table2 = $write_table;
 
-    if (trim($mw_basic[cf_related_table])) {
-        $bo_table2 = $mw_basic[cf_related_table];
-        $write_table2 = "$g4[write_prefix]$bo_table2";
+    if (trim($mw_basic['cf_related_table'])) {
+        $bo_table2 = $mw_basic['cf_related_table'];
+		$write_table2 = "{$g4['write_prefix']}$bo_table2";
     }
 
     $sql_where = "";
@@ -66,7 +66,7 @@ function mw_related($related, $field="wr_id, wr_subject, wr_content, wr_datetime
             $sql_where .= " (instr(wr_subject, '$rel') or instr(wr_content, '$rel')) ";
         }
     }
-    if (!trim($mw_basic[cf_related_table]))
+    if (!trim($mw_basic['cf_related_table']))
         $sql_where .= " and wr_id <> '$wr_id' ";
 
     $sql = "select $field from $write_table2 where wr_is_comment = 0 and ($sql_where) order by wr_num ";
@@ -75,13 +75,13 @@ function mw_related($related, $field="wr_id, wr_subject, wr_content, wr_datetime
     $list = array();
     $i = 0;
     while ($row = sql_fetch_array($qry)) {
-        $row[href] = mw_seo_url($bo_table2, $row[wr_id]);
+        $row['href'] = mw_seo_url($bo_table2, $row['wr_id']);
         if (!$row['wr_comment']) $row['wr_comment'] = '';
-        $row[comment] = $row[wr_comment] ? "<span class='comment'>$row[wr_comment]</span>" : "";
-        $row[subject] = get_text($row[wr_subject]);
-        $row[subject] = mw_reg_str($row[subject]);
+        $row['comment'] = $row['wr_comment'] ? "<span class='comment'>{$row['wr_comment']}</span>" : "";
+        $row['subject'] = get_text($row['wr_subject']);
+        $row['subject'] = mw_reg_str($row['subject']);
         $list[$i] = $row;
-        if (++$i >= $mw_basic[cf_related]) {
+        if (++$i >= $mw_basic['cf_related']) {
             break;
         }
     }
@@ -130,7 +130,7 @@ function mw_related2($bo_table, $related, $related_skin, $field="wr_id, wr_subje
             $sql_where .= " ) ";
         }
     }
-    if (!trim($mw_basic[cf_related_table]))
+    if (!trim($mw_basic['cf_related_table']))
         $sql_where .= " and wr_id <> '$wr_id' ";
 
     $sql = "select $field from $write_table2 where wr_is_comment = 0 and ($sql_where) order by wr_num ";
@@ -139,13 +139,13 @@ function mw_related2($bo_table, $related, $related_skin, $field="wr_id, wr_subje
     $list = array();
     $i = 0;
     while ($row = sql_fetch_array($qry)) {
-        $row[href] = mw_seo_url($bo_table2, $row[wr_id]);
+        $row['href'] = mw_seo_url($bo_table2, $row['wr_id']);
         if (!$row['wr_comment']) $row['wr_comment'] = '';
-        $row[comment] = $row[wr_comment] ? "<span class='comment'>$row[wr_comment]</span>" : "";
-        $row[subject] = get_text($row[wr_subject]);
-        $row[subject] = mw_reg_str($row[subject]);
+        $row['comment'] = $row['wr_comment'] ? "<span class='comment'>{$row['wr_comment']}</span>" : "";
+        $row['subject'] = get_text($row['wr_subject']);
+        $row['subject'] = mw_reg_str($row['subject']);
         $list[$i] = $row;
-        if (++$i >= $mw_basic[cf_related]) {
+        if (++$i >= $mw_basic['cf_related']) {
             break;
         }
     }
@@ -184,27 +184,27 @@ function mw_view_latest($field="wr_id, wr_subject, wr_content, wr_datetime, wr_c
 {
     global $bo_table, $write_table, $g4, $wr_id, $write, $mw_basic;
 
-    if (!$write[mb_id]) return;
+    if (!$write['mb_id']) return;
 
     $bo_table2 = $bo_table;
     $write_table2 = $write_table;
 
-    if (trim($mw_basic[cf_latest_table])) {
-        $bo_table2 = $mw_basic[cf_latest_table];
+    if (trim($mw_basic['cf_latest_table'])) {
+        $bo_table2 = $mw_basic['cf_latest_table'];
         $write_table2 = "$g4[write_prefix]$bo_table2";
     }
 
-    $sql = "select $field from $write_table2 where wr_is_comment = 0 and wr_id <> '$wr_id' and mb_id = '$write[mb_id]' order by wr_num limit $mw_basic[cf_latest] ";
+	$sql = "select $field from $write_table2 where wr_is_comment = 0 and wr_id <> '$wr_id' and mb_id = '{$write['mb_id']}' order by wr_num limit {$mw_basic['cf_latest']} ";
     $qry = sql_query($sql, false);
 
     $list = array();
     $i = 0;
     for ($i=0; $row=sql_fetch_array($qry); $i++) {
-        $row[href] = mw_seo_url($bo_table2, $row[wr_id]);
+        $row['href'] = mw_seo_url($bo_table2, $row['wr_id']);
         //$row[comment] = $row[wr_comment] ? "<span class='comment'>($row[wr_comment])</span>" : "";
-        $row[comment] = $row[wr_comment] ? "<span class='comment'>+$row[wr_comment]</span>" : "";
-        $row[subject] = get_text($row[wr_subject]);
-        $row[subject] = mw_reg_str($row[subject]);
+        $row['comment'] = $row['wr_comment'] ? "<span class='comment'>+{$row['wr_comment']}</span>" : "";
+        $row['subject'] = get_text($row['wr_subject']);
+        $row['subject'] = mw_reg_str($row['subject']);
         $list[$i] = $row;
     }
     return $list;
@@ -213,10 +213,10 @@ function mw_view_latest($field="wr_id, wr_subject, wr_content, wr_datetime, wr_c
 function mw_thumbnail_keep($size, $set_width, $set_height) {
     global $mw_basic;
 
-    if (!$mw_basic[cf_resize_base])
-        $mw_basic[cf_resize_base] = 'long';
+    if (!$mw_basic['cf_resize_base'])
+        $mw_basic['cf_resize_base'] = 'long';
 
-    if ($mw_basic[cf_resize_base] == 'long')
+    if ($mw_basic['cf_resize_base'] == 'long')
     {
         if ($size[0] > $size[1]) {
             @$rate = $set_width / $size[0];
@@ -228,12 +228,12 @@ function mw_thumbnail_keep($size, $set_width, $set_height) {
             $get_width = (int)($size[0] * $rate);
         }
     }
-    else if ($mw_basic[cf_resize_base] == 'width') {
+    else if ($mw_basic['cf_resize_base'] == 'width') {
         @$rate = $set_width / $size[0];
         $get_width = $set_width;
         $get_height = (int)($size[1] * $rate);
     }
-    else if ($mw_basic[cf_resize_base] == 'height') {
+    else if ($mw_basic['cf_resize_base'] == 'height') {
         @$rate = $set_height / $size[1];
         $get_height = $set_height;
         $get_width = (int)($size[0] * $rate);
@@ -268,10 +268,10 @@ function mw_image_auto_rotate($source_file)
             break;
     }
 
-    if (!$mw_basic[cf_resize_quality])
-        $mw_basic[cf_resize_quality] = 100;
+    if (!$mw_basic['cf_resize_quality'])
+        $mw_basic['cf_resize_quality'] = 100;
 
-    @imagejpeg($source, $source_file, $mw_basic[cf_resize_quality]);
+    @imagejpeg($source, $source_file, $mw_basic['cf_resize_quality']);
     @chmod($source_file, 0606);
 
     @imagedestroy($source);
@@ -301,18 +301,18 @@ function mw_make_thumbnail($set_width, $set_height, $source_file, $thumbnail_fil
         default: return false;
     }
 
-    if (!$mw_basic[cf_resize_base])
-        $mw_basic[cf_resize_base] = 'long';
+    if (!$mw_basic['cf_resize_base'])
+        $mw_basic['cf_resize_base'] = 'long';
 
     // 원본이 설정 사이즈보다 작은 경우 변경하지 않음
     if ($source_file == $thumbnail_file) {
-        if ($mw_basic[cf_resize_base] == 'long' && $size[0] < $set_width && $size[1] < $set_height) {
+        if ($mw_basic['cf_resize_base'] == 'long' && $size[0] < $set_width && $size[1] < $set_height) {
             return;
         }
-        else if ($mw_basic[cf_resize_base] == 'width' && $size[0] < $set_width) {
+        else if ($mw_basic['cf_resize_base'] == 'width' && $size[0] < $set_width) {
             return;
         }
-        else if ($mw_basic[cf_resize_base] == 'height' && $size[1] < $set_height) {
+        else if ($mw_basic['cf_resize_base'] == 'height' && $size[1] < $set_height) {
             return;
         }
     }
@@ -327,7 +327,7 @@ function mw_make_thumbnail($set_width, $set_height, $source_file, $thumbnail_fil
     {
         $rate = $set_width / $size[0];
         $get_width = $set_width;
-        $get_height = (int)($size[1] * $rate); 
+        $get_height = (int)($size[1] * $rate);
 
         $temp_h = (int)($set_height / $set_width * $size[0]);
         $src_y = (int)(($size[1] - $temp_h) / 2);
@@ -337,7 +337,7 @@ function mw_make_thumbnail($set_width, $set_height, $source_file, $thumbnail_fil
             //$get_height = $set_height;
             $rate = $set_height / $size[1];
             $get_height = $set_height;
-            $get_width = (int)($size[0] * $rate); 
+            $get_width = (int)($size[0] * $rate);
 
             $src_y = 0;
             $temp_w = (int)($set_width / $set_height * $size[1]);
@@ -350,21 +350,21 @@ function mw_make_thumbnail($set_width, $set_height, $source_file, $thumbnail_fil
     @imagefilledrectangle($target, 0, 0, $set_width, $set_height, $white);
     @imagecopyresampled($target, $source, 0, 0, $src_x, $src_y, $get_width, $get_height, $size[0], $size[1]);
 
-    if ($source_file != $thumbnail_file && $mw_basic[cf_watermark_use_thumb]
-        && is_mw_file("$g4[bbs_path]/$mw_basic[cf_watermark_path]")) { // watermark
+    if ($source_file != $thumbnail_file && $mw_basic['cf_watermark_use_thumb']
+        && is_mw_file("{$g4['bbs_path']}/{$mw_basic['cf_watermark_path']}")) { // watermark
         mw_watermark($target, $set_width, $set_height
-            , "$g4[bbs_path]/$mw_basic[cf_watermark_path]"
-            , $mw_basic[cf_watermark_position]
-            , $mw_basic[cf_watermark_transparency]);
+            , "{$g4['bbs_path']}/{$mw_basic['cf_watermark_path']}"
+            , $mw_basic['cf_watermark_position']
+            , $mw_basic['cf_watermark_transparency']);
     }
 
-    if (!$mw_basic[cf_resize_quality])
-        $mw_basic[cf_resize_quality] = 80;
+    if (!$mw_basic['cf_resize_quality'])
+        $mw_basic['cf_resize_quality'] = 80;
 
-    if ($mw_basic[cf_image_outline])
-        mw_image_outline($target, $size, $mw_basic[cf_image_outline_color]);
+    if ($mw_basic['cf_image_outline'])
+        mw_image_outline($target, $size, $mw_basic['cf_image_outline_color']);
 
-    @imagejpeg($target, $thumbnail_file, $mw_basic[cf_resize_quality]);
+    @imagejpeg($target, $thumbnail_file, $mw_basic['cf_resize_quality']);
     @chmod($thumbnail_file, 0606);
 
     @imagedestroy($target);
@@ -419,7 +419,7 @@ function mw_image_outline($source, $size=null, $color="#cccccc")
         default: return false;
     }
 
-    $rgb = mw_hex_to_rgb($color); 
+    $rgb = mw_hex_to_rgb($color);
     $color = imagecolorallocate($source, $rgb[0], $rgb[1], $rgb[2]);
     $xy = array(0, 0, $size[0]-1, 0, $size[0]-1, $size[1]-1, 0, $size[1]-1);
     imagepolygon($source, $xy, 4, $color);
@@ -429,7 +429,7 @@ function mw_image_outline($source, $size=null, $color="#cccccc")
             imagegif($source, $source_file);
             break;
         case 2:
-            imagejpeg($source, $source_file, $mw_basic[cf_resize_quality]);
+            imagejpeg($source, $source_file, $mw_basic['cf_resize_quality']);
             break;
         case 3:
             imagepng($source, $source_file);
@@ -438,7 +438,8 @@ function mw_image_outline($source, $size=null, $color="#cccccc")
     @chmod($source_file, 0606);
     @imagedestroy($source);
 
-    thumb_log($thumbnail_file, 'outline');
+    # ???? 주석처리
+    #thumb_log($thumbnail_file, 'outline');
     return $source;
 }
 
@@ -535,55 +536,55 @@ function mw_watermark($target, $tw, $th, $source, $position, $transparency=100)
 
 // http://stackoverflow.com/questions/11291868/merge-transparent-images-in-php
 function imagecopymerge_alpha($dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h, $pct)
-{ 
-    if (!isset($pct)) return false; 
+{
+    if (!isset($pct)) return false;
 
-    $pct /= 100; 
+    $pct /= 100;
 
-    // Get image width and height 
-    $w = imagesx($src_im); 
-    $h = imagesy($src_im); 
+    // Get image width and height
+    $w = imagesx($src_im);
+    $h = imagesy($src_im);
 
-    // Turn alpha blending off 
-    imagealphablending ($src_im, false); 
+    // Turn alpha blending off
+    imagealphablending ($src_im, false);
 
-    // Find the most opaque pixel in the image (the one with the smallest alpha value) 
-    $minalpha = 127; 
-    for ($x = 0; $x<$w; $x++) 
-    for ($y = 0; $y<$h; $y++) { 
-        $alpha = (imagecolorat($src_im, $x, $y) >> 24 ) & 0xFF; 
-        if($alpha < $minalpha) { 
-            $minalpha = $alpha; 
-        } 
-    } 
+    // Find the most opaque pixel in the image (the one with the smallest alpha value)
+    $minalpha = 127;
+    for ($x = 0; $x<$w; $x++)
+    for ($y = 0; $y<$h; $y++) {
+        $alpha = (imagecolorat($src_im, $x, $y) >> 24 ) & 0xFF;
+        if($alpha < $minalpha) {
+            $minalpha = $alpha;
+        }
+    }
 
-    //loop through image pixels and modify alpha for each 
-    for ($x = 0; $x<$w; $x++) { 
-        for ($y = 0; $y < $h; $y++) { 
-            //get current alpha value (represents the TANSPARENCY!) 
-            $colorxy = imagecolorat($src_im, $x, $y); 
-            $alpha = ($colorxy >> 24) & 0xFF; 
+    //loop through image pixels and modify alpha for each
+    for ($x = 0; $x<$w; $x++) {
+        for ($y = 0; $y < $h; $y++) {
+            //get current alpha value (represents the TANSPARENCY!)
+            $colorxy = imagecolorat($src_im, $x, $y);
+            $alpha = ($colorxy >> 24) & 0xFF;
 
-            //calculate new alpha 
-            if ($minalpha !== 127) { 
-                $alpha = 127 + 127 * $pct * ($alpha - 127) / (127 - $minalpha); 
-            }   
-            else { 
-                $alpha += 127 * $pct; 
+            //calculate new alpha
+            if ($minalpha !== 127) {
+                $alpha = 127 + 127 * $pct * ($alpha - 127) / (127 - $minalpha);
+            }
+            else {
+                $alpha += 127 * $pct;
             }
 
-            //get the color index with new alpha 
+            //get the color index with new alpha
             $alphacolorxy = imagecolorallocatealpha($src_im, ($colorxy >> 16) & 0xFF, ($colorxy >> 8) & 0xFF, $colorxy & 0xFF, $alpha);
-            //set pixel with the new color + opacity 
-            if (!imagesetpixel($src_im, $x, $y, $alphacolorxy)) { 
-                return false; 
+            //set pixel with the new color + opacity
+            if (!imagesetpixel($src_im, $x, $y, $alphacolorxy)) {
+                return false;
             }
         }
     }
 
-    // The image copy 
+    // The image copy
     imagecopy($dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h);
-} 
+}
 
 function mw_watermark_file($source_file)
 {
@@ -592,7 +593,7 @@ function mw_watermark_file($source_file)
     if (!is_mw_file($source_file)) return;
 
     $pathinfo = pathinfo($source_file);
-    $basename = md5(basename($source_file)).'.'.$pathinfo[extension];
+    $basename = md5(basename($source_file)).'.'.$pathinfo['extension'];
     $watermark_file = "$watermark_path/$basename";
 
     if (is_mw_file($watermark_file)) return $watermark_file;
@@ -614,16 +615,16 @@ function mw_watermark_file($source_file)
     @imagefilledrectangle($target, 0, 0, $size[0], $size[1], $white);
     @imagecopyresampled($target, $source, 0, 0, 0, 0, $size[0], $size[1], $size[0], $size[1]);
 
-    thumb_log($thumbnail_file, 'watermark_file');
+    #thumb_log($thumbnail_file, 'watermark_file');
     mw_watermark($target, $size[0], $size[1]
-        , $mw_basic[cf_watermark_path]
-        , $mw_basic[cf_watermark_position]
-        , $mw_basic[cf_watermark_transparency]);
+        , $mw_basic['cf_watermark_path']
+        , $mw_basic['cf_watermark_position']
+        , $mw_basic['cf_watermark_transparency']);
 
     if ($mw_basic['cf_watermark_type'] == 'png')
         @imagepng($target, $watermark_file);
-    else 
-        @imagejpeg($target, $watermark_file, $mw_basic[cf_resize_quality]);
+    else
+        @imagejpeg($target, $watermark_file, $mw_basic['cf_resize_quality']);
 
     @chmod($watermark_file, 0606);
     @imagedestroy($source);
@@ -639,7 +640,7 @@ function mw_get_first_file($bo_table, $wr_id, $is_image=false)
     global $g4;
     $sql_image = "";
     if ($is_image) $sql_image = " and bf_width > 0 ";
-    $sql = "select * from $g4[board_file_table] where bo_table = '$bo_table' and wr_id = '$wr_id' $sql_image order by bf_no limit 1";
+    $sql = "select * from {$g4['board_file_table']} where bo_table = '$bo_table' and wr_id = '$wr_id' $sql_image order by bf_no limit 1";
     $row = sql_fetch($sql);
     return $row;
 }
@@ -674,7 +675,7 @@ function mw_get_category_option($bo_table='')
     global $board;
     global $mw_basic;
 
-    $arr = array_map("trim", explode("|", $board[bo_category_list]));
+    $arr = array_map("trim", explode("|", $board['bo_category_list']));
     if ($mw_basic['cf_ca_order']) {
         sort($arr);
     }
@@ -694,9 +695,9 @@ function mw_set_sync_tag($content) {
 
     preg_match_all("/<([^>]*)</iUs", $content, $matchs);
     for ($i=0, $max=count($matchs[0]); $i<$max; $i++) {
-	$pos = strpos($content, $matchs[0][$i]);
-	$len = strlen($matchs[0][$i]);
-	$content = substr($content, 0, $pos + $len - 1) . ">" . substr($content, $pos + $len - 1, strlen($content));
+		$pos = strpos($content, $matchs[0][$i]);
+		$len = strlen($matchs[0][$i]);
+		$content = substr($content, 0, $pos + $len - 1) . ">" . substr($content, $pos + $len - 1, strlen($content));
     }
 
     $content = mw_get_sync_tag($content, "div");
@@ -706,30 +707,30 @@ function mw_set_sync_tag($content) {
     // 그누보드 auto_link 에 괄호포함되는 문제 해결
     $content = preg_replace("/\(<a href=\"([^\)]+)\)\"([^>]*)>([^\)]+)\)<\/a>/i", "(<a href=\"$1\"$2>$3</a>)", $content);
 
-    if ($board[bo_image_width]) {
+    if ($board['bo_image_width']) {
         if (mw_is_mobile_builder()) {
-            $board[bo_image_width] = 280;
+            $board['bo_image_width'] = 280;
         }
 
         preg_match_all("/width\s*:\s*([0-9]+)px/iUs", $content, $matchs);
         for ($i=0, $m=count($matchs[1]); $i<$m; $i++) {
-            if ($matchs[1][$i] > $board[bo_image_width]) {
-                $content = str_replace($matchs[0][$i], "width:{$board[bo_image_width]}px ", $content);
+            if ($matchs[1][$i] > $board['bo_image_width']) {
+                $content = str_replace($matchs[0][$i], "width:{$board['bo_image_width']}px ", $content);
             }
         }
 
         preg_match_all("/width=[\"\']?([0-9]+)[\"\']?\s+height=[\"\']?([0-9]+)[\"\'\s>]/iUs", $content, $matchs);
         for ($i=0, $m=count($matchs[1]); $i<$m; $i++) {
-            if ($matchs[1][$i] > $board[bo_image_width]) {
-                $height = mw_width_ratio($matchs[1][$i], $matchs[2][$i], $board[bo_image_width]);
-                $content = str_replace($matchs[0][$i], "width=\"{$board[bo_image_width]}\", height=\"{$height}\" ", $content);
+            if ($matchs[1][$i] > $board['bo_image_width']) {
+                $height = mw_width_ratio($matchs[1][$i], $matchs[2][$i], $board['bo_image_width']);
+                $content = str_replace($matchs[0][$i], "width=\"{$board['bo_image_width']}\", height=\"{$height}\" ", $content);
             }
         }
 
         preg_match_all("/width=[\"\']?([0-9]+)[\"\'\s>]/iUs", $content, $matchs);
         for ($i=0, $m=count($matchs[1]); $i<$m; $i++) {
-            if ($matchs[1][$i] > $board[bo_image_width]) {
-                $content = str_replace($matchs[0][$i], "width=\"{$board[bo_image_width]}\" ", $content);
+            if ($matchs[1][$i] > $board['bo_image_width']) {
+                $content = str_replace($matchs[0][$i], "width=\"{$board['bo_image_width']}\" ", $content);
             }
         }
     }
@@ -755,7 +756,7 @@ function mw_basic_nobot_slice($str) {
     $ret = "<script>";
     $ret.= "document.write(";
     for ($i=0; $i<strlen($str); $i++) {
-	$ret .= "\"".substr($str, $i, 1)."\" + ";	
+	$ret .= "\"".substr($str, $i, 1)."\" + ";
     }
     $ret.= "\"\")</script>";
     return $ret;
@@ -799,7 +800,7 @@ function umz_get_url($url) {
     global $mw_basic;
     global $is_admin;
 
-    $surl = $mw_basic[cf_umz2];
+    $surl = $mw_basic['cf_umz2'];
     if ($surl == 'mwt.so')
         $surl = 'umz.kr';
 
@@ -816,6 +817,7 @@ function umz_get_url($url) {
     fputs($fp, "POST /plugin/shorten/update.php?url=$url2 HTTP/1.0\r\n");
     fputs($fp, "Host: $surl\r\n");
     fputs($fp, "\r\n");
+    $header = '';
     while (trim($buffer = fgets($fp,1024)) != "") $header .= $buffer;
     while (!feof($fp)) $buffer .= fgets($fp,1024);
     fclose($fp);
@@ -824,7 +826,7 @@ function umz_get_url($url) {
     return $ret;
 }
 
-// euckr -> utf8 
+// euckr -> utf8
 if (!function_exists("set_utf8")) {
 function set_utf8($str)
 {
@@ -836,7 +838,7 @@ function set_utf8($str)
     return $str;
 }}
 
-// utf8 -> euckr 
+// utf8 -> euckr
 if (!function_exists("set_euckr")) {
 function set_euckr($str)
 {
@@ -849,7 +851,7 @@ function set_euckr($str)
 }}
 
 
-// Charset 을 변환하는 함수 
+// Charset 을 변환하는 함수
 if (!function_exists("convert_charset")) {
 function convert_charset($from_charset, $to_charset, $str) {
     if( function_exists('iconv') )
@@ -860,7 +862,7 @@ function convert_charset($from_charset, $to_charset, $str) {
         die("Not found 'iconv' or 'mbstring' library in server.");
 }}
 
-// 텍스트가 utf-8 인지 검사하는 함수 
+// 텍스트가 utf-8 인지 검사하는 함수
 if (!function_exists("is_utf8")) {
 function is_utf8($string) {
 
@@ -877,7 +879,7 @@ function is_utf8($string) {
  )*$%xs', $string);
 }}
 
-// syntax highlight 
+// syntax highlight
 function _preg_callback($m)
 {
     //$str = str_replace(array("<br/>", "&nbsp;"), array("\n", " "), $m[1]);
@@ -895,7 +897,7 @@ function _preg_callback($m)
     //$str = htmlspecialchars($str);
     $str = preg_replace("/</", "&lt;", $str);
     $str = preg_replace("/>/", "&gt;", $str);
-    
+
     $str = preg_replace("/&lt;br\/&gt;/i", "\n", $str);
 
     return "<pre class='brush:php;' style='width:300px;'>$str</pre>";
@@ -911,12 +913,12 @@ function mw_get_level($mb_id) {
     if (!in_array($mb_id, $icon_level_mb_id)) {
         $icon_level_mb_id[] = $mb_id;
         $mb = get_member($mb_id, "mb_point");
-        $icon_level_mb_point[$mb_id] = $mb[mb_point];
-        $point = $mb[mb_point];
+        $icon_level_mb_point[$mb_id] = $mb['mb_point'];
+        $point = $mb['mb_point'];
     } else {
         $point = $icon_level_mb_point[$mb_id];
     }
-    $level = intval($point/$mw_basic[cf_icon_level_point]);
+    $level = intval($point/$mw_basic['cf_icon_level_point']);
     if ($level > 98) $level = 98;
     if ($level < 0) $level = 0;
     return $level;
@@ -932,26 +934,26 @@ function get_comment_file($bo_table, $wr_id)
     $result = sql_query($sql);
     while ($row = sql_fetch_array($result))
     {
-        $no = $row[bf_no];
-        $file[$no][href] = $g4['bbs_path']."/download.php?bo_table=$bo_table&wr_id=$wr_id&no=$no" . $qstr;
-        $file[$no][download] = $row[bf_download];
+        $no = $row['bf_no'];
+        $file[$no]['href'] = $g4['bbs_path']."/download.php?bo_table=$bo_table&wr_id=$wr_id&no=$no" . $qstr;
+        $file[$no]['download'] = $row['bf_download'];
         // 4.00.11 - 파일 path 추가
-        $file[$no][path] = "$g4[path]/data/file/$bo_table";
-        //$file[$no][size] = get_filesize("{$file[$no][path]}/$row[bf_file]");
-        $file[$no][size] = get_filesize($row[bf_filesize]);
-        //$file[$no][datetime] = date("Y-m-d H:i:s", @filemtime("$g4[path]/data/file/$bo_table/$row[bf_file]"));
-        $file[$no][datetime] = $row[bf_datetime];
-        $file[$no][source] = $row[bf_source];
-        $file[$no][bf_content] = $row[bf_content];
-        $file[$no][content] = get_text($row[bf_content]);
+		$file[$no]['path'] = "{$g4['path']}/data/file/$bo_table";
+        //$file[$no]['size'] = get_filesize("{$file[$no][path]}/$row[bf_file]");
+        $file[$no]['size'] = get_filesize($row['bf_filesize']);
+        //$file[$no][datetime] = date("Y-m-d H:i:s", @filemtime("{$g4['path']}/data/file/$bo_table/$row[bf_file]"));
+        $file[$no]['datetime'] = $row['bf_datetime'];
+        $file[$no]['source'] = $row['bf_source'];
+        $file[$no]['bf_content'] = $row['bf_content'];
+        $file[$no]['content'] = get_text($row['bf_content']);
         //$file[$no][view] = view_file_link($row[bf_file], $file[$no][content]);
-        $file[$no][view] = view_file_link($row[bf_file], $row[bf_width], $row[bf_height], $file[$no][content]);
-        $file[$no][file] = $row[bf_file];
+        $file[$no]['view'] = view_file_link($row['bf_file'], $row['bf_width'], $row['bf_height'], $file[$no]['content']);
+        $file[$no]['file'] = $row['bf_file'];
         // prosper 님 제안
         //$file[$no][imgsize] = @getimagesize("{$file[$no][path]}/$row[bf_file]");
-        $file[$no][image_width] = $row[bf_width] ? $row[bf_width] : 640;
-        $file[$no][image_height] = $row[bf_height] ? $row[bf_height] : 480;
-        $file[$no][image_type] = $row[bf_type];
+        $file[$no]['image_width'] = $row['bf_width'] ? $row['bf_width'] : 640;
+        $file[$no]['image_height'] = $row['bf_height'] ? $row['bf_height'] : 480;
+        $file[$no]['image_type'] = $row['bf_type'];
         $file["count"]++;
     }
 
@@ -961,8 +963,8 @@ function get_comment_file($bo_table, $wr_id)
 // 호칭
 function get_name_title($name, $wr_name) {
     global $mw_basic;
-    if (strlen(trim($mw_basic[cf_name_title]))) {
-        $name = str_replace("<span class='member'>{$wr_name}</span>", "<span class='member'>{$wr_name}{$mw_basic[cf_name_title]}</span>", $name);
+    if (strlen(trim($mw_basic['cf_name_title']))) {
+        $name = str_replace("<span class='member'>{$wr_name}</span>", "<span class='member'>{$wr_name}{$mw_basic['cf_name_title']}</span>", $name);
     }
     return $name;
 }
@@ -974,7 +976,7 @@ function mw_get_editor_image($data)
 
     $editor_image = $ret = array();
 
-    $url = $g4[url];
+    $url = $g4['url'];
     $url = preg_replace("(\/)", "\\\/", $url);
     $url = preg_replace("(\.)", "\.", $url);
 
@@ -996,7 +998,7 @@ function mw_get_editor_image($data)
         $editor_image[] = $matchs[1][$j];
     }
 
-    $ext = "<img.*src=\"(.*\/data\/{$g4[cheditor4]}[^\"]+)\"";
+    $ext = "<img.*src=\"(.*\/data\/{$g4['cheditor4']}[^\"]+)\"";
     preg_match_all("/$ext/iUs", $data, $matchs);
     for ($j=0; $j<count($matchs[1]); $j++) {
         $editor_image[] = $matchs[1][$j];
@@ -1022,10 +1024,10 @@ function mw_get_editor_image($data)
                 $path = '../'.$path;
             }
         }
-       
+
         if (is_mw_file($path)) {
-            $ret[http_path][] = $match;
-            $ret[local_path][] = $path;
+            $ret['http_path'][] = $match;
+            $ret['local_path'][] = $path;
         }
     }
     return $ret;
@@ -1040,9 +1042,9 @@ function mw_create_editor_image_watermark($data)
 
     $editor_image = mw_get_editor_image($data);
 
-    for ($j=0, $m=count($editor_image[local_path]); $j<$m; $j++) {
-        $match = $editor_image[http_path][$j];
-        $path = $editor_image[local_path][$j];
+    for ($j=0, $m=count($editor_image['local_path']); $j<$m; $j++) {
+        $match = $editor_image['http_path'][$j];
+        $path = $editor_image['local_path'][$j];
         $size = @getimagesize($path);
         if ($size[0] > 0) {
             $watermark_file = mw_watermark_file($path);
@@ -1062,8 +1064,8 @@ function mw_delete_editor_image($data)
 
     $editor_image = mw_get_editor_image($data);
 
-    for ($j=0, $m=count($editor_image[local_path]); $j<$m; $j++) {
-        $path = $editor_image[local_path][$j];
+    for ($j=0, $m=count($editor_image['local_path']); $j<$m; $j++) {
+        $path = $editor_image['local_path'][$j];
         $size = @getimagesize($path);
         if ($size[0] > 0) {
             $watermark_file = "$watermark_path/".basename($path);
@@ -1080,7 +1082,7 @@ function mw_board_popup($view, $html=0)
 
     if (!$board_skin_path) $board_skin_path = $board_skin_path;
 
-    $dialog_id = "mw_board_popup_$view[wr_id]";
+	$dialog_id = "mw_board_popup_{$view['wr_id']}";
 
     $board['bo_image_width'] = 550;
     $minWidth = 600;
@@ -1089,7 +1091,7 @@ function mw_board_popup($view, $html=0)
     $is_mobile = mw_is_mobile_builder();
 
     if ($is_mobile) {
-        $board[bo_image_width] = 250;
+        $board['bo_image_width'] = 250;
         $minWidth = 250;
         $minHeight = 250;
     }
@@ -1098,29 +1100,29 @@ function mw_board_popup($view, $html=0)
     // 파일 출력
     ob_start();
     $cf_img_1_noview = $mw_basic[cf_img_1_noview];
-    for ($i=0; $i<=$view[file][count]; $i++) {
-        if ($cf_img_1_noview && $view[file][$i][view]) {
+    for ($i=0; $i<=$view['file'][count]; $i++) {
+        if ($cf_img_1_noview && $view['file'][$i][view]) {
             $cf_img_1_noview = false;
             continue;
         }
-        if ($view[file][$i][view])
+        if ($view['file'][$i][view])
         {
             // 이미지 크기 조절
-            if ($board[bo_image_width] < $view[file][$i][image_width]) {
-                $img_width = $board[bo_image_width];
+            if ($board['bo_image_width'] < $view['file'][$i][image_width]) {
+                $img_width = $board['bo_image_width'];
             } else {
-                $img_width = $view[file][$i][image_width];
+                $img_width = $view['file'][$i][image_width];
             }
-            $view[file][$i][view] = str_replace("<img", "<img width=\"{$img_width}\"", $view[file][$i][view]);
+            $view['file'][$i][view] = str_replace("<img", "<img width=\"{$img_width}\"", $view['file'][$i][view]);
 
             // 워터마크 이미지 출력
             if ($mw_basic[cf_watermark_use]) {
-                preg_match("/src='([^']+)'/iUs", $view[file][$i][view], $match);
+                preg_match("/src='([^']+)'/iUs", $view['file'][$i][view], $match);
                 $watermark_file = mw_watermark_file($match[1]);
-                $view[file][$i][view] = str_replace($match[1], $watermark_file, $view[file][$i][view]);
+                $view['file'][$i][view] = str_replace($match[1], $watermark_file, $view['file'][$i][view]);
             }
 
-            echo $view[file][$i][view] . "<br/><br/>";
+            echo $view['file'][$i][view] . "<br/><br/>";
         }
     }
     $file_viewer = ob_get_contents();
@@ -1133,16 +1135,16 @@ function mw_board_popup($view, $html=0)
         $html = 2;
 
     $view[content] = conv_content($view[wr_content], $html);
-    $view[rich_content] = preg_replace("/{이미지\:([0-9]+)[:]?([^}]*)}/ie", "view_image(\$view, '\\1', '\\2')", $view[content]);
-    $view[rich_content] = mw_reg_str($view[rich_content]);
-    $view[rich_content] = bc_code($view[rich_content]);
+    $view['rich_content'] = preg_replace("/{이미지\:([0-9]+)[:]?([^}]*)}/ie", "view_image(\$view, '\\1', '\\2')", $view[content]);
+    $view['rich_content'] = mw_reg_str($view['rich_content']);
+    $view['rich_content'] = bc_code($view['rich_content']);
 
     $subject = get_text($view[subject]);
     $subject = mw_reg_str($subject);
     $subject = bc_code($subject);
-    $content = $file_viewer.$view[rich_content];
+    $content = $file_viewer.$view['rich_content'];
     */
-    $subject = get_text($view[subject]);
+    $subject = get_text($view['subject']);
     $subject = mw_reg_str($subject);
     $subject = bc_code($subject);
 
@@ -1154,7 +1156,7 @@ function mw_board_popup($view, $html=0)
     else if (strstr($view['wr_option'], "html2"))
         $html = 2;
 
-    $view[content] = conv_content($view[wr_content], $html);
+    $view['content'] = conv_content($view['wr_content'], $html);
     include("$board_skin_path/view_head.skin.php");
 
     set_session("ss_popup_token", $token = uniqid(time()));
@@ -1168,16 +1170,16 @@ function mw_board_popup($view, $html=0)
         // -----------------------------------------------------------
         // bootstrap modal
         // -----------------------------------------------------------
-        if ($is_admin && $view[wr_id]) {
+        if ($is_admin && $view['wr_id']) {
             $add_button = <<<HEREDOC
                 <button type="button" class="btn btn-default" onclick="">내림</button>
-                
+
 HEREDOC;
             $add_script = <<<HEREDOC
                 function mw_board_popup_del() {
                     var q = confirm("정말로 팝업공지를 내리시겠습니까?")
                     if (q) {
-                        $.get("$board_skin_path/mw.proc/mw.popup.php?bo_table=$bo_table&wr_id=$view[wr_id]&token=$token", function (ret) {
+                        $.get("$board_skin_path/mw.proc/mw.popup.php?bo_table=$bo_table&wr_id={$view['wr_id']}&token=$token", function (ret) {
                             alert(ret);
                         });
                     }
@@ -1187,7 +1189,7 @@ HEREDOC;
 
         echo <<<HEREDOC
 
-        <div class="modal fade" id="dialog-message-$view[wr_id]" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" id="dialog-message-{$view['wr_id']}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -1195,7 +1197,7 @@ HEREDOC;
                         <h4 class="modal-title" id="myModalLabel">$subject</h4>
                     </div>
                     <div class="modal-body">
-                    $view[rich_content]
+                    {$view['rich_content']}
                     </div>
                     <div class="modal-footer">
                         $add_button
@@ -1209,11 +1211,11 @@ HEREDOC;
         <script>
         $add_script
         function mw_board_popup_24() {
-            set_cookie("mw_board_popup_$view[wr_id]", "1", 24, "$g4[cookie_domain]");
-            $("#dialog-message-$view[wr_id]").modal('hide');
+			set_cookie("mw_board_popup_{$view['wr_id']}", "1", 24, "{$g4['cookie_domain']}");
+            $("#dialog-message-{$view['wr_id']}").modal('hide');
         }
         $(document).ready(function () {
-            $("#dialog-message-$view[wr_id]").modal('show');
+            $("#dialog-message-{$view['wr_id']}").modal('show');
         });
         </script>
 HEREDOC;
@@ -1222,12 +1224,12 @@ HEREDOC;
         // -----------------------------------------------------------
         // jquery modal
         // -----------------------------------------------------------
-        if ($is_admin && $view[wr_id]) {
+        if ($is_admin && $view['wr_id']) {
             $add_script = <<<HEREDOC
                 "팝업내림": function () {
                     var q = confirm("정말로 팝업공지를 내리시겠습니까?")
                     if (q) {
-                        $.get("$board_skin_path/mw.proc/mw.popup.php?bo_table=$bo_table&wr_id=$view[wr_id]&token=$token", function (ret) {
+                        $.get("$board_skin_path/mw.proc/mw.popup.php?bo_table=$bo_table&wr_id={$view['wr_id']}&token=$token", function (ret) {
                             alert(ret);
                         });
                     }
@@ -1236,20 +1238,20 @@ HEREDOC;
         }
 
         echo <<<HEREDOC
-        <div id="dialog-message-$view[wr_id]" class="dialog-content" title="$subject">
-            <div>$view[rich_content]</div>
+        <div id="dialog-message-{$view['wr_id']}" class="dialog-content" title="$subject">
+		<div>{$view['rich_content']}</div>
         </div>
 
         <script>
         $(function() {
-            $("#dialog-message-$view[wr_id]").dialog({
+            $("#dialog-message-{$view['wr_id']}").dialog({
                 modal: true,
                 minWidth: $minWidth,
                 minHeight: $minHeight,
                 buttons: {
                     $add_script
                     "24시간 동안 창을 띄우지 않습니다.": function () {
-                        set_cookie("mw_board_popup_$view[wr_id]", "1", 24, "$g4[cookie_domain]");
+						set_cookie("mw_board_popup_{$view['wr_id']}", "1", 24, "{$g4['cookie_domain']}");
                         $(this).dialog("close");
                     },
                     "확인": function() {
@@ -1275,16 +1277,16 @@ function is_okname()
 
     set_session("ss_ipin_bo_table", "");
 
-    if (!$mw_basic[cf_kcb_type]) return true;
-    if (!$mw_basic[cf_kcb_id]) return true;
+    if (!$mw_basic['cf_kcb_type']) return true;
+    if (!$mw_basic['cf_kcb_id']) return true;
 
     if (get_session("ss_okname")) return true;
 
-    if ($member[mb_id]) {
-        $sql = "select * from $mw[okname_table] where mb_id = '$member[mb_id]'";
+    if ($member['mb_id']) {
+	$sql = "select * from $mw[okname_table] where mb_id = '{$member['mb_id']}'";
         $row = sql_fetch($sql, false);
         if ($row) {
-            set_session("ss_okname", $row[ok_name]);
+            set_session("ss_okname", $row['ok_name']);
             return true;
         }
     }
@@ -1295,14 +1297,14 @@ function check_okname()
 {
     global $mw_basic, $g4, $member, $board_skin_path, $bo_table, $board;
 
-    if (!$mw_basic[cf_kcb_id]) return false;
+    if (!$mw_basic['cf_kcb_id']) return false;
 
     echo "<link rel='stylesheet' href='$board_skin_path/style.common.css' type='text/css'>\n";
     echo "<style type='text/css'> #mw_basic { display:none; } </style>\n";
 
     $req_file = null;
 
-    if ($mw_basic[cf_kcb_type] == "19ban")
+    if ($mw_basic['cf_kcb_type'] == "19ban")
         $req_file = "$board_skin_path/mw.proc/mw.19ban.php"; // 19금
     else
         $req_file = "$board_skin_path/mw.proc/mw.okname.php"; // 실명인증
@@ -1315,9 +1317,9 @@ function mw_reg_str($str)
 {
     global $member;
 
-    if ($member[mb_id]) {
-        $str = str_replace("{닉네임}", $member[mb_nick], $str);
-        $str = str_replace("{별명}", $member[mb_nick], $str);
+    if ($member['mb_id']) {
+        $str = str_replace("{닉네임}", $member['mb_nick'], $str);
+        $str = str_replace("{별명}", $member['mb_nick'], $str);
     } else {
         $str = str_replace("{닉네임}", "회원", $str);
         $str = str_replace("{별명}", "회원", $str);
@@ -1363,7 +1365,7 @@ function mw_basic_write_config_file()
 {
     global $g4, $mw, $bo_table, $mw_basic_config_file, $mw_basic_config_path;
 
-    $sql = "select * from $mw[basic_config_table] where bo_table = '$bo_table'";
+	$sql = "select * from {$mw['basic_config_table']} where bo_table = '$bo_table'";
     $mw_basic = sql_fetch($sql, false);
 
     $contents = $mw_basic;
@@ -1386,66 +1388,58 @@ function mw_basic_sns_date($datetime)
 {
     global $g4;
 
-    $timestamp = strtotime($datetime); // 글쓴날짜시간 Unix timestamp 형식 
-    $current = $g4['server_time']; // 현재날짜시간 Unix timestamp 형식 
+    $timestamp = strtotime($datetime); // 글쓴날짜시간 Unix timestamp 형식
+    $current = $g4['server_time']; // 현재날짜시간 Unix timestamp 형식
 
-    // 1년전 
+    // 1년전
     if ($timestamp <= $current - 86400 * 365)
-        $str = (int)(($current - $timestamp) / (86400 * 365)) . "년전"; 
+        $str = (int)(($current - $timestamp) / (86400 * 365)) . "년전";
     else if ($timestamp <= $current - 86400 * 31)
-        $str = (int)(($current - $timestamp) / (86400 * 31)) . "개월전"; 
+        $str = (int)(($current - $timestamp) / (86400 * 31)) . "개월전";
     else if ($timestamp <= $current - 86400 * 1)
-        $str = (int)(($current - $timestamp) / 86400) . "일전"; 
+        $str = (int)(($current - $timestamp) / 86400) . "일전";
     else if ($timestamp <= $current - 3600 * 1)
-        $str = (int)(($current - $timestamp) / 3600) . "시간전"; 
+        $str = (int)(($current - $timestamp) / 3600) . "시간전";
     else if ($timestamp <= $current - 60 * 1)
-        $str = (int)(($current - $timestamp) / 60) . "분전"; 
+        $str = (int)(($current - $timestamp) / 60) . "분전";
     else
-        $str = (int)($current - $timestamp) . "초전"; 
-    
-    return $str; 
+        $str = (int)($current - $timestamp) . "초전";
+
+    return $str;
 }
 
 function mw_basic_counting_date($datetime, $endstr=" 남았습니다")
 {
     global $g4;
 
-    $timestamp = strtotime($datetime); // 글쓴날짜시간 Unix timestamp 형식 
+    $timestamp = strtotime($datetime); // 글쓴날짜시간 Unix timestamp 형식
     if (!$timestamp) return;
 
-    $current = $g4['server_time']; // 현재날짜시간 Unix timestamp 형식 
+    $current = $g4['server_time']; // 현재날짜시간 Unix timestamp 형식
 
     if ($current >= $timestamp)
         return "종료 되었습니다.";
 
     if ($current <= $timestamp - 86400 * 365)
-        $str = (int)(($timestamp - $current) / (86400 * 365)) . "년"; 
+        $str = (int)(($timestamp - $current) / (86400 * 365)) . "년";
     else if ($current <= $timestamp - 86400 * 31)
-        $str = (int)(($timestamp - $current) / (86400 * 31)) . "개월"; 
+        $str = (int)(($timestamp - $current) / (86400 * 31)) . "개월";
     else if ($current <= $timestamp - 86400 * 1)
-        $str = (int)(($timestamp - $current) / 86400) . "일"; 
+        $str = (int)(($timestamp - $current) / 86400) . "일";
     else if ($current <= $timestamp - 3600 * 1)
-        $str = (int)(($timestamp - $current) / 3600) . "시간"; 
+        $str = (int)(($timestamp - $current) / 3600) . "시간";
     else if ($current <= $timestamp - 60 * 1)
-        $str = (int)(($timestamp - $current) / 60) . "분"; 
+        $str = (int)(($timestamp - $current) / 60) . "분";
     else
-        $str = (int)($timestamp - $current) . "초"; 
-    
-    return $str.$endstr; 
+        $str = (int)($timestamp - $current) . "초";
+
+    return $str.$endstr;
 }
 
 function bc_code($str, $is_content=1, $only_admin=0) {
     global $g4, $bo_table, $wr_id, $board_skin_path;
 
     if ($is_content) {
-        $html_call = create_function('$arg', '
-            $s = $arg[1];
-            $s = str_replace("[", "&#91;", $s);
-            $s = str_replace("]", "&#93;", $s);
-            return $s;
-        ');
-        $str = preg_replace_callback("/\[bccode\((.*)\)\]/iUs", $html_call, $str);
-
         $str = preg_replace("/\[url:\/\/(.*)\](.*)\[\/url\]/iU", "<a href='http://$1' target='_blank'>$2</a>", $str);
         $str = preg_replace("/\[s\](.*)\[\/s\]/iU", "<s>$1</s>", $str);
         $str = preg_replace("/\[b\](.*)\[\/b\]/iU", "<b>$1</b>", $str);
@@ -1461,12 +1455,28 @@ function bc_code($str, $is_content=1, $only_admin=0) {
         $str = preg_replace("/\[img (\/\/[^\s]+)\]/iUs", "<img src=\"$1\"/>", $str);
 
         global $write, $config, $row;
-        if ($write && $write[mb_id] == $config[cf_admin] && !$row[wr_is_comment]) {
-            $callback = create_function ('$arg', '
-                global $g4;
+        if ($write && $write['mb_id'] == $config['cf_admin'] && !$row['wr_is_comment']) {
+            // $callback = create_function ('$arg', '
+                // global $g4;
+
+                // if (mw_is_mobile_builder())
+                    // $arg[1] = preg_replace("/^\.\.\//", "../../", $arg[1]);
+                // $content = $arg[0];
+                // if (is_mw_file($arg[1])) {
+                    // ob_start();
+                    // include($arg[1]);
+                    // $content = ob_get_contents();
+                    // ob_end_clean();
+                // }
+                // return $content;'
+            // );
+
+			$callback = function ($arg) {
+				global $g4;
 
                 if (mw_is_mobile_builder())
                     $arg[1] = preg_replace("/^\.\.\//", "../../", $arg[1]);
+
                 $content = $arg[0];
                 if (is_mw_file($arg[1])) {
                     ob_start();
@@ -1474,16 +1484,20 @@ function bc_code($str, $is_content=1, $only_admin=0) {
                     $content = ob_get_contents();
                     ob_end_clean();
                 }
-                return $content;'
-            );
+
+                return $content;
+			};
+
             $str = preg_replace_callback("/include\(\"([^\"]+)\"\)/i", $callback, $str);
         }
 
-        $str = preg_replace('/\[soundcloud url="([^"]+)".*params="([^"]+)".*\]/ie', "mw_soundcloud('\\1', '\\2')", $str);
-        $str = preg_replace('/\[soundcloud url=.*<A HREF="([^"]+)".*<\/A>.*params=&#034;([^;]+); [^\]]+\]/ie', "mw_soundcloud('\\1', '\\2')", $str);
+        $str = preg_replace('/\[soundcloud url="([^"]+)".*params="([^"]+)".*\]/i', "mw_soundcloud('\\1', '\\2')", $str);
+        $str = preg_replace('/\[soundcloud url=.*<A HREF="([^"]+)".*<\/A>.*params=&#034;([^;]+); [^\]]+\]/i', "mw_soundcloud('\\1', '\\2')", $str);
     }
+
     if ($only_admin) {
-        $callback = create_function('$arg', 'return mw_pay_banner($arg[1], $arg[2]);');
+        #$callback = create_function('$arg', 'return mw_pay_banner($arg[1], $arg[2]);');
+        $callback = function($arg) { return mw_pay_banner($arg[1], $arg[2]); };
         $str = preg_replace_callback("/\<\?=mw_pay_banner\([\"\']?([^\"\']+)[\"\']?,[\s]*[\"\']?([^\"\']+)[\"\']?\)\?\>/i",
             $callback, $str);
     }
@@ -1494,18 +1508,26 @@ function bc_code($str, $is_content=1, $only_admin=0) {
     $str = preg_replace("/\[hr\]/iU", "<hr/>", $str);
     $str = preg_replace("/\[hr\s+color=([^\]]+)\]/iU", "<hr style='border-color:\\1;'/>", $str);
 
-    $str = preg_replace("/\[month\]/iU", date('n', $g4[server_time]), $str);
-    $str = preg_replace("/\[last_day\]/iU", date('t', $g4[server_time]), $str);
+    $str = preg_replace("/\[month\]/iU", date('n', $g4['server_time']), $str);
+    $str = preg_replace("/\[last_day\]/iU", date('t', $g4['server_time']), $str);
 
     $str = preg_replace("/\[today\]/iU", date('Y년 m월 d일', $g4['server_time']), $str);
     $str = preg_replace("/\[day of the week\]/iU", get_yoil($g4['time_ymdhis']), $str);
 
-    $call_emoticon = create_function ('$arg', '
-        global $board_skin_path;
+    #$call_emoticon = create_function ('$arg', '
+    #    global $board_skin_path;
+    #    if (!preg_match("/^[0-9a-z-_\/]+$/i", $arg[1])) return $arg[0];
+    #    $img = glob("{$board_skin_path}/mw.emoticon/{$arg[1]}.{gif,jpg,jpeg,png}", GLOB_BRACE);
+    #    return sprintf("<img src=\"%s\" align=\"absmiddle\"/>", $img[0]);
+    #');
+
+	$call_emoticon = function ($arg) {
+		global $board_skin_path;
         if (!preg_match("/^[0-9a-z-_\/]+$/i", $arg[1])) return $arg[0];
         $img = glob("{$board_skin_path}/mw.emoticon/{$arg[1]}.{gif,jpg,jpeg,png}", GLOB_BRACE);
         return sprintf("<img src=\"%s\" align=\"absmiddle\"/>", $img[0]);
-    ');
+	};
+
     $str = preg_replace_callback("/\[e:([^\]]+)\]/i", $call_emoticon, $str);
 
     preg_match_all("/\[counting (.*)\]/iU", $str, $matches);
@@ -1539,7 +1561,7 @@ function mw_spelling($str)
         }
     }
 
-    if (strtolower(preg_replace('/-/', '', $g4[charset])) == 'euckr') {
+    if (strtolower(preg_replace('/-/', '', $g4['charset'])) == 'euckr') {
         $str = convert_charset("euckr", "cp949//IGNORE", $str);
     }
 
@@ -1553,52 +1575,52 @@ function mw_get_ccl_info($ccl)
     switch ($ccl)
     {
         case "by":
-            $info[by] = "by";
-            $info[nc] = "";
-            $info[nd] = "";
-            $info[kr] = "저작자표시";
+            $info['by'] = "by";
+            $info['nc'] = "";
+            $info['nd'] = "";
+            $info['kr'] = "저작자표시";
             break;
         case "by-nc":
-            $info[by] = "by";
-            $info[nc] = "nc";
-            $info[nd] = "";
-            $info[kr] = "저작자표시-비영리";
+            $info['by'] = "by";
+            $info['nc'] = "nc";
+            $info['nd'] = "";
+            $info['kr'] = "저작자표시-비영리";
             break;
         case "by-sa":
-            $info[by] = "by";
-            $info[nc] = "";
-            $info[nd] = "sa";
-            $info[kr] = "저작자표시-동일조건변경허락";
+            $info['by'] = "by";
+            $info['nc'] = "";
+            $info['nd'] = "sa";
+            $info['kr'] = "저작자표시-동일조건변경허락";
             break;
         case "by-nd":
-            $info[by] = "by";
-            $info[nc] = "";
-            $info[nd] = "nd";
-            $info[kr] = "저작자표시-변경금지";
+            $info['by'] = "by";
+            $info['nc'] = "";
+            $info['nd'] = "nd";
+            $info['kr'] = "저작자표시-변경금지";
             break;
         case "by-nc-nd":
-            $info[by] = "by";
-            $info[nc] = "nc";
-            $info[nd] = "nd";
-            $info[kr] = "저작자표시-비영리-변경금지";
+            $info['by'] = "by";
+            $info['nc'] = "nc";
+            $info['nd'] = "nd";
+            $info['kr'] = "저작자표시-비영리-변경금지";
             break;
         case "by-nc-sa":
-            $info[by] = "by";
-            $info[nc] = "nc";
-            $info[nd] = "sa";
-            $info[kr] = "저작자표시-비영리-동일조건변경허락";
+            $info['by'] = "by";
+            $info['nc'] = "nc";
+            $info['nd'] = "sa";
+            $info['kr'] = "저작자표시-비영리-동일조건변경허락";
             break;
         default :
-            $info[by] = "";
-            $info[nc] = "nc";
-            $info[nd] = "nd";
-            $info[kr] = "";
+            $info['by'] = "";
+            $info['nc'] = "nc";
+            $info['nd'] = "nd";
+            $info['kr'] = "";
             break;
     }
-    $info[ccl] = $ccl;
-    $info[msg] = "크리에이티브 커먼즈 코리아 $info[kr] 2.0 대한민국 라이센스에 따라 이용하실 수 있습니다.";
-    $info[link] = "http://creativecommons.org/licenses/{$ccl}/2.0/kr/";
-    
+    $info['ccl'] = $ccl;
+    $info['msg'] = "크리에이티브 커먼즈 코리아 $info[kr] 2.0 대한민국 라이센스에 따라 이용하실 수 있습니다.";
+    $info['link'] = "http://creativecommons.org/licenses/{$ccl}/2.0/kr/";
+
     return $info;
 }
 
@@ -1609,13 +1631,13 @@ function mw_delete_row($board, $write, $save_log=false, $save_message='삭제되
     global $is_admin;
     global $board_skin_path;
 
-    $write_table = "$g4[write_prefix]$board[bo_table]";
+	$write_table = "{$g4['write_prefix']}${board['bo_table']}";
 
-    $row = sql_fetch("select * from $write_table where wr_id = '$write[wr_id]'");
+    $row = sql_fetch("select * from $write_table where wr_id = '{$write['wr_id']}'");
     if (!$row)
         return;
 
-    //$board_skin_path = "$g4[path]/skin/board/$board[bo_skin]";
+    //$board_skin_path = "{$g4['path']}/skin/board/$board[bo_skin]";
     $lib_file_path = "$board_skin_path/mw.lib/mw.skin.basic.lib.php";
     if (is_mw_file($lib_file_path)) include($lib_file_path);
 
@@ -1643,27 +1665,27 @@ function mw_delete_row($board, $write, $save_log=false, $save_message='삭제되
 
     // 썸네일 삭제
     if ($thumb_path) {
-        $thumb_file = mw_thumb_jpg("$thumb_path/$write[wr_id]");
+		$thumb_file = mw_thumb_jpg("$thumb_path/{$write['wr_id']}");
         if (is_mw_file($thumb_file)) @unlink($thumb_file);
     }
 
     if ($thumb2_path) {
-        $thumb_file = mw_thumb_jpg("$thumb2_path/$write[wr_id]");
+		$thumb_file = mw_thumb_jpg("$thumb2_path/{$write['wr_id']}");
         if (is_mw_file($thumb_file)) @unlink($thumb_file);
     }
 
     if ($thumb3_path) {
-        $thumb_file = mw_thumb_jpg("$thumb3_path/$write[wr_id]");
+        $thumb_file = mw_thumb_jpg("$thumb3_path/{$write['wr_id']}");
         if (is_mw_file($thumb_file)) @unlink($thumb_file);
     }
 
     if ($thumb4_path) {
-        $thumb_file = mw_thumb_jpg("$thumb4_path/$write[wr_id]");
+        $thumb_file = mw_thumb_jpg("$thumb4_path/{$write['wr_id']}");
         if (is_mw_file($thumb_file)) @unlink($thumb_file);
     }
 
     if ($thumb5_path) {
-        $thumb_file = mw_thumb_jpg("$thumb5_path/$write[wr_id]");
+        $thumb_file = mw_thumb_jpg("$thumb5_path/{$write['wr_id']}");
         if (is_mw_file($thumb_file)) @unlink($thumb_file);
     }
 
@@ -1674,44 +1696,44 @@ function mw_delete_row($board, $write, $save_log=false, $save_message='삭제되
 
     // 워터마크 삭제
     if ($watermark_path) {
-        $sql = " select * from $g4[board_file_table] ";
-        $sql.= " where bo_table = '$board[bo_table]' and wr_id = '$write[wr_id]' and bf_width > 0  order by bf_no";
+        $sql = " select * from {$g4['board_file_table']} ";
+        $sql.= " where bo_table = '$board[bo_table]' and wr_id = '{$write['wr_id']}' and bf_width > 0  order by bf_no";
         $qry = sql_query($sql);
         while ($row = sql_fetch_array($qry)) {
-            @unlink("$watermark_path/$row[bf_file]");
+			@unlink("$watermark_path/{$row['bf_file']}");
         }
 
         // 에디터 이미지 및 워터마크 삭제
-        mw_delete_editor_image($write[wr_content]);
+        mw_delete_editor_image($write['wr_content']);
     }
 
     // 팝업공지 삭제
-    sql_query("delete from $mw[popup_notice_table] where bo_table = '$board[bo_table]' and wr_id = '$write[wr_id]' ", false);
+	sql_query("delete from {$mw['popup_notice_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$write['wr_id']}' ", false);
 
     // 코멘트 삭제
-    if ($write[wr_is_comment]) {
+    if ($write['wr_is_comment']) {
 
-        // 코멘트 추천 삭제 
-        if ($mw[comment_good_table]) 
-            sql_query("delete from $mw[comment_good_table] where bo_table = '$board[bo_table]' and wr_id = '$write[wr_id]'");
+        // 코멘트 추천 삭제
+        if ($mw['comment_good_table'])
+		sql_query("delete from {$mw['comment_good_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$write['wr_id']}'");
 
         // 코멘트 포인트 삭제
-        if (!delete_point($write[mb_id], $board[bo_table], $write[wr_id], '코멘트'))
-            insert_point($write[mb_id], $board[bo_comment_point] * (-1), "$board[bo_subject] {$write[wr_parent]}-{$write[wr_id]} 코멘트삭제");
+        if (!delete_point($write['mb_id'], $board['bo_table'], $write['wr_id'], '코멘트'))
+            insert_point($write['mb_id'], $board['bo_comment_point'] * (-1), "{$board['bo_subject']} {$write['wr_parent']}-{$write['wr_id']} 코멘트삭제");
 
-        if (!delete_point($write[mb_id], $board[bo_table], $write[wr_id], '댓글'))
-            insert_point($write[mb_id], $board[bo_comment_point] * (-1), "$board[bo_subject] {$write[wr_parent]}-{$write[wr_id]} 코멘트삭제");
+        if (!delete_point($write['mb_id'], $board['bo_table'], $write['wr_id'], '댓글'))
+            insert_point($write['mb_id'], $board['bo_comment_point'] * (-1), "{$board['bo_subject']} {$write['wr_parent']}-{$write['wr_id']} 코멘트삭제");
 
 
         // 업로드된 파일이 있다면 파일삭제
-        if ($mw[comment_file_table]) {
-            $sql = " select * from $mw[comment_file_table] where bo_table = '$board[bo_table]' and wr_id = '$write[wr_id]' ";
+        if ($mw['comment_file_table']) {
+			$sql = " select * from {$mw['comment_file_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$write['wr_id']}' ";
             $qry = sql_query($sql);
             while ($row = sql_fetch_array($qry))
-                @unlink("$g4[path]/data/file/$board[bo_table]/$row[bf_file]");
+                @unlink("{$g4['path']}/data/file/{$board['bo_table']}/{$row['bf_file']}");
 
             // 파일테이블 행 삭제
-            sql_query(" delete from $mw[comment_file_table] where bo_table = '$board[bo_table]' and wr_id = '$write[wr_id]' ");
+			sql_query(" delete from {$mw['comment_file_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$write['wr_id']}' ");
         }
 
         // 럭키라이팅 삭제
@@ -1720,73 +1742,73 @@ function mw_delete_row($board, $write, $save_log=false, $save_message='삭제되
         $count_comment++;
     }
     // 원글삭제
-    else { 
-        $sql = " select wr_id, mb_id, wr_is_comment from $write_table where wr_parent = '$write[wr_id]' order by wr_id ";
+    else {
+		$sql = " select wr_id, mb_id, wr_is_comment from $write_table where wr_parent = '{$write['wr_id']}' order by wr_id ";
         $result = sql_query($sql);
-        while ($row = sql_fetch_array($result)) 
+        while ($row = sql_fetch_array($result))
         {
             // 원글이라면
-            if (!$row[wr_is_comment]) 
+            if (!$row['wr_is_comment'])
             {
                 // 원글 포인트 삭제
-                if (!delete_point($row[mb_id], $board[bo_table], $row[wr_id], '쓰기'))
-                    insert_point($row[mb_id], $board[bo_write_point] * (-1), "$board[bo_subject] $row[wr_id] 글삭제");
+				if (!delete_point($row['mb_id'], $board['bo_table'], $row['wr_id'], '쓰기'))
+                    insert_point($row['mb_id'], $board['bo_write_point'] * (-1), "{$board['bo_subject']} {$row['wr_id']} 글삭제");
 
                 // qna 포인트 삭제
-                delete_point($row[mb_id], $board[bo_table], $row[wr_id], '@qna');
-                delete_point($row[mb_id], $board[bo_table], $row[wr_id], '@qna-hold');
-                delete_point($row[mb_id], $board[bo_table], $row[wr_id], '@qna-choose');
+                delete_point($row['mb_id'], $board['bo_table'], $row['wr_id'], '@qna');
+                delete_point($row['mb_id'], $board['bo_table'], $row['wr_id'], '@qna-hold');
+                delete_point($row['mb_id'], $board['bo_table'], $row['wr_id'], '@qna-choose');
 
                 // 럭키라이팅 삭제
                 if (function_exists("mw_delete_lucky_writing")) mw_delete_lucky_writing($board, $row);
 
                 // 업로드된 파일이 있다면 파일삭제
-                $sql2 = " select * from $g4[board_file_table] where bo_table = '$board[bo_table]' and wr_id = '$row[wr_id]' ";
+				$sql2 = " select * from {$g4['board_file_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$row['wr_id']}' ";
                 $result2 = sql_query($sql2);
                 while ($row2 = sql_fetch_array($result2))
-                    @unlink("$g4[path]/data/file/$board[bo_table]/$row2[bf_file]");
-                    
+                    @unlink("{$g4['path']}/data/file/{$board['bo_table']}/{$row2['bf_file']}");
+
                 // 파일테이블 행 삭제
-                sql_query(" delete from $g4[board_file_table] where bo_table = '$board[bo_table]' and wr_id = '$row[wr_id]' ");
+				sql_query(" delete from {$g4['board_file_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$row['wr_id']}' ");
 
                 // 추천
-                sql_query(" delete from $g4[board_good_table] where bo_table = '$board[bo_table]' and wr_id = '$write[wr_id]' ");
+				sql_query(" delete from $g4[board_good_table] where bo_table = '{$board['bo_table']}' and wr_id = '{$write['wr_id']}' ");
 
                 $count_write++;
-            } 
+            }
             // 코멘트라면
-            else 
+            else
             {
                 // 업로드된 파일이 있다면 파일삭제
-                if ($mw[comment_file_table]) {
-                    $sql2 = " select * from $mw[comment_file_table] where bo_table = '$board[bo_table]' and wr_id = '$row[wr_id]' ";
+                if ($mw['comment_file_table']) {
+					$sql2 = " select * from {$mw['comment_file_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$row['wr_id']}' ";
                     $qry2 = sql_query($sql2);
                     while ($row2 = sql_fetch_array($qry2))
-                        @unlink("$g4[path]/data/file/$board[bo_table]/$row2[bf_file]");
-                        
+						@unlink("{$g4['path']}/data/file/{$board['bo_table']}/{$row2['bf_file']}");
+
                     // 파일테이블 행 삭제
-                    sql_query(" delete from $mw[comment_file_table] where bo_table = '$board[bo_table]' and wr_id = '$row[wr_id]' ");
+					sql_query(" delete from {$mw['comment_file_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$row['wr_id']}' ");
                 }
 
                 // 코멘트 추천
                 if ($mw[comment_good_table])
-                    sql_query(" delete from $mw[comment_good_table] where bo_table = '$board[bo_table]' and wr_id = '$write[wr_id]' ");
+					sql_query(" delete from {$mw['comment_good_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$write['wr_id']}' ");
 
                 // 코멘트 포인트 삭제
-                if (!delete_point($row[mb_id], $board[bo_table], $row[wr_id], '코멘트'))
-                    insert_point($row[mb_id], $board[bo_comment_point] * (-1), "$board[bo_subject] {$write[wr_id]}-{$row[wr_id]} 코멘트삭제");
+				if (!delete_point($row['mb_id'], $board['bo_table'], $row['wr_id'], '코멘트'))
+                    insert_point($row['mb_id'], $board['bo_comment_point'] * (-1), "{$board['bo_subject']} {$write['wr_id']}-{$row['wr_id']} 코멘트삭제");
 
                 // 코멘트 추천 포인트 삭제
                 $sq2 = " select * from $g4[point_table] ";
-                $sq2.= "  where po_rel_table = '$board[bo_table]' ";
-                $sq2.= "    and po_rel_id = '$write[wr_id]' ";
+                $sq2.= "  where po_rel_table = '{$board['bo_table']}' ";
+				$sq2.= "    and po_rel_id = '{$write['wr_id']}' ";
                 $sq2.= "    and (po_rel_action like '%@good%' or po_rel_action like '%@nogood%') ";
                 $qr2 = sql_query($sq2);
                 while ($ro2 = sql_fetch_array($qr2)) {
-                    delete_point($row[mb_id], $board[bo_table], $row[wr_id], $ro2[mb_id].'@good');
-                    delete_point($ro2[mb_id], $board[bo_table], $row[wr_id], $ro2[mb_id].'@good_re');
-                    delete_point($row[mb_id], $board[bo_table], $row[wr_id], $ro2[mb_id].'@nogood');
-                    delete_point($ro2[mb_id], $board[bo_table], $row[wr_id], $ro2[mb_id].'@nogood_re');
+                    delete_point($row['mb_id'], $board['bo_table'], $row['wr_id'], $ro2['mb_id'].'@good');
+                    delete_point($ro2['mb_id'], $board['bo_table'], $row['wr_id'], $ro2['mb_id'].'@good_re');
+                    delete_point($row['mb_id'], $board['bo_table'], $row['wr_id'], $ro2['mb_id'].'@nogood');
+                    delete_point($ro2['mb_id'], $board['bo_table'], $row['wr_id'], $ro2['mb_id'].'@nogood_re');
                 }
 
                 // 럭키라이팅 삭제
@@ -1799,19 +1821,19 @@ function mw_delete_row($board, $write, $save_log=false, $save_message='삭제되
 
     // 게시글 삭제
     if ($save_log != 'no' && ($delete_log || $save_log)) {
-        if ($mw_basic[cf_post_history]) {
-            //$wr_name2 = $board[bo_use_name] ? $member[mb_name] : $member[mb_nick];
+        if ($mw_basic['cf_post_history']) {
+            //$wr_name2 = $board[bo_use_name] ? $member[mb_name] : $member['mb_nick'];
             $sql = "insert into $mw[post_history_table]
-                       set bo_table = '$board[bo_table]'
-                           ,wr_id = '$write[wr_id]'
-                           ,wr_parent = '$write[wr_parent]'
-                           ,mb_id = '$write[mb_id]'
-                           ,ph_name = '$write[wr_name]'
-                           ,ph_option = '$write[wr_option]'
-                           ,ph_subject = '".addslashes($write[wr_subject])."'
-                           ,ph_content = '".addslashes($write[wr_content])."'
-                           ,ph_ip = '$_SERVER[REMOTE_ADDR]'
-                           ,ph_datetime = '$g4[time_ymdhis]'";
+                       set bo_table = '{$board['bo_table']}'
+                           ,wr_id = '{$write['wr_id']}'
+                           ,wr_parent = '{$write['wr_parent']}'
+							,mb_id = '{$write['mb_id']}'
+                           ,ph_name = '{$write['wr_name']}'
+                           ,ph_option = '{$write['wr_option']}'
+                           ,ph_subject = '".addslashes($write['wr_subject'])."'
+                           ,ph_content = '".addslashes($write['wr_content'])."'
+                           ,ph_ip = '{$_SERVER['REMOTE_ADDR']}'
+                           ,ph_datetime = '{$g4['time_ymdhis']}'";
             sql_query($sql);
         }
 
@@ -1821,58 +1843,59 @@ function mw_delete_row($board, $write, $save_log=false, $save_message='삭제되
                         ,wr_option = ''
                         ,wr_link1 = ''
                         ,wr_link2 = ''
-                  where wr_id = '$write[wr_id]'";
+                  where wr_id = '{$write['wr_id']}'";
         sql_query($sql);
     }
     else {
         // 원글삭제
-        sql_query(" delete from $write_table where wr_parent = '$write[wr_id]' ");
-        sql_query(" delete from $write_table where wr_id = '$write[wr_id]' ");
+        sql_query(" delete from $write_table where wr_parent = '{$write['wr_id']}' ");
+
+		  sql_query(" delete from $write_table where wr_id = '{$write['wr_id']}' ");
 
         // 추천 포인트 삭제
-        $sql = " select * from $g4[point_table] ";
-        $sql.= "  where po_rel_table = '$board[bo_table]' ";
-        $sql.= "    and po_rel_id = '$write[wr_id]' ";
+        $sql = " select * from {$g4['point_table']} ";
+        $sql.= "  where po_rel_table = '{$board['bo_table']}' ";
+        $sql.= "    and po_rel_id = '{$write['wr_id']}' ";
         $sql.= "    and (po_rel_action like '%@good%' or po_rel_action like '%@nogood%') ";
         $qry = sql_query($sql);
         while ($row = sql_fetch_array($qry)) {
-            delete_point($write[mb_id], $board[bo_table], $write[wr_id], $row[mb_id].'@good');
-            delete_point($row[mb_id], $board[bo_table], $write[wr_id], $row[mb_id].'@good_re');
-            delete_point($write[mb_id], $board[bo_table], $write[wr_id], $row[mb_id].'@nogood');
-            delete_point($row[mb_id], $board[bo_table], $write[wr_id], $row[mb_id].'@nogood_re');
+            delete_point($write['mb_id'], $board['bo_table'], $write['wr_id'], $row['mb_id'].'@good');
+            delete_point($row['mb_id'], $board['bo_table'], $write['wr_id'], $row['mb_id'].'@good_re');
+            delete_point($write['mb_id'], $board['bo_table'], $write['wr_id'], $row['mb_id'].'@nogood');
+            delete_point($row['mb_id'], $board['bo_table'], $write['wr_id'], $row['mb_id'].'@nogood_re');
         }
 
         // 리워드
-        sql_query("delete from $mw[reward_table] where bo_table = '$board[bo_table]' and wr_id = '$write[wr_id]'", false);
-        sql_query("delete from $mw[reward_log_table] where bo_table = '$board[bo_table]' and wr_id = '$write[wr_id]'", false);
+		sql_query("delete from {$mw['reward_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$write['wr_id']}'", false);
+		sql_query("delete from {$mw['reward_log_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$write['wr_id']}'", false);
 
         // 설문
-        $sql = "select vt_id from $mw[vote_table] where bo_table = '$board[bo_table]' and wr_id = '$write[wr_id]'";
+	$sql = "select vt_id from {$mw['vote_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$write['wr_id']}'";
         $row = sql_fetch($sql, false);
-        sql_query("delete from $mw[vote_item_table] where vt_id = '$row[vt_id]'", false);
-        sql_query("delete from $mw[vote_log_table] where vt_id = '$row[vt_id]'", false);
-        sql_query("delete from $mw[vote_table] where vt_id = '$row[vt_id]'", false);
+		sql_query("delete from {$mw['vote_item_table']} where vt_id = '{$row['vt_id']}'", false);
+		sql_query("delete from {$mw['vote_log_table']} where vt_id = '{$row['vt_id']}'", false);
+		sql_query("delete from {$mw['vote_table']} where vt_id = '{$row['vt_id']}'", false);
 
         // 기타
-        sql_query("delete from $mw[download_log_table] where bo_table = '$board[bo_table]' and wr_id = '$write[wr_id]'", false);
-        sql_query("delete from $mw[link_log_table] where bo_table = '$board[bo_table]' and wr_id = '$write[wr_id]'", false);
-        sql_query("delete from $mw[post_history_table] where bo_table = '$board[bo_table]' and wr_id = '$write[wr_id]'", false);
-        sql_query("delete from $mw[singo_log_table] where bo_table = '$board[bo_table]' and wr_id = '$write[wr_id]'", false);
-        sql_query("delete from $mw[must_notice_table] where bo_table = '$board[bo_table]' and wr_id = '$write[wr_id]'", false);
+        sql_query("delete from {$mw['download_log_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$write['wr_id']}'", false);
+        sql_query("delete from {$mw['link_log_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$write['wr_id']}'", false);
+        sql_query("delete from {$mw['post_history_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$write['wr_id']}'", false);
+        sql_query("delete from {$mw['singo_log_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$write['wr_id']}'", false);
+        sql_query("delete from {$mw['must_notice_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$write['wr_id']}'", false);
 
         // 최근게시물 삭제
-        sql_query(" delete from $g4[board_new_table] where bo_table = '$board[bo_table]' and wr_parent = '$write[wr_id]' ");
-        sql_query(" delete from $g4[board_new_table] where bo_table = '$board[bo_table]' and wr_id = '$write[wr_id]' ");
+        sql_query(" delete from {$g4['board_new_table']} where bo_table = '{$board['bo_table']}' and wr_parent = '{$write['wr_id']}' ");
+        sql_query(" delete from {$g4['board_new_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$write['wr_id']}' ");
 
         // 스크랩 삭제
-        sql_query(" delete from $g4[scrap_table] where bo_table = '$board[bo_table]' and wr_id = '$write[wr_id]' ");
+		sql_query(" delete from {$g4['scrap_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$write['wr_id']}' ");
 
         // 퀴즈삭제
-        if ($mw_basic[cf_quiz] && is_mw_file("$quiz_path/_config.php")) {
+        if ($mw_basic['cf_quiz'] && is_mw_file("$quiz_path/_config.php")) {
             include("$quiz_path/_config.php");
-            $row = sql_fetch(" select * from $mw_quiz[quiz_table] where bo_table = '$board[bo_table]' and wr_id = '$write[wr_id]' ", false);
-            sql_query(" delete from $mw_quiz[quiz_table] where bo_table = '$board[bo_table]' and wr_id = '$write[wr_id]' ", false);
-            sql_query(" delete from $mw_quiz[log_table] where qz_id = '$row[qz_id]' ", false);
+			$row = sql_fetch(" select * from {$mw_quiz['quiz_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$write['wr_id']}' ", false);
+            sql_query(" delete from {$mw_quiz['quiz_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$write['wr_id']}' ", false);
+            sql_query(" delete from {$mw_quiz['log_table']} where qz_id = '{$row['qz_id']}' ", false);
         }
 
         // 소셜커머스 삭제
@@ -1891,7 +1914,7 @@ function mw_delete_row($board, $write, $save_log=false, $save_message='삭제되
         if (is_mw_file("$talent_market_path/delete.skin.php")) @include("$talent_market_path/delete.skin.php");
 
         // 모아보기 삭제
-        if (function_exists('mw_moa_delete')) mw_moa_delete($write[wr_id]);
+        if (function_exists('mw_moa_delete')) mw_moa_delete($write['wr_id']);
 
         // 통합검색
         if (function_exists('mw_del_united_search')) {
@@ -1901,14 +1924,14 @@ function mw_delete_row($board, $write, $save_log=false, $save_message='삭제되
                 mw_del_united_search($board['gr_id'], $board['bo_table'], $write['wr_id'], $write['wr_id']);
         }
 
-        if ($write[wr_is_comment]) {
+        if ($write['wr_is_comment']) {
             // 원글의 코멘트 숫자를 감소(다시계산)
-            $tmp = sql_fetch("select count(*) as cnt from $write_table where wr_parent = '$write[wr_parent]' and wr_is_comment = '1'");
-            sql_query(" update $write_table set wr_comment = '$tmp[cnt]' where wr_id = '$write[wr_parent]' ");
+			$tmp = sql_fetch("select count(*) as cnt from $write_table where wr_parent = '{$write['wr_parent']}' and wr_is_comment = '1'");
+			sql_query(" update $write_table set wr_comment = '{$tmp['cnt']}' where wr_id = '{$write['wr_parent']}' ");
         }
         // 글숫자 감소
         if ($count_write > 0 || $count_comment > 0) {
-            sql_query(" update $g4[board_table] set bo_count_write = bo_count_write - '$count_write', bo_count_comment = bo_count_comment - '$count_comment' where bo_table = '$board[bo_table]' ");
+            sql_query(" update {$g4['board_table']} set bo_count_write = bo_count_write - '$count_write', bo_count_comment = bo_count_comment - '$count_comment' where bo_table = '{$board['bo_table']}' ");
         }
     }
 
@@ -1936,7 +1959,7 @@ function mw_anonymous_nick($mb_id, $wr_ip='')
         if (!$mw_anonymous_index)
             $mw_anonymous_index = 1;
 
-        if ($write[mb_id] == $mb_id || $write[wr_ip] == $wr_ip) {
+        if ($write['mb_id'] == $mb_id || $write['wr_ip'] == $wr_ip) {
             $mw_anonymous_list[$mb_id] = "익명글쓴이";
         } else {
             $mw_anonymous_list[$mb_id] = "익명{$mw_anonymous_index}호";
@@ -1947,8 +1970,8 @@ function mw_anonymous_nick($mb_id, $wr_ip='')
 }
 
 // 19+ : 19세 이상
-// 19- : 19세 미만 
-// 19= : 19세만 
+// 19- : 19세 미만
+// 19= : 19세만
 function mw_basic_age($value, $type='alert')
 {
     global $g4;
@@ -1964,7 +1987,7 @@ function mw_basic_age($value, $type='alert')
 
     //if (!$member[mb_birth]) return;
 
-    $member_age = floor((date("Ymd", $g4[server_time]) - $member[mb_birth]) / 10000);
+    $member_age = floor((date("Ymd", $g4['server_time']) - $member['mb_birth']) / 10000);
 
     preg_match("/^([0-9]+)([\+\-\=])$/", $value, $match);
 
@@ -1997,34 +2020,34 @@ function mw_basic_move_cate($bo_table, $wr_id)
     global $g4, $mw_basic, $mw, $board, $write_table;
     global $notice_div;
 
-    $sql = " select * from $mw[move_table] where bo_table = '$bo_table' and wr_id = '$wr_id' and mv_datetime <= '$g4[time_ymdhis]' ";
+    $sql = " select * from $mw[move_table] where bo_table = '$bo_table' and wr_id = '$wr_id' and mv_datetime <= '{$g4['time_ymdhis']}' ";
     $row = sql_fetch($sql);
 
     if (!$row) return;
 
-    $notice_array = explode($notice_div, trim($board[bo_notice]));
-    if ($row[mv_notice] == "u") {
-        
+    $notice_array = explode($notice_div, trim($board['bo_notice']));
+    if ($row['mv_notice'] == "u") {
+
         if (!in_array((int)$wr_id, $notice_array))
         {
-            $bo_notice = $wr_id . $notice_div . $board[bo_notice];
-            sql_query(" update $g4[board_table] set bo_notice = '$bo_notice' where bo_table = '$bo_table' ");
+            $bo_notice = $wr_id . $notice_div . $board['bo_notice'];
+            sql_query(" update {$g4['board_table']} set bo_notice = '$bo_notice' where bo_table = '$bo_table' ");
         }
     }
-    else if ($row[mv_notice] == "d") {
+    else if ($row['mv_notice'] == "d") {
         $bo_notice = '';
         for ($i=0; $i<count($notice_array); $i++)
             if ((int)$wr_id != (int)$notice_array[$i])
                 $bo_notice .= $notice_array[$i] . $notice_div;
         $bo_notice = trim($bo_notice);
-        sql_query(" update $g4[board_table] set bo_notice = '$bo_notice' where bo_table = '$bo_table' ");
+        sql_query(" update {$g4['board_table']} set bo_notice = '$bo_notice' where bo_table = '$bo_table' ");
 
     }
 
-    if ($row[mv_cate]) 
-        sql_query( " update $write_table set ca_name = '$row[mv_cate]' where wr_id = '$wr_id' ");
+    if ($row['mv_cate'])
+		sql_query( " update $write_table set ca_name = '{$row['mv_cate']}' where wr_id = '$wr_id' ");
 
-    sql_query(" delete from $mw[move_table] where bo_table = '$bo_table' and wr_id = '$wr_id' and mv_datetime <= '$g4[time_ymdhis]' ");
+    sql_query(" delete from {$mw['move_table']} where bo_table = '$bo_table' and wr_id = '$wr_id' and mv_datetime <= '{$g4['time_ymdhis']}' ");
 }
 
 function mw_view_image($view, $number, $attribute)
@@ -2038,8 +2061,8 @@ function mw_view_image($view, $number, $attribute)
 
     if ($view['file'][$number]['view']) {
         $ret = preg_replace("/>$/", " $attribute>", $view['file'][$number]['view']);
-        if (trim($view['file'][$number][content]))
-            $ret .= "<br/><br/>" . $view['file'][$number][content] . "<br/><br/>";
+        if (trim($view['file'][$number]['content']))
+            $ret .= "<br/><br/>" . $view['file'][$number]['content'] . "<br/><br/>";
     }
     else {
         $ret = "{".$number."번 이미지 없음}";
@@ -2071,7 +2094,7 @@ function mw_view_movie($view, $number, $attribute)
     if ($is_movie and is_mw_file($path)) {
         $ret = mw_jwplayer($path);
         if (trim($view['file'][$number]['content']))
-            $ret.= "<br/><br/>".$view[file][$number]['content'] . "<br/><br/>";
+            $ret.= "<br/><br/>".$view['file'][$number]['content'] . "<br/><br/>";
     }
     else {
         $ret = "{".$number."번 동영상 없음}";
@@ -2104,16 +2127,16 @@ function mw_move($board, $wr_id_list, $chk_bo_table, $sw)
     //$sql = " select distinct wr_num from $write_table where wr_id in (" . stripslashes($wr_id_list) . ") order by wr_id ";
     $sql = " select distinct wr_num from $write_table where wr_id in ($wr_id_list) order by wr_id ";
     $result = sql_query($sql);
-    while ($row = sql_fetch_array($result)) 
+    while ($row = sql_fetch_array($result))
     {
-        $wr_num = $row[wr_num];
-        for ($i=0; $i<count($chk_bo_table); $i++) 
+        $wr_num = $row['wr_num'];
+        for ($i=0; $i<count($chk_bo_table); $i++)
         {
             $move_bo_table = $chk_bo_table[$i];
             $move_write_table = $g4['write_prefix'] . $move_bo_table;
 
-            $src_dir = "$g4[path]/data/file/$bo_table"; // 원본 디렉토리
-            $dst_dir = "$g4[path]/data/file/$move_bo_table"; // 복사본 디렉토리
+            $src_dir = "{$g4['path']}/data/file/$bo_table"; // 원본 디렉토리
+            $dst_dir = "{$g4['path']}/data/file/$move_bo_table"; // 복사본 디렉토리
 
             $count_write = 0;
             $count_comment = 0;
@@ -2123,14 +2146,14 @@ function mw_move($board, $wr_id_list, $chk_bo_table, $sw)
             //$sql2 = " select * from $write_table where wr_num = '$wr_num' order by wr_parent, wr_comment desc, wr_id ";
             $sql2 = " select * from $write_table where wr_num = '$wr_num' order by wr_parent, wr_is_comment, wr_comment desc, wr_id ";
             $result2 = sql_query($sql2);
-            while ($row2 = sql_fetch_array($result2)) 
+            while ($row2 = sql_fetch_array($result2))
             {
-                $nick = cut_str($member[mb_nick], $config[cf_cut_name]);
-                if (!$row2[wr_is_comment] && $config[cf_use_copy_log]) {
-                    $row2[wr_content] .= "\n\n[이 게시물은 {$nick}님에 의해 $g4[time_ymdhis] {$board[bo_subject]}에서 " . ($sw == 'copy' ? '복사' : '이동') ." 됨]";
+                $nick = cut_str($member['mb_nick'], $config['cf_cut_name']);
+                if (!$row2['wr_is_comment'] && $config['cf_use_copy_log']) {
+                    $row2['wr_content'] .= "\n\n[이 게시물은 {$nick}님에 의해 $g4[time_ymdhis] {$board['bo_subject']}에서 " . ($sw == 'copy' ? '복사' : '이동') ." 됨]";
                     if ($sw == 'copy') {
-                        //$row2[wr_content] .= "\n\n".set_http($g4[url])."/$g4[bbs]/board.php?bo_table=$board[bo_table]&wr_id=$row2[wr_id]";
-                        $row2[wr_content] .= "\n\n".mw_seo_url($board[bo_table], $row2[wr_id]);
+                        //$row2[wr_content] .= "\n\n".set_http($g4[url])."/$g4[bbs]/board.php?bo_table={$board['bo_table']}&wr_id=$row2['wr_id']";
+                        $row2['wr_content'] .= "\n\n".mw_seo_url($board['bo_table'], $row2['wr_id']);
                     }
                 }
 
@@ -2140,48 +2163,48 @@ function mw_move($board, $wr_id_list, $chk_bo_table, $sw)
 
                 $sql = " insert into $move_write_table
                             set wr_num            = '$next_wr_num',
-                                wr_reply          = '$row2[wr_reply]',
-                                wr_is_comment     = '$row2[wr_is_comment]',
-                                wr_comment        = '$row2[wr_comment]',
-                                wr_comment_reply  = '$row2[wr_comment_reply]',
-                                ca_name           = '".addslashes($row2[ca_name])."',
-                                wr_option         = '$row2[wr_option]',
-                                wr_subject        = '".addslashes($row2[wr_subject])."',
-                                wr_content        = '".addslashes($row2[wr_content])."',
-                                wr_link1          = '".addslashes($row2[wr_link1])."',
-                                wr_link2          = '".addslashes($row2[wr_link2])."',
-                                wr_link1_hit      = '$row2[wr_link1_hit]',
-                                wr_link2_hit      = '$row2[wr_link2_hit]',
-                                wr_hit            = '$row2[wr_hit]',
-                                wr_good           = '$row2[wr_good]',
-                                wr_nogood         = '$row2[wr_nogood]',
-                                mb_id             = '$row2[mb_id]',
-                                wr_password       = '$row2[wr_password]',
-                                wr_name           = '".addslashes($row2[wr_name])."',
-                                wr_email          = '".addslashes($row2[wr_email])."',
-                                wr_homepage       = '".addslashes($row2[wr_homepage])."',
-                                wr_datetime       = '$row2[wr_datetime]',
-                                wr_last           = '$row2[wr_last]',
-                                wr_ip             = '$row2[wr_ip]',
-                                wr_1              = '".addslashes($row2[wr_1])."',
-                                wr_2              = '".addslashes($row2[wr_2])."',
-                                wr_3              = '".addslashes($row2[wr_3])."',
-                                wr_4              = '".addslashes($row2[wr_4])."',
-                                wr_5              = '".addslashes($row2[wr_5])."',
-                                wr_6              = '".addslashes($row2[wr_6])."',
-                                wr_7              = '".addslashes($row2[wr_7])."',
-                                wr_8              = '".addslashes($row2[wr_8])."',
-                                wr_9              = '".addslashes($row2[wr_9])."',
-                                wr_10             = '".addslashes($row2[wr_10])."' ";
+                                wr_reply          = '{$row2['wr_reply']}',
+                                wr_is_comment     = '{$row2['wr_is_comment']}',
+                                wr_comment        = '{$row2['wr_comment']}',
+                                wr_comment_reply  = '{$row2['wr_comment_reply']}',
+                                ca_name           = '".addslashes($row2['ca_name'])."',
+                                wr_option         = '{$row2['wr_option']}',
+                                wr_subject        = '".addslashes($row2['wr_subject'])."',
+                                wr_content        = '".addslashes($row2['wr_content'])."',
+                                wr_link1          = '".addslashes($row2['wr_link1'])."',
+                                wr_link2          = '".addslashes($row2['wr_link2'])."',
+                                wr_link1_hit      = '{$row2['wr_link1_hit']}',
+                                wr_link2_hit      = '{$row2['wr_link2_hit']}',
+                                wr_hit            = '{$row2['wr_hit']}',
+                                wr_good           = '{$row2['wr_good']}',
+                                wr_nogood         = '{$row2['wr_nogood']}',
+								mb_id             = '{$row2['mb_id']}',
+                                wr_password       = '{$row2['wr_password']}',
+                                wr_name           = '".addslashes($row2['wr_name'])."',
+                                wr_email          = '".addslashes($row2['wr_email'])."',
+                                wr_homepage       = '".addslashes($row2['wr_homepage'])."',
+                                wr_datetime       = '{$row2['wr_datetime']}',
+                                wr_last           = '{$row2['wr_last']}',
+                                wr_ip             = '{$row2['wr_ip']}',
+                                wr_1              = '".addslashes($row2['wr_1'])."',
+                                wr_2              = '".addslashes($row2['wr_2'])."',
+                                wr_3              = '".addslashes($row2['wr_3'])."',
+                                wr_4              = '".addslashes($row2['wr_4'])."',
+                                wr_5              = '".addslashes($row2['wr_5'])."',
+                                wr_6              = '".addslashes($row2['wr_6'])."',
+                                wr_7              = '".addslashes($row2['wr_7'])."',
+                                wr_8              = '".addslashes($row2['wr_8'])."',
+                                wr_9              = '".addslashes($row2['wr_9'])."',
+                                wr_10             = '".addslashes($row2['wr_10'])."' ";
                 sql_query("lock tables $move_write_table write", false);
                 sql_query($sql);
 
                 $insert_id = sql_insert_id();
                 sql_query("unlock tables", false);
 
-                sql_query(" update $move_write_table set wr_trackback = '".addslashes($row2[wr_trackback])."' where wr_id = '$insert_id' ", false);
+                sql_query(" update $move_write_table set wr_trackback = '".addslashes($row2['wr_trackback'])."' where wr_id = '$insert_id' ", false);
 
-                if (!$row2[wr_is_comment]) { // 원글
+                if (!$row2['wr_is_comment']) { // 원글
                     $save_parent = $insert_id;
                     $count_write++;
                 } else { // 코멘트
@@ -2199,73 +2222,73 @@ function mw_move($board, $wr_id_list, $chk_bo_table, $sw)
                 }
 
                 // 첨부파일 복사
-                $sql3 = " select * from $g4[board_file_table] where bo_table = '$bo_table' and wr_id = '$row2[wr_id]' order by bf_no ";
+				$sql3 = " select * from {$g4['board_file_table']} where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}' order by bf_no ";
                 $result3 = sql_query($sql3);
-                for ($k=0; $row3 = sql_fetch_array($result3); $k++) 
+                for ($k=0; $row3 = sql_fetch_array($result3); $k++)
                 {
                     $chars_array = array_merge(range(0,9), range('a','z'), range('A','Z'));
-                    $filename = preg_replace("/\.(php|phtm|htm|cgi|pl|exe|jsp|asp|inc)/i", "$0-x", $row3[bf_source]);
+                    $filename = preg_replace("/\.(php|phtm|htm|cgi|pl|exe|jsp|asp|inc)/i", "$0-x", $row3['bf_source']);
                     shuffle($chars_array);
                     $shuffle = implode("", $chars_array);
-                    $filename = abs(ip2long($_SERVER[REMOTE_ADDR])).'_'.substr($shuffle,0,8).'_'.str_replace('%', '', urlencode(str_replace(' ', '_', $filename))); 
+                    $filename = abs(ip2long($_SERVER['REMOTE_ADDR'])).'_'.substr($shuffle,0,8).'_'.str_replace('%', '', urlencode(str_replace(' ', '_', $filename)));
 
-                    if ($row3[bf_file]) { // 원본파일을 복사하고 퍼미션을 변경
+                    if ($row3['bf_file']) { // 원본파일을 복사하고 퍼미션을 변경
                         @copy("$src_dir/$row3[bf_file]", "$dst_dir/$filename");
                         @chmod("$dst_dir/$filename", 0606);
                     }
 
-                    $sql = " insert into $g4[board_file_table] 
-                                set bo_table = '$move_bo_table', 
-                                    wr_id = '$insert_id', 
-                                    bf_no = '$row3[bf_no]', 
-                                    bf_source = '".addslashes($row3[bf_source])."', 
-                                    bf_file = '$filename', 
-                                    bf_download = '$row3[bf_download]', 
-                                    bf_content = '".addslashes($row3[bf_content])."',
-                                    bf_filesize = '$row3[bf_filesize]',
-                                    bf_width = '$row3[bf_width]',
-                                    bf_height = '$row3[bf_height]',
-                                    bf_type = '$row3[bf_type]',
-                                    bf_datetime = '$row3[bf_datetime]' ";
+                    $sql = " insert into {$g4['board_file_table']}
+                                set bo_table = '$move_bo_table',
+                                    wr_id = '$insert_id',
+									bf_no = '{$row3['bf_no']}',
+                                    bf_source = '".addslashes($row3['bf_source'])."',
+                                    bf_file = '$filename',
+                                    bf_download = '{$row3['bf_download']}',
+                                    bf_content = '".addslashes($row3['bf_content'])."',
+									bf_filesize = '{$row3['bf_filesize']}',
+									bf_width = {$row3['bf_width']}',
+									bf_height = '{$row3['bf_height']}',
+									{bf_type = '{$row3['bf_type']}',
+                                    bf_datetime = '{$row3['bf_datetime']}' ";
                     sql_query($sql);
 
-                    if ($sw == "move" && $row3[bf_file])
-                        $save[$cnt][bf_file][$k] = "$src_dir/$row3[bf_file]";
+                    if ($sw == "move" && $row3['bf_file'])
+                        $save[$cnt]['bf_file'][$k] = "$src_dir/{$row3['bf_file']}";
                 }
 
                 // 코멘트 첨부파일 복사
-                $sql3 = " select * from $mw[comment_file_table] where bo_table = '$bo_table' and wr_id = '$row2[wr_id]' order by bf_no ";
+				$sql3 = " select * from {$mw['comment_file_table']} where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}' order by bf_no ";
                 $result3 = sql_query($sql3);
-                for ($k=0; $row3 = sql_fetch_array($result3); $k++) 
+                for ($k=0; $row3 = sql_fetch_array($result3); $k++)
                 {
                     $chars_array = array_merge(range(0,9), range('a','z'), range('A','Z'));
-                    $filename = preg_replace("/\.(php|phtm|htm|cgi|pl|exe|jsp|asp|inc)/i", "$0-x", $row3[bf_source]);
+                    $filename = preg_replace("/\.(php|phtm|htm|cgi|pl|exe|jsp|asp|inc)/i", "$0-x", $row3['bf_source']);
                     shuffle($chars_array);
                     $shuffle = implode("", $chars_array);
-                    $filename = abs(ip2long($_SERVER[REMOTE_ADDR])).'_'.substr($shuffle,0,8).'_'.str_replace('%', '', urlencode(str_replace(' ', '_', $filename))); 
+                    $filename = abs(ip2long($_SERVER['REMOTE_ADDR'])).'_'.substr($shuffle,0,8).'_'.str_replace('%', '', urlencode(str_replace(' ', '_', $filename)));
 
-                    if ($row3[bf_file]) { // 원본파일을 복사하고 퍼미션을 변경
+                    if ($row3['bf_file']) { // 원본파일을 복사하고 퍼미션을 변경
                         @copy("$src_dir/$row3[bf_file]", "$dst_dir/$filename");
                         @chmod("$dst_dir/$filename", 0606);
                     }
 
-                    $sql = " insert into $mw[comment_file_table] 
-                                set bo_table = '$move_bo_table', 
-                                    wr_id = '$insert_id', 
-                                    bf_no = '$row3[bf_no]', 
-                                    bf_source = '".addslashes($row3[bf_source])."', 
-                                    bf_file = '$filename', 
-                                    bf_download = '$row3[bf_download]', 
-                                    bf_content = '".addslashes($row3[bf_content])."',
-                                    bf_filesize = '$row3[bf_filesize]',
-                                    bf_width = '$row3[bf_width]',
-                                    bf_height = '$row3[bf_height]',
-                                    bf_type = '$row3[bf_type]',
-                                    bf_datetime = '$row3[bf_datetime]' ";
+                    $sql = " insert into {$mw['comment_file_table']}
+                                set bo_table = '$move_bo_table',
+                                    wr_id = '$insert_id',
+                                    bf_no = '{$row3['bf_no']}',
+                                    bf_source = '".addslashes($row3['bf_source'])."',
+                                    bf_file = '$filename',
+                                    bf_download = '{$row3['bf_download']}',
+                                    bf_content = '".addslashes($row3['bf_content'])."',
+                                    bf_filesize = '{$row3['bf_filesize']}',
+                                    bf_width = '{$row3['bf_width']}',
+                                    bf_height = '{$row3['bf_height']}',
+                                    bf_type = '{$row3['bf_type']}',
+                                    bf_datetime = '{$row3['bf_datetime']}' ";
                     sql_query($sql);
 
-                    if ($sw == "move" && $row3[bf_file])
-                        $save[$cnt][bf_file][$k] = "$src_dir/$row3[bf_file]";
+                    if ($sw == "move" && $row3['bf_file'])
+                        $save[$cnt]['bf_file'][$k] = "$src_dir/$row3[bf_file]";
                 }
 
                 //////////////////////////////////////////////////////////////////////////////
@@ -2274,133 +2297,133 @@ function mw_move($board, $wr_id_list, $chk_bo_table, $sw)
                 if ($sw == "copy")
                 {
                     // 최신글 등록
-                    $sql = " insert into $g4[board_new_table] ( bo_table, wr_id, wr_parent, bn_datetime, mb_id ) ";
-                    $sql.= " values ( '$move_bo_table', '$insert_id', '$save_parent', '$row2[wr_datetime]', '$row2[mb_id]' ) ";
+					$sql = " insert into {$g4['board_new_table']} ( bo_table, wr_id, wr_parent, bn_datetime, mb_id ) ";
+					$sql.= " values ( '$move_bo_table', '$insert_id', '$save_parent', '{$row2['wr_datetime']}', '{$row2['mb_id']}' ) ";
                     sql_query($sql);
 
                     // 리워드
-                    $tmp = sql_fetch("select * from $mw[reward_table] where bo_table = '$bo_table' and wr_id = '$row2[wr_id]'");
+                    $tmp = sql_fetch("select * from $mw[reward_table] where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}'");
                     if ($tmp) {
                         $sql_common = "bo_table     = '$move_bo_table'";
                         $sql_common.= ", wr_id      = '$insert_id'";
-                        $sql_common.= ", re_site    = '".addslashes($tmp[re_site])."'";
+                        $sql_common.= ", re_site    = '".addslashes($tmp['re_site'])."'";
                         $sql_common.= ", re_point   = '$tmp[re_point]'";
-                        $sql_common.= ", re_url     = '".addslashes($tmp[re_url])."'";
+                        $sql_common.= ", re_url     = '".addslashes($tmp['re_url'])."'";
                         $sql_common.= ", re_edate   = '$tmp[re_edate]'";
-                        sql_query("insert into $mw[reward_table] set $sql_common, re_status = '1'");
+						sql_query("insert into {$mw['reward_table']} set $sql_common, re_status = '1'");
                     }
 
                     // 설문
-                    $tmp = sql_fetch("select * from $mw[vote_table] where bo_table = '$bo_table' and wr_id = '$row2[wr_id]'");
+					$tmp = sql_fetch("select * from {$mw['vote_table']} where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}'");
                     if ($tmp) {
-                        $vt_id = $tmp[vt_id];
+                        $vt_id = $tmp['vt_id'];
 
-                        $sql = "insert into $mw[vote_table] set bo_table = '$move_bo_table'";
+						$sql = "insert into {$mw['vote_table']} set bo_table = '$move_bo_table'";
                         $sql.= ", wr_id = '$insert_id' ";
-                        $sql.= ", vt_edate = '$tmp[vt_edate]' ";
-                        $sql.= ", vt_total = '$tmp[vt_total]' ";
-                        $sql.= ", vt_point = '$tmp[vt_point]' ";
+						$sql.= ", vt_edate = '{$tmp['vt_edate']}' ";
+						$sql.= ", vt_total = '{$tmp['vt_total']}' ";
+						$sql.= ", vt_point = '{$tmp['vt_point']}' ";
                         sql_query($sql);
 
                         $insert_vt_id = sql_insert_id();
 
-                        $qry = sql_query("select * from $mw[vote_item_table] where vt_id = '$vt_id' order by vt_num");
+						$qry = sql_query("select * from {$mw['vote_item_table']} where vt_id = '$vt_id' order by vt_num");
                         while ($tmp = sql_fetch_array($qry)) {
-                            sql_query("insert into $mw[vote_item_table] set vt_id = '$insert_vt_id', vt_num = '$tmp[vt_num]', vt_item = '$tmp[vt_item]', vt_hit = '$tmp[vt_hit]'");
+							sql_query("insert into {$mw['vote_item_table']} set vt_id = '$insert_vt_id', vt_num = '{$tmp['vt_num']}', vt_item = '{$tmp['vt_item']}', vt_hit = '{$tmp['vt_hit']}'");
                         }
 
-                        $qry = sql_query("select * from $mw[vote_log_table] where vt_id = '$tmp[vt_id]' order by vt_num");
+						$qry = sql_query("select * from {$mw['vote_log_table']} where vt_id = '{$tmp['vt_id']}' order by vt_num");
                         while ($tmp = sql_fetch_array($qry)) {
-                            sql_query("insert into $mw[vote_log_table] set vt_id = '$insert_vt_id', vt_num = '$tmp[vt_num]', mb_id = '$tmp[mb_id]', vt_ip = '$tmp[vt_ip]', vt_datetime = '$tmp[vt_datetime]'");
+							sql_query("insert into {$mw['vote_log_table']} set vt_id = '$insert_vt_id', vt_num = '{$tmp['vt_num']}', mb_id = '{$tmp['mb_id']}', vt_ip = '{$tmp['vt_ip']}', vt_datetime = '{$tmp['vt_datetime']}'");
                         }
                     }
 
                     // 글 변경로그
-                    $qry = sql_query("select * from $mw[post_history_table] where bo_table = '$bo_table' and wr_id = '$row2[wr_id]' order by ph_id", false);
+					$qry = sql_query("select * from {$mw['post_history_table']} where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}' order by ph_id", false);
                     while ($tmp = sql_fetch_array($qry)) {
                         $sql_common = "bo_table         = '$move_bo_table'";
                         $sql_common.= ", wr_id          = '$insert_id'";
                         $sql_common.= ", wr_parent      = '$save_parent'";
-                        $sql_common.= ", mb_id          = '$tmp[mb_id]'";
+						$sql_common.= ", mb_id          = '{$tmp['mb_id']}'";
                         $sql_common.= ", ph_name        = '$tmp[ph_name]'";
                         $sql_common.= ", ph_option      = '$tmp[ph_option]'";
-                        $sql_common.= ", ph_subject     = '".addslashes($tmp[ph_subject])."'";
-                        $sql_common.= ", ph_content     = '".addslashes($tmp[ph_content])."'";
-                        $sql_common.= ", ph_ip          = '$tmp[ph_ip]'";
-                        $sql_common.= ", ph_datetime    = '$tmp[ph_datetime]'";
-                        sql_query("insert into $mw[post_history_table] set $sql_common");
+                        $sql_common.= ", ph_subject     = '".addslashes($tmp['ph_subject'])."'";
+                        $sql_common.= ", ph_content     = '".addslashes($tmp['ph_content'])."'";
+						$sql_common.= ", ph_ip          = '{$tmp['ph_ip']}'";
+                        $sql_common.= ", ph_datetime    = '{$tmp['ph_datetime']}'";
+						sql_query("insert into {$mw['post_history_table']} set $sql_common");
                     }
 
                     // 다운로드 로그
-                    $qry = sql_query("select * from $mw[download_log_table] where bo_table = '$bo_table' and wr_id = '$row2[wr_id]' order by dl_id", false);
+					$qry = sql_query("select * from $mw[download_log_table] where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}' order by dl_id", false);
                     while ($tmp = sql_fetch_array($qry)) {
                         $sql_common = "bo_table         = '$move_bo_table'";
                         $sql_common.= ", wr_id          = '$insert_id'";
-                        $sql_common.= ", mb_id          = '$tmp[mb_id]'";
-                        $sql_common.= ", bf_no          = '$tmp[bf_no]'";
-                        $sql_common.= ", dl_name        = '$tmp[dl_name]'";
-                        $sql_common.= ", dl_ip          = '$tmp[dl_ip]'";
-                        $sql_common.= ", dl_datetime    = '$tmp[dl_datetime]'";
-                        sql_query("insert into $mw[download_log_table] set $sql_common");
+						$sql_common.= ", mb_id          = '{$tmp['mb_id']}'";
+                        $sql_common.= ", bf_no          = '{$tmp['bf_no']}'";
+                        $sql_common.= ", dl_name        = '{$tmp['dl_name']}'";
+                        $sql_common.= ", dl_ip          = '{$tmp['dl_ip']}'";
+                        $sql_common.= ", dl_datetime    = '{$tmp['dl_datetime']}'";
+                        sql_query("insert into {$mw['download_log_table']} set $sql_common");
                     }
 
                     // 원글추천
-                    $qry = sql_query("select * from $g4[board_good_table] where bo_table = '$bo_table' and wr_id = '$row2[wr_id]' order by bg_id ", false);
+                    $qry = sql_query("select * from $g4[board_good_table] where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}' order by bg_id ", false);
                     while ($tmp = sql_fetch_array($qry)) {
                         $sql_common = "bo_table         = '$move_bo_table'";
                         $sql_common.= ", wr_id          = '$insert_id'";
-                        $sql_common.= ", mb_id          = '$tmp[mb_id]'";
-                        $sql_common.= ", bg_flag        = '$tmp[bg_flag]'";
-                        $sql_common.= ", bg_datetime    = '$tmp[bg_datetime]'";
-                        sql_query("insert into $g4[board_good_table] set $sql_common");                   
+						$sql_common.= ", mb_id          = '{$tmp['mb_id']}'";
+						$sql_common.= ", bg_flag        = '{$tmp['bg_flag']}'";
+                        $sql_common.= ", bg_datetime    = '{$tmp['bg_datetime']}'";
+						sql_query("insert into {$g4['board_good_table']} set $sql_common");
                     }
 
                     // 코멘트추천
-                    $qry = sql_query("select * from $mw[comment_good_table] where bo_table = '$bo_table' and wr_id = '$row2[wr_id]' ", false);
+					$qry = sql_query("select * from $mw[comment_good_table] where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}' ", false);
                     while ($tmp = sql_fetch_array($qry)) {
                         $sql_common = "bo_table         = '$move_bo_table'";
                         $sql_common.= ", parent_id      = '$save_parent'";
                         $sql_common.= ", wr_id          = '$insert_id'";
-                        $sql_common.= ", mb_id          = '$tmp[mb_id]'";
-                        $sql_common.= ", bg_flag        = '$tmp[bg_flag]'";
-                        $sql_common.= ", bg_datetime    = '$tmp[bg_datetime]'";
-                        sql_query("insert into $mw[comment_good_table] set $sql_common");                   
+						$sql_common.= ", mb_id          = '{$tmp['mb_id']}'";
+                        $sql_common.= ", bg_flag        = '{$tmp['bg_flag']}'";
+                        $sql_common.= ", bg_datetime    = '{$tmp['bg_datetime']}'";
+                        sql_query("insert into {$mw['comment_good_table']} set $sql_common");
                     }
 
                     // 신고로그
-                    $qry = sql_query("select * from $mw[singo_log_table] where bo_table = '$bo_table' and wr_id = '$row2[wr_id]' order by si_id ", false);
+				$qry = sql_query("select * from {$mw['singo_log_table']} where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}' order by si_id ", false);
                     while ($tmp = sql_fetch_array($qry)) {
                         $sql_common = "bo_table         = '$move_bo_table'";
                         $sql_common.= ", wr_id          = '$insert_id'";
-                        $sql_common.= ", mb_id          = '$tmp[mb_id]'";
-                        $sql_common.= ", si_type        = '$tmp[si_type]'";
-                        $sql_common.= ", si_memo        = '$tmp[si_memo]'";
-                        $sql_common.= ", si_ip          = '$tmp[si_ip]'";
-                        $sql_common.= ", si_datetime    = '$tmp[si_datetime]'";
-                        sql_query("insert into $mw[singo_log_table] set $sql_common");                   
+						$sql_common.= ", mb_id          = '{$tmp['mb_id']}'";
+                        $sql_common.= ", si_type        = '{$tmp['si_type']}'";
+                        $sql_common.= ", si_memo        = '{$tmp['si_memo']}'";
+                        $sql_common.= ", si_ip          = '{$tmp['si_ip']}'";
+                        $sql_common.= ", si_datetime    = '{$tmp['si_datetime']}'";
+						sql_query("insert into {$mw['singo_log_table']} set $sql_common");
                     }
 
                     // 링크로그
-                    $qry = sql_query("select * from $mw[link_log_table] where bo_table = '$bo_table' and wr_id = '$row2[wr_id]' order by ll_id ", false);
+					$qry = sql_query("select * from {$mw['link_log_table']} where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}' order by ll_id ", false);
                     while ($tmp = sql_fetch_array($qry)) {
                         $sql_common = "bo_table         = '$move_bo_table'";
                         $sql_common.= ", wr_id          = '$insert_id'";
-                        $sql_common.= ", mb_id          = '$tmp[mb_id]'";
-                        $sql_common.= ", ll_no          = '$tmp[ll_lo]'";
-                        $sql_common.= ", ll_name        = '$tmp[ll_name]'";
-                        $sql_common.= ", ll_ip          = '$tmp[ll_ip]'";
-                        $sql_common.= ", ll_datetime    = '$tmp[ll_datetime]'";
-                        sql_query("insert into $mw[link_log_table] set $sql_common");                   
+						$sql_common.= ", mb_id          = '{$tmp['mb_id']}'";
+						$sql_common.= ", ll_no          = '{$tmp['ll_lo']}'";
+                        $sql_common.= ", ll_name        = '{$tmp['ll_name']}'";
+                        $sql_common.= ", ll_ip          = '{$tmp['ll_ip']}'";
+                        $sql_common.= ", ll_datetime    = '{$tmp['ll_datetime']}'";
+                        sql_query("insert into {$mw['link_log_table']} set $sql_common");
                     }
 
                     // 공지필수
-                    $qry = sql_query("select * from $mw[must_notice_table] where bo_table = '$bo_table' and wr_id = '$row2[wr_id]' ", false);
+					$qry = sql_query("select * from {$mw['must_notice_table']} where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}' ", false);
                     while ($tmp = sql_fetch_array($qry)) {
                         $sql_common = "bo_table         = '$move_bo_table'";
                         $sql_common.= ", wr_id          = '$insert_id'";
-                        $sql_common.= ", mb_id          = '$tmp[mb_id]'";
-                        $sql_common.= ", mu_datetime    = '$tmp[mu_datetime]'";
-                        sql_query("insert into $mw[must_notice_table] set $sql_common");                   
+						$sql_common.= ", mb_id          = '{$tmp['mb_id']}'";
+						$sql_common.= ", mu_datetime    = '{$tmp['mu_datetime']}'";
+						sql_query("insert into {$mw['must_notice_table']} set $sql_common");
                     }
                 }
 
@@ -2409,120 +2432,120 @@ function mw_move($board, $wr_id_list, $chk_bo_table, $sw)
                 //////////////////////////////////////////////////////////////////////////////
                 else if ($sw == "move")
                 {
-                    $save[$cnt][wr_id] = $row2[wr_parent];
+                    $save[$cnt]['wr_id'] = $row2['wr_parent'];
 
                     // 썸네일 삭제
-                    @unlink(mw_thumb_jpg("$thumb_path/$row2[wr_id]"));
-                    @unlink(mw_thumb_jpg("$thumb2_path/$row2[wr_id]"));
-                    @unlink(mw_thumb_jpg("$thumb3_path/$row2[wr_id]"));
-                    @unlink(mw_thumb_jpg("$thumb4_path/$row2[wr_id]"));
-                    @unlink(mw_thumb_jpg("$thumb5_path/$row2[wr_id]"));
+                    @unlink(mw_thumb_jpg("$thumb_path/{$row2['wr_id']}"));
+                    @unlink(mw_thumb_jpg("$thumb2_path/{$row2['wr_id']}"));
+                    @unlink(mw_thumb_jpg("$thumb3_path/{$row2['wr_id']}"));
+                    @unlink(mw_thumb_jpg("$thumb4_path/{$row2['wr_id']}"));
+                    @unlink(mw_thumb_jpg("$thumb5_path/{$row2['wr_id']}"));
 
                     // 워터마크 삭제
-                    $sql = "select * from $g4[board_file_table] where bo_table = '$bo_table' and wr_id = '$row2[wr_id]' and bf_width > 0  order by bf_no";
+                    $sql = "select * from {$g4['board_file_table']} where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}' and bf_width > 0  order by bf_no";
                     $qry = sql_query($sql);
                     while ($file = sql_fetch_array($qry)) {
-                        @unlink("$watermark_path/$row[bf_file]");
+                        @unlink("$watermark_path/{$row['bf_file']}");
                     }
 
                     // 스크랩 이동
                     $sql = " update $g4[scrap_table] set bo_table = '$move_bo_table', wr_id = '$save_parent' ";
-                    $sql.= " where bo_table = '$bo_table' and wr_id = '$row2[wr_id]' ";
+                    $sql.= " where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}' ";
                     sql_query($sql);
 
                     // 최신글 이동
                     $sql = " update $g4[board_new_table] set bo_table = '$move_bo_table', wr_id = '$insert_id', wr_parent = '$save_parent' ";
-                    $sql.= " where bo_table = '$bo_table' and wr_id = '$row2[wr_id]' ";
+                    $sql.= " where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}' ";
                     sql_query($sql);
 
                     // 리워드
                     $sql = " update $mw[reward_table] set bo_table = '$move_bo_table', wr_id = '$insert_id' ";
-                    $sql.= " where bo_table = '$bo_table' and wr_id = '$row2[wr_id]'";
+                    $sql.= " where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}'";
                     sql_query($sql, false);
 
                     $sql = " update from $mw[reward_log_table] set bo_table = '$move_bo_table', wr_id = '$insert_id' ";
-                    $sql.= " where bo_table = '$bo_table' and wr_id = '$row2[wr_id]'";
+                    $sql.= " where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}'";
                     sql_query($sql, false);
 
                     // 설문
                     $sql = " update $mw[vote_table] set bo_table = '$move_bo_table', wr_id = '$insert_id' ";
-                    $sql.= " where bo_table = '$bo_table' and wr_id = '$row2[wr_id]'";
+                    $sql.= " where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}'";
                     sql_query($sql, false);
 
                     // 글 변경로그
                     $sql = " update $mw[post_history_table] set bo_table = '$move_bo_table', wr_id = '$insert_id' ";
-                    $sql.= " where bo_table = '$bo_table' and wr_id = '$row2[wr_id]'";
+                    $sql.= " where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}'";
                     sql_query($sql, false);
 
                     // 다운로드 로그
                     $sql = " update $mw[download_log_table] set bo_table = '$move_bo_table', wr_id = '$insert_id' ";
-                    $sql.= " where bo_table = '$bo_table' and wr_id = '$row2[wr_id]'";
+                    $sql.= " where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}'";
                     sql_query($sql, false);
 
                     // 원글 추천
                     $sql = " update $g4[board_good_table] set bo_table = '$move_bo_table', wr_id = '$insert_id' ";
-                    $sql.= " where bo_table = '$bo_table' and wr_id = '$row2[wr_id]'";
+                    $sql.= " where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}'";
                     sql_query($sql, false);
 
                     // 코멘트 추천
                     $sql = " update $mw[comment_good_table] set bo_table = '$move_bo_table', wr_id = '$insert_id' ";
-                    $sql.= " where bo_table = '$bo_table' and wr_id = '$row2[wr_id]'";
+                    $sql.= " where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}'";
                     sql_query($sql, false);
 
                     // 코멘트 추천
                     $sql = " update $mw[comment_good_table] set bo_table = '$move_bo_table', wr_id = '$insert_id' ";
-                    $sql.= " where bo_table = '$bo_table' and wr_id = '$row2[wr_id]'";
+                    $sql.= " where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}'";
                     sql_query($sql, false);
 
                     // 신고로그
                     $sql = " update $mw[singo_log_table] set bo_table = '$move_bo_table', wr_id = '$insert_id' ";
-                    $sql.= " where bo_table = '$bo_table' and wr_id = '$row2[wr_id]'";
+                    $sql.= " where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}'";
                     sql_query($sql, false);
 
                     // 링크로그
                     $sql = " update $mw[link_log_table] set bo_table = '$move_bo_table', wr_id = '$insert_id' ";
-                    $sql.= " where bo_table = '$bo_table' and wr_id = '$row2[wr_id]'";
+                    $sql.= " where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}'";
                     sql_query($sql, false);
 
                     // 공지필수
                     $sql = " update $mw[must_notice_table] set bo_table = '$move_bo_table', wr_id = '$insert_id' ";
-                    $sql.= " where bo_table = '$bo_table' and wr_id = '$row2[wr_id]'";
+                    $sql.= " where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}'";
                     sql_query($sql, false);
 
                     // 모아보기 삭제
-                    if (function_exists('mw_moa_delete')) mw_moa_delete($row2[wr_id]);
+                    if (function_exists('mw_moa_delete')) mw_moa_delete($row2['wr_id']);
 
                     // 팝업공지 삭제
-                    sql_query("delete from $mw[popup_notice_table] where bo_table = '$bo_table' and wr_id = '$row2[wr_id]' ", false);
+                    sql_query("delete from $mw[popup_notice_table] where bo_table = '$bo_table' and wr_id = '{$row2['wr_id']}' ", false);
                 }
 
                 // 소셜커머스
-                if (!$row2[wr_is_comment] && is_mw_file("$social_commerce_path/move_update.skin.php")) {
+                if (!$row2['wr_is_comment'] && is_mw_file("$social_commerce_path/move_update.skin.php")) {
                     @include("$social_commerce_path/move_update.skin.php");
                 }
 
                 // 마케팅DB
-                if (!$row2[wr_is_comment] && is_mw_file("$marketdb_path/move_update.skin.php")) {
+                if (!$row2['wr_is_comment'] && is_mw_file("$marketdb_path/move_update.skin.php")) {
                     @include("$marketdb_path/move_update.skin.php");
                 }
 
                 // 시험문제
-                if (!$row2[wr_is_comment] && is_mw_file("$exam_path/move_update.skin.php")) {
+                if (!$row2['wr_is_comment'] && is_mw_file("$exam_path/move_update.skin.php")) {
                     @include("$exam_path/move_update.skin.php");
                 }
 
                 // 게시판배너
-                if (!$row2[wr_is_comment] && is_mw_file("$bbs_banner_path/move_update.skin.php")) {
+                if (!$row2['wr_is_comment'] && is_mw_file("$bbs_banner_path/move_update.skin.php")) {
                     @include("$bbs_banner_path/move_update.skin.php");
                 }
 
                 // 재능마켓
-                if (!$row2[wr_is_comment] && is_mw_file("$talent_market_path/move_update.skin.php")) {
+                if (!$row2['wr_is_comment'] && is_mw_file("$talent_market_path/move_update.skin.php")) {
                     @include("$talent_market_path/move_update.skin.php");
                 }
 
                 // 퀴즈
-                if (!$row2[wr_is_comment] && is_mw_file("$quiz_path/move_update.skin.php")) {
+                if (!$row2['wr_is_comment'] && is_mw_file("$quiz_path/move_update.skin.php")) {
                     @include("$quiz_path/_config.php");
                     @include("$quiz_path/move_update.skin.php");
                 }
@@ -2530,30 +2553,30 @@ function mw_move($board, $wr_id_list, $chk_bo_table, $sw)
                 $cnt++;
             }
 
-            sql_query(" update $g4[board_table] set bo_count_write   = bo_count_write   + '$count_write'   where bo_table = '$move_bo_table' ");
-            sql_query(" update $g4[board_table] set bo_count_comment = bo_count_comment + '$count_comment' where bo_table = '$move_bo_table' ");
+            sql_query(" update {$g4['board_table']} set bo_count_write   = bo_count_write   + '$count_write'   where bo_table = '$move_bo_table' ");
+            sql_query(" update {$g4['board_table']} set bo_count_comment = bo_count_comment + '$count_comment' where bo_table = '$move_bo_table' ");
         }
 
         $save_count_write += $count_write;
         $save_count_comment += $count_comment;
     }
 
-    if ($sw == "move") 
+    if ($sw == "move")
     {
-        for ($i=0; $i<count($save); $i++) 
+        for ($i=0; $i<count($save); $i++)
         {
             //  파일삭제
-            for ($k=0; $k<count($save[$i][bf_file]); $k++) {
-                @unlink($save[$i][bf_file][$k]);    
+            for ($k=0; $k<count($save[$i]['bf_file']); $k++) {
+                @unlink($save[$i]['bf_file'][$k]);
             }
 
-            sql_query(" delete from $write_table where wr_parent = '{$save[$i][wr_id]}' "); // 원글삭제
-            sql_query(" delete from $g4[board_new_table] where bo_table = '$bo_table' and wr_id = '{$save[$i][wr_id]}' "); // 최신글 삭제
-            sql_query(" delete from $g4[board_file_table] where bo_table = '$bo_table' and wr_id = '{$save[$i][wr_id]}' "); // 파일정보 삭제
-            sql_query(" delete from $mw[comment_file_table] where bo_table = '$bo_table' and wr_id = '{$save[$i][wr_id]}' "); // 코멘트 파일정보 삭제
+            sql_query(" delete from $write_table where wr_parent = '{$save[$i]['wr_id']}' "); // 원글삭제
+			sql_query(" delete from {$g4['board_new_table']} where bo_table = '$bo_table' and wr_id = '{$save[$i]['wr_id']}' "); // 최신글 삭제
+            sql_query(" delete from {$g4['board_file_table']} where bo_table = '$bo_table' and wr_id = '{$save[$i]['wr_id']}' "); // 파일정보 삭제
+            sql_query(" delete from {$mw['comment_file_table']} where bo_table = '$bo_table' and wr_id = '{$save[$i]['wr_id']}' "); // 코멘트 파일정보 삭제
         }
         // 게시판 글수 카운터 조정
-        $sql = " update $g4[board_table] set ";
+        $sql = " update {$g4['board_table']} set ";
         $sql.= "   bo_count_write = bo_count_write - '$save_count_write' ";
         $sql.= " , bo_count_comment = bo_count_comment - '$save_count_comment' ";
         $sql.= " where bo_table = '$bo_table' ";
@@ -2564,19 +2587,20 @@ function mw_move($board, $wr_id_list, $chk_bo_table, $sw)
     global $notice_div;
     $bo_notice = "";
     $lf = "";
-    if ($board[bo_notice]) {
-        $tmp_array = explode($notice_div, $board[bo_notice]);
+    if ($board['bo_notice']) {
+        $tmp_array = explode($notice_div, $board['bo_notice']);
         for ($i=0; $i<count($tmp_array); $i++) {
             $tmp_wr_id = trim($tmp_array[$i]);
-            $row = sql_fetch(" select count(*) as cnt from $g4[write_prefix]$bo_table where wr_id = '$tmp_wr_id' ");
-            if ($row[cnt]) 
+            $row = sql_fetch(" select count(*) as cnt from {$g4['write_prefix']}$bo_table where wr_id = '$tmp_wr_id' ");
+            if ($row['cnt'])
             {
                 $bo_notice .= $lf . $tmp_wr_id;
                 $lf = $notice_div;
             }
         }
     }
-    $sql = " update $g4[board_table] set bo_notice = '$bo_notice' where bo_table = '$bo_table' ";
+
+    $sql = " update {$g4['board_table']} set bo_notice = '$bo_notice' where bo_table = '$bo_table' ";
     sql_query($sql);
 
     return $save_parent;
@@ -2588,77 +2612,78 @@ function mw_bomb()
 
     $is_bomb = false;
 
-    sql_query("lock tables $mw[bomb_table] write", false);
-    //$sql = " select * from $mw[bomb_table] where bo_table = '$board[bo_table]' and bm_datetime <= '$g4[time_ymdhis]' ";
-    $sql = " select * from $mw[bomb_table] where bm_datetime <= '$g4[time_ymdhis]' ";
-    $qry = sql_query(" select * from $mw[bomb_table] where bm_datetime <= '$g4[time_ymdhis]' ", false);
-    sql_query("delete from $mw[bomb_table] where bm_datetime <= '$g4[time_ymdhis]'");
+    sql_query("lock tables {$mw['bomb_table']} write", false);
+    //$sql = " select * from {$mw['bomb_table']} where bo_table = '{$board['bo_table']}' and bm_datetime <= '$g4[time_ymdhis]' ";
+    $sql = " select * from {$mw['bomb_table']} where bm_datetime <= '{$g4['time_ymdhis']}' ";
+    $qry = sql_query(" select * from {$mw['bomb_table']} where bm_datetime <= '{$g4['time_ymdhis']}' ", false);
+    sql_query("delete from {$mw['bomb_table']} where bm_datetime <= '{$g4['time_ymdhis']}'");
     sql_query("unlock tables", false);
 
     while ($row = sql_fetch_array($qry)) {
-        $write_table = $g4[write_prefix].$row[bo_table];
-        $write = sql_fetch("select * from $write_table where wr_id = '$row[wr_id]'");
-        $board = sql_fetch("select * from $g4[board_table] where bo_table = '$row[bo_table]'");
-        $mw_basic = sql_fetch("select cf_bomb_move_table, cf_bomb_move_time, cf_bomb_move_cate, cf_bomb_item from $mw[basic_config_table] where bo_table = '$row[bo_table]'");
+        $write_table = $g4['write_prefix'].$row['bo_table'];
+        $write = sql_fetch("select * from $write_table where wr_id = '{$row['wr_id']}'");
+		$board = sql_fetch("select * from {$g4['board_table']} where bo_table = '{$row['bo_table']}'");
+		$mw_basic = sql_fetch("select cf_bomb_move_table, cf_bomb_move_time, cf_bomb_move_cate, cf_bomb_item from {$mw['basic_config_table']} where bo_table = '{$row['bo_table']}'");
 
-        $move_table = trim($row[bm_move_table]);
+        $move_table = trim($row['bm_move_table']);
         if (!$move_table)
-            $move_table = trim($mw_basic[cf_bomb_move_table]);
+            $move_table = trim($mw_basic['cf_bomb_move_table']);
 
         if ($move_table) {
-            if ($row[bm_log]) {
-                $wr_id = mw_move($board, $row[wr_id], $move_table, 'copy');
-                mw_delete_row($board, $write, $row[bm_log], '폭파되었습니다.');
+            if ($row['bm_log']) {
+                $wr_id = mw_move($board, $row['wr_id'], $move_table, 'copy');
+                mw_delete_row($board, $write, $row['bm_log'], '폭파되었습니다.');
             }
             else
-                $wr_id = mw_move($board, $row[wr_id], $move_table, 'move');
+                $wr_id = mw_move($board, $row['wr_id'], $move_table, 'move');
 
             if ($mw_basic['cf_bomb_move_time'] && $wr_id) {
-                $sql = "update $g4[write_prefix]$move_table set wr_datetime = '$row[bm_datetime]' where wr_id = '$wr_id'";
+				$sql = "update {$g4['write_prefix']}$move_table set wr_datetime = '{$row['bm_datetime']}' where wr_id = '$wr_id'";
                 sql_query($sql);
             }
+
             if ($mw_basic['cf_bomb_move_cate'] && $wr_id) {
-                $sql = "update $g4[write_prefix]$move_table set ca_name = '".addslashes($board[bo_subject])."' where wr_id = '$wr_id'";
+                $sql = "update {$g4['write_prefix']}$move_table set ca_name = '".addslashes($board['bo_subject'])."' where wr_id = '$wr_id'";
                 sql_query($sql);
             }
         } else {
-            if (!$mw_basic[cf_bomb_item]) {
-                mw_delete_row($board, $write, $row[bm_log], '폭파되었습니다.');
+            if (!$mw_basic['cf_bomb_item']) {
+                mw_delete_row($board, $write, $row['bm_log'], '폭파되었습니다.');
             }
             else {
-                if (strstr($mw_basic[cf_bomb_item], "subject")) {
-                    $sql = " update $write_table set wr_subject = '폭파되었습니다.' where wr_id = '$write[wr_id]' ";
+                if (strstr($mw_basic['cf_bomb_item'], "subject")) {
+                    $sql = " update $write_table set wr_subject = '폭파되었습니다.' where wr_id = '{$write['wr_id']}' ";
                     sql_query($sql);
                 }
-                if (strstr($mw_basic[cf_bomb_item], "content")) {
-                    $sql = " update $write_table set wr_content = '폭파되었습니다.' where wr_id = '$write[wr_id]' ";
+                if (strstr($mw_basic['cf_bomb_item'], "content")) {
+                    $sql = " update $write_table set wr_content = '폭파되었습니다.' where wr_id = '{$write['wr_id']}' ";
                     sql_query($sql);
                 }
-                if (strstr($mw_basic[cf_bomb_item], "file")) {
+                if (strstr($mw_basic['cf_bomb_item'], "file")) {
                     // 썸네일 삭제
                     global $thumb_path, $thumb2_path, $thumb3_path, $thumb4_path, $thumb5_path, $lightbox_path, $watermark_path;
                     if ($thumb_path) {
-                        $thumb_file = mw_thumb_jpg("$thumb_path/$write[wr_id]");
+                        $thumb_file = mw_thumb_jpg("$thumb_path/{$write['wr_id']}");
                         if (is_mw_file($thumb_file)) @unlink($thumb_file);
                     }
 
                     if ($thumb2_path) {
-                        $thumb_file = mw_thumb_jpg("$thumb2_path/$write[wr_id]");
+                        $thumb_file = mw_thumb_jpg("$thumb2_path/{$write['wr_id']}");
                         if (is_mw_file($thumb_file)) @unlink($thumb_file);
                     }
 
                     if ($thumb3_path) {
-                        $thumb_file = mw_thumb_jpg("$thumb3_path/$write[wr_id]");
+                        $thumb_file = mw_thumb_jpg("$thumb3_path/{$write['wr_id']}");
                         if (is_mw_file($thumb_file)) @unlink($thumb_file);
                     }
 
                     if ($thumb4_path) {
-                        $thumb_file = mw_thumb_jpg("$thumb4_path/$write[wr_id]");
+                        $thumb_file = mw_thumb_jpg("$thumb4_path/{$write['wr_id']}");
                         if (is_mw_file($thumb_file)) @unlink($thumb_file);
                     }
 
                     if ($thumb5_path) {
-                        $thumb_file = mw_thumb_jpg("$thumb5_path/$write[wr_id]");
+                        $thumb_file = mw_thumb_jpg("$thumb5_path/{$write['wr_id']}");
                         if (is_mw_file($thumb_file)) @unlink($thumb_file);
                     }
 
@@ -2667,21 +2692,21 @@ function mw_bomb()
                         @array_map('unlink', $files);
                     }
 
-                    $sql = " select * from $g4[board_file_table] ";
-                    $sql.= " where bo_table = '$board[bo_table]' and wr_id = '$write[wr_id]' order by bf_no";
+                    $sql = " select * from {$g4['board_file_table']} ";
+                    $sql.= " where bo_table = '{$board['bo_table']}' and wr_id = '{$write['wr_id']}' order by bf_no";
                     $qry = sql_query($sql);
                     while ($row = sql_fetch_array($qry)) {
-                        @unlink("$g4[path]/data/file/$board[bo_table]/$row[bf_file]");
-                        @unlink("$watermark_path/$row[bf_file]");
+                        @unlink("{$g4['path']}/data/file/{$board['bo_table']}/{$row['bf_file']}");
+                        @unlink("$watermark_path/{$row['bf_file']}");
                     }
-                    sql_query("delete from $g4[board_file_table] where bo_table = '$board[bo_table]' and wr_id = '$write[wr_id]' ");
+                    sql_query("delete from {$g4['board_file_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$write['wr_id']}' ");
 
                     // 에디터 이미지 및 워터마크 삭제
-                    mw_delete_editor_image($write[wr_content]);
+                    mw_delete_editor_image($write['wr_content']);
                 }
             }
         }
-        //$sql = "delete from $mw[bomb_table] where bo_table = '$board[bo_table]' and wr_id = '$row[wr_id]'";
+        //$sql = "delete from {$mw['bomb_table']} where bo_table = '{$board['bo_table']}' and wr_id = '{$row['wr_id']}'";
         //sql_query($sql, false);
 
         $is_bomb = true;
@@ -2712,8 +2737,8 @@ function mw_get_noimage()
 {
     global $g4, $mw_basic, $board_skin_path;
 
-    if (trim($mw_basic[cf_noimage_path]) && is_mw_file($mw_basic[cf_noimage_path]) and !is_dir($mw_basic[cf_noimage_path]))
-        return $mw_basic[cf_noimage_path];
+    if (trim($mw_basic['cf_noimage_path']) && is_mw_file($mw_basic['cf_noimage_path']) and !is_dir($mw_basic['cf_noimage_path']))
+        return $mw_basic['cf_noimage_path'];
 
     return "$board_skin_path/img/noimage.gif";
 }
@@ -2744,24 +2769,17 @@ function mw_jwplayer($url, $opt="")
     if ($mw_basic['cf_jwplayer_version'] == 'jwplayer5') {
         $buffer .= " flashplayer:'$board_skin_path/jwplayer5/player.swf', ";
         global $g4;
-        $url = str_replace("../..", $g4[url], $url);
-        $url = str_replace("..", $g4[url], $url);
+        $url = str_replace("../..", $g4['url'], $url);
+        $url = str_replace("..", $g4['url'], $url);
     }
-    if (mw_is_mobile_builder() or G5_IS_MOBILE) {
+    if (mw_is_mobile_builder()) {
         $opt .= ", width:'100%' ";
     }
     elseif ($mw_basic['cf_player_size']) {
         $size = explode("x", $mw_basic['cf_player_size']);
         $opt .= ", width:'{$size[0]}', height:'{$size[1]}' ";
     }
-    if (preg_match('/\.(mp3|asf|wma)$/i', basename($url))) {
-        if (preg_match('/height/i', $opt)) {
-            $opt = preg_replace("/height:'[0-9]+'/", "height:'30'", $opt);
-        }
-        else {
-            $opt .= ", height:'30'";
-        }
-    }
+
     if ($mw_basic['cf_jwplayer_autostart']) {
         $opt = ', autostart:true ' . $opt;
     }
@@ -2782,39 +2800,39 @@ function mw_file_view($url, $write, $width=0, $height=0, $content="")
     $ids++;
 
     // 파일의 폭이 게시판설정의 이미지폭 보다 크다면 게시판설정 폭으로 맞추고 비율에 따라 높이를 계산
-    if ($width > $board[bo_image_width] && $board[bo_image_width])
+    if ($width > $board['bo_image_width'] && $board['bo_image_width'])
     {
-        $rate = $board[bo_image_width] / $width;
-        $width = $board[bo_image_width];
+        $rate = $board['bo_image_width'] / $width;
+        $width = $board['bo_image_width'];
         $height = (int)($height * $rate);
     }
 
     $mb = array();
-    if ($write[mb_id])
-        $mb = get_member($write[mb_id], "mb_level");
+    if ($write['mb_id'])
+        $mb = get_member($write['mb_id'], "mb_level");
 
     if (preg_match("/\.($config[cf_image_extension])($|\?)/i", $url)) {
         // 이미지에 속성을 주지 않는 이유는 이미지 클릭시 원본 이미지를 보여주기 위한것임
         // 게시판설정 이미지보다 크다면 스킨의 자바스크립트에서 이미지를 줄여준다
         return "<img src='{$url}' name='target_resize_image[]' onclick='image_window(this);' style='cursor:pointer;' title='$content'>";
     }
-    else if ($mw_basic[cf_iframe_level] and $mw_basic[cf_iframe_level] <= $mb[mb_level]) {
+    else if ($mw_basic['cf_iframe_level'] and $mw_basic['cf_iframe_level'] <= $mb['mb_level']) {
         if (!$width) {
             $width = 400;
             $height = 320;
         }
-        if (!$jwplayer && preg_match("/\.($config[cf_movie_extension])$/i", $url)) {
+		if (!$jwplayer && preg_match("/\.({$config['cf_movie_extension']})$/i", $url)) {
             return "<script>doc_write(obj_movie('{$url}', '_g4_{$ids}', '$width', '$height'));</script>";
         }
-        else if (preg_match("/\.($config[cf_flash_extension])$/i", $url)) {
+        else if (preg_match("/\.({$config['cf_flash_extension']})$/i", $url)) {
             $size = @getimagesize($url);
             if ($size[0]) {
                 $width = $size[0];
                 $height = $size[1];
-                if ($width > $board[bo_image_width] && $board[bo_image_width])
+                if ($width > $board['bo_image_width'] && $board['bo_image_width'])
                 {
-                    $rate = $board[bo_image_width] / $width;
-                    $width = $board[bo_image_width];
+                    $rate = $board['bo_image_width'] / $width;
+                    $width = $board['bo_image_width'];
                     $height = (int)($height * $rate);
                 }
             }
@@ -2837,7 +2855,8 @@ function mw_get_youtube_thumb($wr_id, $url, $datetime='')
         $v = basename($p['path']);
     }
     elseif (preg_match("/\/\/.*youtube\.com\/.*v[=\/]([a-zA-Z0-9-_]+)?/i", $url, $mat)) {
-        parse_str($p['query']);
+        $result = null;
+        parse_str($p['query'], $result);
         //$v = $mat[1];
     }
     elseif (preg_match('/player.vimeo.com\/video\/(\d+)$/', $url, $mat)) {
@@ -2847,13 +2866,14 @@ function mw_get_youtube_thumb($wr_id, $url, $datetime='')
 
     if (!$v) return;
 
-    thumb_log($thumbnail_file, 'youtube-try');
+    #thumb_log($thumbnail_file, 'youtube-try');
 
     $fp = fsockopen ("img.youtube.com", 80, $errno, $errstr, 10);
     if (!$fp) return false;
     fputs($fp, "GET /vi/{$v}/mqdefault.jpg HTTP/1.0\r\n");
     fputs($fp, "Host: img.youtube.com:80\r\n");
     fputs($fp, "\r\n");
+    $header = '';
     while (trim($buffer = fgets($fp,1024)) != "") $header .= $buffer;
     while (!feof($fp)) $buffer .= fgets($fp,1024);
     fclose($fp);
@@ -2871,7 +2891,7 @@ function mw_get_youtube_thumb($wr_id, $url, $datetime='')
         if ($size[2] != 2) @unlink($file);
     }
 
-    thumb_log($thumbnail_file, 'youtube');
+    #thumb_log($thumbnail_file, 'youtube');
     //mw_make_thumbnail($mw_basic[cf_thumb_width], $mw_basic[cf_thumb_height], $file, $file, true);
     mw_make_thumbnail_all($file);
 
@@ -2902,21 +2922,22 @@ function mw_get_vimeo_thumb($wr_id, $url, $datetime='')
     fputs($fp, "GET /api/v2/video/{$v}.php HTTP/1.0\r\n");
     fputs($fp, "Host: vimeo.com\r\n");
     fputs($fp, "\r\n");
+    $header = '';
     while (trim($buffer = fgets($fp,1024)) != "") $header .= $buffer;
     while (!feof($fp)) $buffer .= fgets($fp,1024);
     fclose($fp);
 
-    $dat = unserialize(trim($buffer)); 
+    $dat = unserialize(trim($buffer));
     $dat = $dat[0];
 
-    if (!trim($dat[thumbnail_large])) return;
+    if (!trim($dat['thumbnail_large'])) return;
 
-    $url = parse_url(trim($dat[thumbnail_large]));
+    $url = parse_url(trim($dat['thumbnail_large']));
 
-    $fp = fsockopen ("$url[host]", 80, $errno, $errstr, 10);
+	$fp = fsockopen ("{$url['host']}", 80, $errno, $errstr, 10);
     if (!$fp) return false;
-    fputs($fp, "GET $url[path] HTTP/1.0\r\n");
-    fputs($fp, "Host: $url[host]\r\n");
+    fputs($fp, "GET {$url['path']} HTTP/1.0\r\n");
+	fputs($fp, "Host: {$url['host']}\r\n");
     fputs($fp, "\r\n");
     while (trim($buffer = fgets($fp,1024)) != "") $header .= $buffer;
     while (!feof($fp)) $buffer .= fgets($fp,1024);
@@ -2935,7 +2956,7 @@ function mw_get_vimeo_thumb($wr_id, $url, $datetime='')
         if ($size[2] != 2) @unlink($file);
     }
 
-    thumb_log($thumbnail_file, 'vimeo');
+    #thumb_log($thumbnail_file, 'vimeo');
     //mw_make_thumbnail($mw_basic[cf_thumb_width], $mw_basic[cf_thumb_height], $file, $file, true);
     mw_make_thumbnail_all($file);
 
@@ -3070,10 +3091,10 @@ function mw_youtube_pattern($content)
 {
     $content = stripslashes($content);
     $pt = array();
-    $pt[] = "/\[<a href=\"(https?:\/\/youtu\.be\/[^\"]+)\"[^>]*>[^<]+<\/a>\]/ie";
-    $pt[] = "/\[<a href=\"(https?:\/\/www\.youtube\.com\/[^\"]+)\"[^>]*>[^<]+<\/a>\]/ie";
-    $pt[] = "/\[(https?:\/\/youtu\.be\/[^\]]+)\]/ie";
-    $pt[] = "/\[(https?:\/\/www\.youtube\.com\/[^\]]+)\]/ie";
+    $pt[] = "/\[<a href=\"(https?:\/\/youtu\.be\/[^\"]+)\"[^>]*>[^<]+<\/a>\]/i";
+    $pt[] = "/\[<a href=\"(https?:\/\/www\.youtube\.com\/[^\"]+)\"[^>]*>[^<]+<\/a>\]/i";
+    $pt[] = "/\[(https?:\/\/youtu\.be\/[^\]]+)\]/i";
+    $pt[] = "/\[(https?:\/\/www\.youtube\.com\/[^\]]+)\]/i";
 
     foreach ($pt as $p) {
         if (preg_match($p, $content)) {
@@ -3087,8 +3108,8 @@ function mw_youtube_pattern($content)
 function mw_vimeo_pattern($content)
 {
     $pt = array();
-    $pt[] = "/\[(https?:\/\/vimeo\.com\/[^]]+)\]/ie"; 
-    $pt[] = "/\[<a href=\"(https?:\/\/vimeo\.com\/[^\"]+)\"[^>]+>[^<]+<\/a>\]/ie"; 
+    $pt[] = "/\[(https?:\/\/vimeo\.com\/[^]]+)\]/i";
+    $pt[] = "/\[<a href=\"(https?:\/\/vimeo\.com\/[^\"]+)\"[^>]+>[^<]+<\/a>\]/i";
 
     foreach ($pt as $p) {
         if (preg_match($p, $content)) {
@@ -3110,7 +3131,7 @@ function mw_make_lightbox()
     if (!$file_start) $file_start = 0;
 
     for ($i=$file_start; $i<=$view['file']['count']; $i++) {
-        if (!$view[file][$i][view]) continue;
+        if (!$view['file'][$i]['view']) continue;
         if ($cf_img_1_noview) {
             $cf_img_1_noview = false;
             continue;
@@ -3135,26 +3156,26 @@ function mw_special_tag($con)
 
 // Dae-Seok Kim님 제안
 function mw_vimeo($url, $q=0)
-{ 
-    global $board, $mw_basic; 
+{
+    global $board, $mw_basic;
 
-    if (!$mw_basic['cf_youtube_size']) 
-        $mw_basic['cf_youtube_size'] = 360; 
+    if (!$mw_basic['cf_youtube_size'])
+        $mw_basic['cf_youtube_size'] = 360;
 
     if ($q) {
         $mw_basic['cf_youtube_size'] = $q;
         $mw_basic['cf_player_size'] = null;
     }
 
-    switch ($mw_basic['cf_youtube_size']) { 
+    switch ($mw_basic['cf_youtube_size']) {
         case "144": $width = 320; $height = 180; break;
-        case "240": $width = 560; $height = 315; break; 
-        case "360": $width = 640; $height = 394; break; 
-        case "480": $width = 854; $height = 516; break; 
-        case "720": $width = 1280; $height = 759; break; 
-        case "1080": $width = 1920; $height = 1123; break; 
-        default: $width =640; $height = 394; break; 
-    } 
+        case "240": $width = 560; $height = 315; break;
+        case "360": $width = 640; $height = 394; break;
+        case "480": $width = 854; $height = 516; break;
+        case "720": $width = 1280; $height = 759; break;
+        case "1080": $width = 1920; $height = 1123; break;
+        default: $width =640; $height = 394; break;
+    }
 
     if ($mw_basic['cf_player_size']) {
         $size = explode("x", $mw_basic['cf_player_size']);
@@ -3162,19 +3183,19 @@ function mw_vimeo($url, $q=0)
         $height = $size[1];
     }
 
-    if ($width > $board['bo_image_width']) { 
-        $height = floor($board['bo_image_width']/$width*$height); 
-        $width = $board['bo_image_width']; 
-    } 
+    if ($width > $board['bo_image_width']) {
+        $height = floor($board['bo_image_width']/$width*$height);
+        $width = $board['bo_image_width'];
+    }
 
     if (preg_match("/^http[s]{0,1}:\/\/vimeo\.com\/(.*)$/i", $url, $mat)) {
         $v = $mat[1];
     }
 
-    $vimeo = "<iframe src='//player.vimeo.com/video/{$v}' width='{$width}' height='{$height}' frameborder='0' webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>"; 
+    $vimeo = "<iframe src='//player.vimeo.com/video/{$v}' width='{$width}' height='{$height}' frameborder='0' webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
 
-    return $vimeo; 
-} 
+    return $vimeo;
+}
 
 function mw_singo_admin($admin_id)
 {
@@ -3390,7 +3411,7 @@ function mw_write_icon($row)
 */
 
 
-    // ---- 
+    // ----
 
     if ($is_singo)
         $write_icon = "<img src=\"{$board_skin_path}/img/icon_red.png\" {$style}>";
@@ -3403,14 +3424,14 @@ function mw_write_icon($row)
 
 function mw_list_link($row)
 {
-    global $g4; 
-    global $mw; 
-    global $board_skin_path; 
-    global $board; 
-    global $mw_basic; 
-    global $member; 
-    global $is_admin; 
-    global $is_member; 
+    global $g4;
+    global $mw;
+    global $board_skin_path;
+    global $board;
+    global $mw_basic;
+    global $member;
+    global $is_admin;
+    global $is_member;
     global $write;
     global $bo_table;
     global $qstr;
@@ -3431,7 +3452,7 @@ function mw_list_link($row)
     {
         //if ($mw_basic[cf_link_log])  {
             $row['link'][$j] = set_http(get_text($row["wr_link{$j}"]));
-            $row['link_href'][$j] = "$board_skin_path/link.php?bo_table=$board[bo_table]&wr_id={$row[wr_id]}&no=$j" . $qstr;
+            $row['link_href'][$j] = "$board_skin_path/link.php?bo_table={$board['bo_table']}&wr_id={$row['wr_id']}&no=$j" . $qstr;
             $row['link_hit'][$j] = (int)$row["wr_link{$j}_hit"];
         //}
 
@@ -3473,7 +3494,7 @@ function mw_list_link($row)
                     $href.= "\\n\\n현재 포인트: {$member['mb_point']}p\\n\\n')) {";
                     if ($row['link_target'][1] == '_blank')
                         $href.= "window.open('{$row['link_href'][1]}');";
-                    else 
+                    else
                         $href.= "location.href = '{$row['link_href'][1]}';";
                     $href.= "  }\"";
                     $link_href = $href;
@@ -3493,7 +3514,7 @@ function mw_list_link($row)
             if ($link_point)
                 $row['href'] = $link_href;
             else if ($row['link_target'][1] == '_blank')
-                $row['href'] = "javascript:void(window.open('{$row['link_href'][1]}'))";    
+                $row['href'] = "javascript:void(window.open('{$row['link_href'][1]}'))";
             else
                 $row['href'] = $row['link_href'][1];
         }
@@ -3513,7 +3534,7 @@ function mw_list_link($row)
                 if ($link_point)
                     $row['href'] = $link_href;
                 else if ($row['link_target'][1] == '_blank')
-                    $row['href'] = "javascript:void(window.open('{$row['link_href'][1]}'))";    
+                    $row['href'] = "javascript:void(window.open('{$row['link_href'][1]}'))";
                 else
                     $row['href'] = $row['link_href'][1];
             }
@@ -3524,7 +3545,7 @@ function mw_list_link($row)
             if ($link_point)
                 $row['href'] = $link_href;
             else if ($row['link_target'][1] == '_blank')
-                $row['href'] = "javascript:void(window.open('{$row['link_href'][1]}'))";    
+                $row['href'] = "javascript:void(window.open('{$row['link_href'][1]}'))";
             else
                 $row['href'] = $row['link_href'][1];
         }
@@ -3561,7 +3582,7 @@ function mw_list_link($row)
                 }
             }
         }
-    } 
+    }
     else if ($mw_basic['cf_read_level'] && $row['wr_read_level'] && $row['wr_read_level'] > $member['mb_level']) {
         $row['href'] = "javascript:void(alert('권한이 없습니다.'))";
     }
@@ -3576,9 +3597,9 @@ function mw_board_cache_read($cache_file, $cache_time) // 분단위
     if (!is_mw_file($cache_file)) return false;
     if (!$cache_time) return false;
 
-    $diff_time = $g4[server_time] - filemtime($cache_file);
+    $diff_time = $g4['server_time'] - filemtime($cache_file);
 
-    $cache_time *= 60; 
+    $cache_time *= 60;
 
     if ($diff_time > $cache_time) return false;
 
@@ -3690,6 +3711,7 @@ function mw_save_remote_image($url, $save_path)
         fputs($fp, "Accept: image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*\r\n");
         fputs($fp, "\r\n");
 
+        $header = '';
         while (trim($buffer = fgets($fp,1024)) != "") { $header .= $buffer; }
         while (!feof($fp)) { $buffer .= fgets($fp,1024); }
     }
@@ -3747,7 +3769,7 @@ function mw_make_thumbnail_row ($bo_table, $wr_id, $wr_content, $remote=false, $
     // 첨부파일 썸네일 생성
     if (!empty($file))
     {
-        thumb_log($thumbnail_file, "file-{$bo_table}-{$wr_id}");
+        #thumb_log($thumbnail_file, "file-{$bo_table}-{$wr_id}");
         mw_make_thumbnail_all($file_path.'/'.$file['bf_file']);
 
         $is_thumb = true;
@@ -3791,7 +3813,7 @@ function mw_make_thumbnail_row ($bo_table, $wr_id, $wr_content, $remote=false, $
                 // 서버내 이미지 썸네일 생성
                 if (is_mw_file($dat))
                 {
-                    thumb_log($thumbnail_file, 'editor');
+                    #thumb_log($thumbnail_file, 'editor');
                     mw_make_thumbnail_all($dat);
 
                     $is_thumb = true;
@@ -3804,7 +3826,7 @@ function mw_make_thumbnail_row ($bo_table, $wr_id, $wr_content, $remote=false, $
                     $ret = mw_save_remote_image($mat, $thumb_file);
                     if ($ret)
                     {
-                        thumb_log($thumbnail_file, 'remote');
+                        #thumb_log($thumbnail_file, 'remote');
                         mw_make_thumbnail_all($thumb_file);
 
                         $is_thumb = true;
@@ -3839,30 +3861,30 @@ function mw_make_thumbnail_all ($source_file)
     global $thumb5_file;
     global $is_admin;
 
-    thumb_log($thumbnail_file, 'all-1');
+    #thumb_log($thumbnail_file, 'all-1');
     mw_make_thumbnail($mw_basic['cf_thumb_width'], $mw_basic['cf_thumb_height'], $source_file,
         $thumb_file, $mw_basic['cf_thumb_keep']);
 
     if ($mw_basic['cf_thumb2_width']) {
-        thumb_log($thumbnail_file, 'all-2');
+        #thumb_log($thumbnail_file, 'all-2');
         @mw_make_thumbnail($mw_basic['cf_thumb2_width'], $mw_basic['cf_thumb2_height'], $source_file,
             $thumb2_file, $mw_basic['cf_thumb2_keep']);
     }
 
     if ($mw_basic['cf_thumb3_width']) {
-        thumb_log($thumbnail_file, 'all-3');
+        #thumb_log($thumbnail_file, 'all-3');
         @mw_make_thumbnail($mw_basic['cf_thumb3_width'], $mw_basic['cf_thumb3_height'], $source_file,
             $thumb3_file, $mw_basic['cf_thumb3_keep']);
     }
 
     if ($mw_basic['cf_thumb4_width']) {
-        thumb_log($thumbnail_file, 'all-4');
+        #thumb_log($thumbnail_file, 'all-4');
         @mw_make_thumbnail($mw_basic['cf_thumb4_width'], $mw_basic['cf_thumb4_height'], $source_file,
             $thumb4_file, $mw_basic['cf_thumb4_keep']);
     }
 
     if ($mw_basic['cf_thumb5_width']) {
-        thumb_log($thumbnail_file, 'all-5');
+        #thumb_log($thumbnail_file, 'all-5');
         @mw_make_thumbnail($mw_basic['cf_thumb5_width'], $mw_basic['cf_thumb5_height'], $source_file,
             $thumb5_file, $mw_basic['cf_thumb5_keep']);
     }
@@ -3909,9 +3931,9 @@ function mw_sub_domain_url($sub, $url) {
 	$url = str_replace("www.", "$sub.", $url);
     } else {
 	//echo "$url\n";
-	$cookie_domain = str_replace(".", "\\.", $g4[cookie_domain]);
+	$cookie_domain = str_replace(".", "\\.", $g4['cookie_domain']);
 	$pattern = "/http:\/\/(.*)$cookie_domain(.*)/i";
-	$change = "http://{$sub}{$g4[cookie_domain]}\$2";
+	$change = "http://{$sub}{$g4['cookie_domain']}\$2";
 	//echo "$pattern --- $change\n";
 	$url = preg_replace($pattern, $change, $url);
 	//echo $url;exit;
@@ -3940,6 +3962,7 @@ function mw_seo_bbs_path($path)
 {
     global $g4;
     global $bo_table;
+    global $mw;
 
     $wr_id = null;
 
@@ -3948,9 +3971,7 @@ function mw_seo_bbs_path($path)
         $path = str_replace('&wr_id='.$wr_id, '', $path);
     }
 
-    $path = preg_replace("/&page=&/i", '', $path);
-    $path = preg_replace("/&page=$/i", '', $path);
-    $path = preg_replace("/&page=[0-1][&$]?/i", '', $path);
+    $path = preg_replace("/&page=[01]?[&$]?/i", '', $path);
 
     if (mw_is_mobile_builder()) {
         $path = str_replace("../../{$mw['mobile_dir']}/board.php?bo_table=".$bo_table, mw_seo_url($bo_table, $wr_id).'?', $path);
@@ -4208,7 +4229,7 @@ function thumb_log($thumb_file, $act)
 
     $log = date("Y-m-d H:i:s")." {$act} [{$member['mb_id']}] {$_SERVER['REMOTE_ADDR']} {$_SERVER['SCRIPT_NAME']}?{$_SERVER["QUERY_STRING"]} [{$w}] {$thumb_file} {$url}\n";
 
-    write_log($file, $log);
+    #write_log($file, $log);
 }
 
 function is_mw_file($path)
@@ -4262,7 +4283,7 @@ function mw_list_icon($row)
     if (!$row['icon_new'] && $row['wr_last'] != $row['wr_datetime'] && $row['wr_last'] >= date("Y-m-d H:i:s", $g4['server_time'] - ($board['bo_new'] * 3600))) {
         //$list[$i]['icon_update'] = "<img src='$board_skin_path/img/icon_update.gif' align='absmiddle'>";
         //$list[$i]['icon_new'] = '';
-        $list[$i]['icon_update'] = "";//"&nbsp;&nbsp;<i class='fa fa-refresh fa-spin' style='font-size:9px;'></i>";
+        #$list[$i]['icon_update'] = "";//"&nbsp;&nbsp;<i class='fa fa-refresh fa-spin' style='font-size:9px;'></i>";
     }
 
     if ($row['icon_new'])
@@ -4376,73 +4397,24 @@ function sql_num_rows($result)
 
 function mw_row_delete_point($board, $write)
 {
-    delete_point($write[mb_id], $board[bo_table], $write[wr_id], '코멘트');
-    delete_point($write[mb_id], $board[bo_table], $write[wr_id], '댓글');
-    delete_point($write[mb_id], $board[bo_table], $write[wr_id], '쓰기');
+    delete_point($write['mb_id'], $board['bo_table'], $write['wr_id'], '코멘트');
+    delete_point($write['mb_id'], $board['bo_table'], $write['wr_id'], '댓글');
+    delete_point($write['mb_id'], $board['bo_table'], $write['wr_id'], '쓰기');
 
-    delete_point($write[mb_id], $board[bo_table], $write[wr_id], '@qna');
-    delete_point($write[mb_id], $board[bo_table], $write[wr_id], '@qna-hold');
-    delete_point($write[mb_id], $board[bo_table], $write[wr_id], '@qna-choose');
+    delete_point($write['mb_id'], $board['bo_table'], $write['wr_id'], '@qna');
+    delete_point($write['mb_id'], $board['bo_table'], $write['wr_id'], '@qna-hold');
+    delete_point($write['mb_id'], $board['bo_table'], $write['wr_id'], '@qna-choose');
 
-    $sql = " select * from $g4[point_table] ";
-    $sql.= "  where po_rel_table = '$board[bo_table]' ";
-    $sql.= "    and po_rel_id = '$write[wr_id]' ";
+    $sql = " select * from {$g4['point_table']} ";
+    $sql.= "  where po_rel_table = '{$board['bo_table']}' ";
+    $sql.= "    and po_rel_id = '{$write['wr_id']}' ";
     $sql.= "    and (po_rel_action like '%@good%' or po_rel_action like '%@nogood%') ";
     $qry = sql_query($sql);
     while ($row = sql_fetch_array($qry)) {
-        delete_point($write[mb_id], $board[bo_table], $write[wr_id], $row[mb_id].'@good');
-        delete_point($row[mb_id], $board[bo_table], $write[wr_id], $row[mb_id].'@good_re');
-        delete_point($write[mb_id], $board[bo_table], $write[wr_id], $row[mb_id].'@nogood');
-        delete_point($row[mb_id], $board[bo_table], $write[wr_id], $row[mb_id].'@nogood_re');
+        delete_point($write['mb_id'], $board['bo_table'], $write['wr_id'], $row['mb_id'].'@good');
+        delete_point($row['mb_id'], $board['bo_table'], $write['wr_id'], $row['mb_id'].'@good_re');
+        delete_point($write['mb_id'], $board['bo_table'], $write['wr_id'], $row['mb_id'].'@nogood');
+        delete_point($row['mb_id'], $board['bo_table'], $write['wr_id'], $row['mb_id'].'@nogood_re');
     }
-}
-
-function mw_jump($bo_table, $wr_id)
-{
-    global $g4;
-    global $mw;
-    global $member;
-
-    $write_table = $g4['write_prefix'].$bo_table;
-    
-    $wr_num = get_next_num($write_table);
-
-    $sql = " update {$write_table} ";
-    $sql.= "    set wr_num = '{$wr_num}' ";
-    $sql.= "      , wr_datetime = '{$g4['time_ymdhis']}' ";
-    $sql.= "  where wr_id = '{$wr_id}' ";
-
-    $qry = sql_query($sql);
-
-    if ($qry) {
-        $sql = " insert into {$mw['jump_log_table']} set ";
-        $sql.= " bo_table = '{$bo_table}' ";
-        $sql.= " , wr_id = '{$wr_id}' ";
-        $sql.= " , mb_id = '{$member['mb_id']}' ";
-        $sql.= " , jp_datetime = '{$g4['time_ymdhis']}' ";
-        sql_query($sql);
-
-        $sql = " update {$g4['board_new_table']} set bn_datetime = '{$g4['time_ymdhis']}' ";
-        $sql.= " where bo_table = '{$bo_table}' and wr_id = '{$wr_id}' ";
-        sql_query($sql);
-    }
-
-    if (is_notice($wr_id)) add_notice($wr_id);
-}
-
-function add_notice($wr_id)
-{
-    global $g4;
-    global $board;
-    global $notice_div;
-
-    $bo_notice = explode($notice_div, trim($board['bo_notice']));
-    array_unshift($bo_notice, $wr_id);
-
-    $bo_notice = array_unique($bo_notice);
-    $bo_notice = implode($notice_div, $bo_notice);
-
-    $sql = " update {$g4['board_table']} set bo_notice = '{$bo_notice}' where bo_table = '{$board['bo_table']}' ";
-    sql_query($sql, true);
 }
 

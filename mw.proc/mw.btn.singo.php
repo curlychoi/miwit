@@ -25,16 +25,16 @@ include_once("$board_skin_path/mw.lib/mw.skin.basic.lib.php");
 if (!$is_member)
     alert_close("회원만 이용하실 수 있습니다.");
 
-if ($write[mb_id] == $config[cf_admin])
+if ($write['mb_id'] == $config['cf_admin'])
     alert_close("최고관리자의 글은 신고하실 수 없습니다.");
 
-if ($write[mb_id] == $member[mb_id])
+if ($write['mb_id'] == $member['mb_id'])
     alert_close("본인의 글은 신고할 수 없습니다.");
 
-if ($member[mb_level] < $mw_basic[cf_singo_level])
+if ($member['mb_level'] < $mw_basic['cf_singo_level'])
     alert_close("죄송합니다.\\n\\n신고 권한이 없습니다.");
 
-$sql = "select * from $mw[singo_log_table] where bo_table = '$bo_table' and wr_id = '$wr_id' and (mb_id = '$member[mb_id]' or si_ip = '$_SERVER[REMOTE_ADDR]')";
+$sql = "select * from {$mw['singo_log_table']} where bo_table = '$bo_table' and wr_id = '$wr_id' and (mb_id = '{$member['mb_id']}' or si_ip = '{$_SERVER['REMOTE_ADDR']})";
 $row = sql_fetch($sql);
 if ($row && !$is_admin)
     alert_close("이미 신고하셨습니다.");
@@ -43,7 +43,7 @@ set_session("ss_singo_token", $token = uniqid(time()));
 
 $meta = "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0\">";
 ob_start();
-include_once("$g4[path]/head.sub.php");
+include_once($g4['path']."/head.sub.php");
 $head = ob_get_clean();
 $head = str_replace("<head>", "<head>\n{$meta}", $head);
 echo $head;
@@ -99,6 +99,6 @@ td.tdb { padding:5px; }
 
 </form>
 
+<?php 
+include_once($g4['path']."/tail.sub.php");
 
-<?
-include_once("$g4[path]/tail.sub.php");

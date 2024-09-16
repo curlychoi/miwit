@@ -21,7 +21,7 @@
 
 if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 
-include_once("$g4[path]/head.sub.php");
+include_once("{$g4['path']}/head.sub.php");
 ?>
 <script type="text/javascript" src="<?=$board_skin_path?>/mw.js/prototype-1.6.0.2.js"></script>
 
@@ -31,14 +31,14 @@ include_once("$g4[path]/head.sub.php");
 #mw_basic a { color:#000; text-decoration:none; }
 #mw_basic .cf_head { padding:10px; background-color:#bed8e4; }
 #mw_basic .cf_sub_menu { height:30px; background-color:#6B95BD; }
-#mw_basic .cf_sub_menu .item { padding:5px 10px 0 10px; } 
-#mw_basic .cf_sub_menu .tab { float:left; height:25px; background-color:#6B95BD; margin:5px 0 0 0; } 
+#mw_basic .cf_sub_menu .item { padding:5px 10px 0 10px; }
+#mw_basic .cf_sub_menu .tab { float:left; height:25px; background-color:#6B95BD; margin:5px 0 0 0; }
 #mw_basic .cf_sub_menu .tab a { text-decoration:none; }
 #mw_basic .cf_sub_menu .select { float:left; height:25px; background-color:#EFEFEF; margin:5px 0 0 0; }
 #mw_basic .cf_sub_menu .select a { text-decoration:none; color:#4B4B4B; font-weight:bold; }
 #mw_basic .cf_title { width:140px; height:30px; padding:0 0 0 10px; background-color:#efefef; }
-#mw_basic .cf_content { padding:0 0 0 10px; line-height:20px; color:#747474; } 
-#mw_basic .cf_content a { color:#747474; } 
+#mw_basic .cf_content { padding:0 0 0 10px; line-height:20px; color:#747474; }
+#mw_basic .cf_content a { color:#747474; }
 #mw_basic .cf_content td { color:#747474; }
 </style>
 

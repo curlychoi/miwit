@@ -25,13 +25,13 @@ include_once("_common.php");
 if ($is_admin != "board" && $is_admin != "group" && $is_admin != "super")
     die("게시판 관리자 이상 접근이 가능합니다.");
 
-if (!$token or get_session("ss_delete_token") != $token) 
+if (!$token or get_session("ss_delete_token") != $token)
     die("토큰 에러로 실행 불가합니다.");
 
 if (!$bo_table) die("bo_table 이 없습니다.");
 if (!$wr_id) die("wr_id 이 없습니다.");
 
-sql_query("update $write_table set wr_datetime='$g4[time_ymdhis]' where wr_id='$wr_id'");
+sql_query("update $write_table set wr_datetime='{$g4['time_ymdhis']}' where wr_id='$wr_id'");
 sql_query("update {$g4['board_new_table']} set bn_datetime='{$g4['time_ymdhis']}' where bo_table = '{$bo_table}' and wr_id='{$wr_id}'");
 
 // 시간순 정렬
@@ -48,9 +48,9 @@ if ($renum == "1") {
     $wr_num = 0;
     foreach ($data as $row) {
         $wr_num--;
-        $row[wr_num] *= -1;
+        $row['wr_num'] *= -1;
 
-        $sql = "update {$write_table} set wr_num = '{$wr_num}' where wr_num = '{$row[wr_num]}'";
+        $sql = "update {$write_table} set wr_num = '{$wr_num}' where wr_num = '{$row['wr_num']}'";
         sql_query($sql);
     }
 }

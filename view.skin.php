@@ -26,8 +26,6 @@ $mw_is_list = false;
 $mw_is_write = false;
 $mw_is_comment = false;
 
-$del_token = $token;
-
 include_once("$board_skin_path/mw.lib/mw.skin.basic.lib.php");
 include("view_head.skin.php");
 
@@ -44,7 +42,7 @@ echo '<meta name="viewport" content="width=device-width,initial-scale=1.0,minimu
 <style> <?php echo $cf_css?> </style>
 <?php include_once($board_skin_path."/mw.proc/mw.asset.php")?>
 
-<script> document.title = "<?=strip_tags(addslashes($view[wr_subject]))?>"; </script>
+<script> document.title = "<?=strip_tags(addslashes($view['wr_subject']))?>"; </script>
 
 <script src="<?=$board_skin_path?>/mw.js/syntaxhighlighter/scripts/shCore.js"></script>
 <script src="<?=$board_skin_path?>/mw.js/syntaxhighlighter/scripts/shBrushPhp.js"></script>
@@ -55,23 +53,23 @@ SyntaxHighlighter.config.clipboardSwf = '<?=$board_skin_path?>/mw.js/syntaxhighl
 SyntaxHighlighter.all();
 </script>
 
-<?php if ($mw_basic[cf_source_copy]) { // 출처 자동 복사 ?>
-<?php $copy_url = $shorten ? $shorten : set_http("{$g4[url]}/{$g4[bbs]}/board.php?bo_table={$bo_table}&wr_id={$wr_id}"); ?>
+<?php if ($mw_basic['cf_source_copy']) { // 출처 자동 복사 ?>
+<?php $copy_url = $shorten ? $shorten : set_http("{$g4['url']}/{$g4['bbs']}/board.php?bo_table={$bo_table}&wr_id={$wr_id}"); ?>
 <script src="<?=$board_skin_path?>/mw.js/autosourcing.open.compact.js"></script>
 <style>
     div.autosourcing-stub { display:none }
-    dIV.autosourcing-stub-extra { position:absolute; opacity:0 }
+    dIv.autosourcing-stub-extra { position:absolute; opacity:0 }
 </style>
 <script>
     AutoSourcing.setTemplate("<p style='margin:11px 0 7px 0;padding:0'> <a href='{link}' target='_blank'> [출처] {title} - {link}</a> </p>");
-    AutoSourcing.setString(<?=$wr_id?> ,"<?=$config[cf_title];//$view[wr_subject]?>", "<?=$view[wr_name]?>", "<?=$copy_url?>");
+    AutoSourcing.setString(<?=$wr_id?> ,"<?=$config['cf_title'];//$view[wr_subject]?>", "<?=$view['wr_name']?>", "<?=$copy_url?>");
     AutoSourcing.init( 'view_%id%' , true);
 </script>
 <?php } ?>
 
-<?php if ($mw_basic[cf_content_align] && $write[wr_align]) { ?>
+<?php if ($mw_basic['cf_content_align'] && $write['wr_align']) { ?>
 <style>
-#view_content { text-align:<?=$write[wr_align]?>; }
+#view_content { text-align:<?=$write['wr_align']?>; }
 </style>
 <?php } ?>
 
@@ -79,9 +77,10 @@ SyntaxHighlighter.all();
 <table width="<?php echo $bo_table_width?>" align="center" cellpadding="0" cellspacing="0"><tr><td id="mw_basic">
 
 <?php
-if (!is_reaction_test())
-if ($mw_basic[cf_include_head] && is_mw_file($mw_basic[cf_include_head]) && strstr($mw_basic[cf_include_head_page], '/v/')) {
-    include_once($mw_basic[cf_include_head]);
+if (!is_reaction_test()) {
+	if ($mw_basic['cf_include_head'] && is_mw_file($mw_basic['cf_include_head']) && strstr($mw_basic['cf_include_head_page'], '/v/')) {
+		include_once($mw_basic['cf_include_head']);
+	}
 }
 
 if ($mw_basic['cf_bbs_banner']) {
@@ -97,9 +96,9 @@ include_once("$board_skin_path/mw.proc/mw.list.hot.skin.php");
 <tr height="25">
     <td>
         <form name="fcategory_view" method="get" style="margin:0;">
-        <? if ($is_category && !$mw_basic[cf_category_tab]) { ?>
+        <? if ($is_category && !$mw_basic['cf_category_tab']) { ?>
             <select name=sca onchange="location='<?=$category_location?>'+this.value;">
-            <? if (!$mw_basic[cf_default_category]) { ?> <option value=''>전체</option> <? } ?>
+            <? if (!$mw_basic['cf_default_category']) { ?> <option value=''>전체</option> <? } ?>
             <?=$category_option?>
             </select>
         <? } ?>
@@ -149,13 +148,13 @@ print '<div>';
 if ($prev_href)
     printf('<a class="fa-button" href="%s" title="" accesskey="b"><i class="fa fa-chevron-left"></i> <span>이전글</span></a>&nbsp;', $prev_href, $prev_wr_subject);
 
-if ($next_href) 
+if ($next_href)
     printf('<a class="fa-button" href="%s" title="" accesskey="b"><i class="fa fa-chevron-right"></i> <span>다음글</span></a>&nbsp;', $next_href, $next_wr_subject);
 
 print '</div><div>';
 
 if ($search_href)
-    printf('<a class="fa-button" href="%s"><i class="fa fa-search"></i> <span>검색목록</span></a>&nbsp;', $search_href); 
+    printf('<a class="fa-button" href="%s"><i class="fa fa-search"></i> <span>검색목록</span></a>&nbsp;', $search_href);
 
 printf('<a class="fa-button" href="%s"><i class="fa fa-list"></i> <span>목록</span></a>&nbsp;', $list_href);
 
@@ -179,7 +178,7 @@ $link_buttons = ob_get_clean();
 <!-- 제목, 글쓴이, 날짜, 조회, 추천, 비추천 -->
 <div class="mw_basic_view_subject">
 <h1>
-<?php 
+<?php
 if ($is_category)
     echo ($category_name ? "[{$view['ca_name']}] " : "");
 
@@ -188,7 +187,7 @@ echo cut_hangul_last(get_text($view['wr_subject'])).$view['icon_secret'];
 if ($mw_basic['cf_reward'])
     echo "&nbsp;<img src='{$board_skin_path}/img/btn_reward_{$reward['re_status']}.gif' align='absmiddle'>";
 
-if ($mw_basic['cf_attribute'] == 'qna' && !$view['is_notice']) { 
+if ($mw_basic['cf_attribute'] == 'qna' && !$view['is_notice']) {
     echo "&nbsp;&nbsp;<img src=\"{$board_skin_path}/img/icon_qna_{$view['wr_qna_status']}.png\" align=\"absmiddle\"></span>";
 }
 ?>
@@ -197,16 +196,16 @@ if ($mw_basic['cf_attribute'] == 'qna' && !$view['is_notice']) {
 
 <div class="mw_basic_view_title">
     <?php echo $mw_admin_button?>
-    <? if ($mw_basic[cf_contents_shop]) { // 배추 컨텐츠샵 ?>
-    <strong>가격</strong> : 
+    <? if ($mw_basic['cf_contents_shop']) { // 배추 컨텐츠샵 ?>
+    <strong>가격</strong> :
     <span class="mw_basic_contents_price"><?=$mw_price?></span>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <? } ?>
-    <? //if ($mw_basic[cf_attribute] != "anonymous") { ?>
+    <? //if ($mw_basic['cf_attribute'] != "anonymous") { ?>
     <i class="fa fa-user"></i>
-    <span class=mw_basic_view_name><?=$view[name]?>
-    <?/* if ($mw_basic[cf_icon_level] && !$view[wr_anonymous] && $mw_basic[cf_attribute] != "anonymous" && $write[mb_id] && $write[mb_id] != $config[cf_admin]) { ?>
-    <span class="icon_level<?php echo mw_get_level($write[mb_id])+1?>" style="border:1px solid #ddd;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <span class=mw_basic_view_name><?=$view['name']?>
+    <?/* if ($mw_basic[cf_icon_level] && !$view[wr_anonymous] && $mw_basic['cf_attribute'] != "anonymous" && $write['mb_id'] && $write['mb_id'] != $config[cf_admin]) { ?>
+    <span class="icon_level<?php echo mw_get_level($write['mb_id'])+1?>" style="border:1px solid #ddd;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
     <? }*/ ?>
     <?php if ($is_ip_view && $ip) { ?>
     <!--<span class="media-ip">&nbsp;(<?=$ip?>)</span>-->
@@ -218,10 +217,10 @@ if ($mw_basic['cf_attribute'] == 'qna' && !$view['is_notice']) {
         <a href="#;" class="tooltip" onclick="btn_ip_search('<?php echo $view['wr_ip']?>')" title="<?php echo $view['wr_ip']?> 검색">
             <i class="fa fa-search"></i></a>
     <?php } ?>
-    <? //} // mw_basic[cf_attribute] != 'anonymous'?>
+    <? //} // mw_basic['cf_attribute'] != 'anonymous'?>
     </span>
     <?php } ?>
-    <i class="fa fa-clock-o"></i> 
+    <i class="fa fa-clock-o"></i>
     <span class="mw_basic_view_datetime media-date"><?php echo $view['datetime2']?></span>
     <span class="mw_basic_view_datetime media-date-sns"><?php echo $view['datetime_sns']?></span>
     <i class="fa fa-eye"></i> <span class="mw_basic_view_hit"><?php echo $view['wr_hit']?></span>
@@ -240,13 +239,13 @@ if ($mw_basic['cf_attribute'] == 'qna' && !$view['is_notice']) {
     <!--<img src="<?php echo $board_skin_path?>/img/copy.png" id="post_url_copy" align="absmiddle">-->
 </div>
 <?php
-} 
-else if ($mw_basic[cf_umz]) { // 짧은 글주소 사용
+}
+else if ($mw_basic['cf_umz']) { // 짧은 글주소 사용
     $view['wr_umz'] = str_replace("mwt.so", "umz.kr", $view['wr_umz']);
 ?>
 <div class="mw_basic_view_url">
     글주소 :
-    <span id="post_url"><?=$view[wr_umz]?></span>
+    <span id="post_url"><?=$view['wr_umz']?></span>
     <!--<img src="<?=$board_skin_path?>/img/copy.png" id="post_url_copy" align="absmiddle">-->
 
     <?php if ($is_admin) { ?>
@@ -268,7 +267,7 @@ else if ($mw_basic[cf_umz]) { // 짧은 글주소 사용
     </script>
     <?php } ?>
 </div>
-<?php } 
+<?php }
 
 if ($mw_basic['cf_include_file_head'] && is_mw_file($mw_basic['cf_include_file_head'])) {
     include_once($mw_basic['cf_include_file_head']);
@@ -280,23 +279,22 @@ if ($mw_basic['cf_file_head']) {
 
 // 가변 파일
 $cnt = 0;
-for ($i=0; $i<count($view[file]); $i++) {
-    if ($view[file][$i][source] && !$view[file][$i][view] && !$view[file][$i][movie]) {
+for ($i=0; $i<count($view['file']); $i++) {
+    if ($view['file'][$i]['source'] && !$view['file'][$i]['view'] && !$view['file'][$i]['movie']) {
         $cnt++;
 
-    $view[file][$i][href] = str_replace('./', $g4['bbs_path'].'/', $view[file][$i][href]);
+    $view['file'][$i]['href'] = str_replace('./', $g4['bbs_path'].'/', $view['file'][$i]['href']);
 ?>
 <div class="mw_basic_view_file">
-    <a href="javascript:file_download('<?=$view[file][$i][href]?>', '<?=$i?>');" title="<?=$view[file][$i][content]?>">
+    <a href="javascript:file_download('<?=$view['file'][$i]['href']?>', '<?=$i?>');" title="<?=$view['file'][$i]['content']?>">
     <i class="fa fa-save"></i>&nbsp;
-    <?=$view[file][$i][source]?></a>
+    <?=$view['file'][$i]['source']?></a>
     <span class="mw_basic_view_file_info">
-        <i class="fa fa-database"></i> <?php echo $view[file][$i]['size']?>
-        <i class="fa fa-download"></i> <?php echo $view[file][$i]['download']?>
-        <span title="<?php echo $view[file][$i]['datetime']?>"><i class="fa fa-clock-o"></i> <?php echo mw_basic_sns_date($view[file][$i]['datetime'])?></span>
+        <i class="fa fa-database"></i> <?php echo $view['file'][$i]['size']?>
+        <i class="fa fa-download"></i> <?php echo $view['file'][$i]['download']?>
+        <span title="<?php echo $view['file'][$i]['datetime']?>"><i class="fa fa-clock-o"></i> <?php echo mw_basic_sns_date($view['file'][$i]['datetime'])?></span>
         <?php if ($good_href) : ?>
         <i class="fa fa-thumbs-o-up" style="cursor:pointer;" onclick="mw_good_act_nocancel('good')"> <?php echo $view['wr_good']?></i>
-        
         <?php endif; ?>
         <a href="#c_write"><i class="fa fa-comment-o"></i></a>
     </span>
@@ -307,13 +305,13 @@ for ($i=0; $i<count($view[file]); $i++) {
 
 // 링크
 $cnt = 0;
-for ($i=1; $i<=$g4[link_count]; $i++) {
-    if ($view[link][$i]) {
+for ($i=1; $i<=$g4['link_count']; $i++) {
+    if ($view['link'][$i]) {
         $cnt++;
         if (mw_is_mobile_builder() or G5_IS_MOBILE)
-            $link = cut_str($view[link][$i], 40);
+            $link = cut_str($view['link'][$i], 40);
         else
-            $link = cut_str($view[link][$i], 70);
+            $link = cut_str($view['link'][$i], 70);
 ?>
 <div class="mw_basic_view_link">
     <?php if ($is_admin && (strstr($link, "youtu") or strstr($link, "vimeo"))) { ?>
@@ -345,9 +343,9 @@ for ($i=1; $i<=$g4[link_count]; $i++) {
     <?php } else { ?>
     <i class="fa fa-external-link"></i>
     <?php } ?>
-    <a href="<?=$view[link_href][$i]?>" target="<?=$view[link_target][$i]?>"><?=$link?></a>
-    <span class=mw_basic_view_link_info>(<?=$view[link_hit][$i]?>)</span>
-    <span class="qr_code" value="<?=$view[link][$i]?>"><i class="fa fa-qrcode"></i></span>
+    <a href="<?=$view['link_href'][$i]?>" target="<?=$view['link_target'][$i]?>"><?=$link?></a>
+    <span class=mw_basic_view_link_info>(<?=$view['link_hit'][$i]?>)</span>
+    <span class="qr_code" value="<?=$view['link'][$i]?>"><i class="fa fa-qrcode"></i></span>
 </div>
 <?php
     }
@@ -395,7 +393,7 @@ if ($mw_basic['cf_file_tail']) {
 
 if ($mw_basic['cf_include_file_tail'] && is_mw_file($mw_basic['cf_include_file_tail'])) {
     include_once($mw_basic['cf_include_file_tail']);
-} 
+}
 ?>
 
 <div class="view_buttons">
@@ -408,7 +406,7 @@ if ($mw_basic['cf_talent_market']) include($talent_market_path."/view.skin.php")
 ?>
 
 <?php
-$bomb = sql_fetch(" select * from $mw[bomb_table] where bo_table = '$bo_table' and wr_id = '$wr_id' ");
+$bomb = sql_fetch(" select * from {$mw['bomb_table']} where bo_table = '$bo_table' and wr_id = '$wr_id' ");
 if ($bomb) {
 ?>
     <div class="mw_basic_view_bomb">
@@ -417,7 +415,7 @@ if ($bomb) {
     </div>
 
     <script>
-    var bomb_end_time = <?=(strtotime($bomb[bm_datetime])-$g4[server_time])?>;
+    var bomb_end_time = <?=(strtotime($bomb['bm_datetime'])-$g4['server_time'])?>;
     function bomb_run_timer()
     {
         var timer = document.getElementById("bomb_end_timer");
@@ -443,11 +441,11 @@ if ($bomb) {
 
         if (bomb_end_time <= 0)  {
             clearInterval(bomb_tid);
-            location.href = "<?=$g4[bbs_path]?>/board.php?bo_table=<?=$bo_table?>";
+            location.href = "<?=$g4['bbs_path']?>/board.php?bo_table=<?=$bo_table?>";
         }
     }
     bomb_run_timer();
-    bomb_tid = setInterval('bomb_run_timer()', 1000); 
+    bomb_tid = setInterval('bomb_run_timer()', 1000);
     </script>
 <?php } ?>
 
@@ -458,22 +456,22 @@ if ($bomb) {
         include_once($mw_basic['cf_include_view_head']);
     }
 
-    echo bc_code($mw_basic[cf_content_head], 1, 1);
+    echo bc_code($mw_basic['cf_content_head'], 1, 1);
     ?>
 
     <div id="view_content">
 
-    <?php if ($mw_basic[cf_reward] && $reward[url]) { // 리워드 ?>
+    <?php if ($mw_basic['cf_reward'] && $reward['url']) { // 리워드 ?>
     <style>
     .reward_button { background:url(<?=$board_skin_path?>/img/btn_reward_click.jpg) no-repeat; width:140px; height:60px; cursor:pointer; margin:0 0 10px 0; }
     .reward_click { margin:10px 0 10px 0; font-weight:bold; }
     .reward_info { margin:0 0 30px 0; }
     </style>
-    <div class="reward_button" onclick="<?=$reward[script]?>"></div>
+    <div class="reward_button" onclick="<?=$reward['script']?>"></div>
     <div class="reward_click">↑ 위 배너를 클릭하시면 됩니다 </div>
     <div class="reward_info">
-        <div class="point">적립 : <?=number_format($reward[re_point])?> P</div>
-        <div class="edate">마감 : <?=$reward[re_edate]?></div>
+        <div class="point">적립 : <?=number_format($reward['re_point'])?> P</div>
+        <div class="edate">마감 : <?=$reward['re_edate']?></div>
     </div>
     <? } ?>
 
@@ -502,21 +500,24 @@ if ($bomb) {
     </div><!--lightbox_container-->
     <?php } ?>
 
-    <?echo $view[rich_content]; // {이미지:0} 과 같은 코드를 사용할 경우?>
+    <?#echo $view[rich_content]; // {이미지:0} 과 같은 코드를 사용할 경우?>
+
+	<?php echo get_view_thumbnail($view['content']); ?>
+
     <div style="clear:both; line-height:0; font-size:0;"></div>
 
     <?php
-    echo bc_code($mw_basic[cf_content_add], 1, 1);
+    echo bc_code($mw_basic['cf_content_add'], 1, 1);
 
-    if ($mw_basic[cf_include_view] && is_mw_file($mw_basic[cf_include_view])) {
-        include_once($mw_basic[cf_include_view]);
+    if ($mw_basic['cf_include_view'] && is_mw_file($mw_basic['cf_include_view'])) {
+        include_once($mw_basic['cf_include_view']);
     }
     ?>
     </div><!--view_content-->
 
-    <?php if ($mw_basic[cf_zzal] && $file_viewer) { ?>
+    <?php if ($mw_basic['cf_zzal'] && $file_viewer) { ?>
     <div class="mw_basic_view_zzal">
-        <input type="button" id="zzbtn" value="<?=$view[wr_zzal]?> 보기" onclick="zzalview()" class="mw_basic_view_zzal_button">
+        <input type="button" id="zzbtn" value="<?=$view['wr_zzal']?> 보기" onclick="zzalview()" class="mw_basic_view_zzal_button">
 
         <script>
         mw_zzal_flag = false;
@@ -532,13 +533,13 @@ if ($bomb) {
                     mw_zzal_flag = true;
                 }
                 zzb.style.display = "block";
-                btn.value = "<?=$view[wr_zzal]?> 가리기";
+                btn.value = "<?=$view['wr_zzal']?> 가리기";
                 //resizeBoardImage(650);
             }
             else
             {
                 zzb.style.display = "none";
-                btn.value = "<?=$view[wr_zzal]?> 보기";
+                btn.value = "<?=$view['wr_zzal']?> 보기";
             }
         }
         </script>
@@ -565,7 +566,7 @@ if ($bomb) {
     </div>
     <?php } ?>
 
-    <?php if ($board[bo_use_good] || $board[bo_use_nogood]) { // 추천, 비추천?>
+    <?php if ($board['bo_use_good'] || $board['bo_use_nogood']) { // 추천, 비추천?>
         <div id="mw_good"></div>
 
         <script>
@@ -595,7 +596,7 @@ if ($bomb) {
                 });
 
                 if (!flag && !confirm("정말 비추천하시겠습니까?")) return;
-            } 
+            }
 
             $.get("<?=$board_skin_path?>/mw.proc/mw.good.act.php?bo_table=<?=$bo_table?>&wr_id=<?=$wr_id?>&good="+good, function (data) {
                 alert(data);
@@ -614,26 +615,26 @@ if ($bomb) {
     <?php } ?>
 
     <?php
-    echo bc_code($mw_basic[cf_content_tail], 1, 1);
+    echo bc_code($mw_basic['cf_content_tail'], 1, 1);
 
-    if ($mw_basic[cf_include_view_tail] && is_mw_file($mw_basic[cf_include_view_tail])) {
-        include_once($mw_basic[cf_include_view_tail]);
+    if ($mw_basic['cf_include_view_tail'] && is_mw_file($mw_basic['cf_include_view_tail'])) {
+        include_once($mw_basic['cf_include_view_tail']);
     }
     ?>
 
     </div><!--view_$wr_id-->
 </div><!--mw_basic_view_content-->
 
-<?php if ($mw_basic[cf_talent_market]) echo $talent_market_content; ?>
-<?php if ($mw_basic[cf_google_map] && trim($write[wr_google_map]) && !$google_map_is_view && $google_map_code)
+<?php if ($mw_basic['cf_talent_market']) echo $talent_market_content; ?>
+<?php if ($mw_basic['cf_google_map'] && trim($write['wr_google_map']) && !$google_map_is_view && $google_map_code)
     echo $google_map_code; ?>
 
 <?php if ($mw_basic['cf_rate_level'] && $write['wr_rate'] > 0) { ?>
 
-    <div id="view_rate_box"> 
+    <div id="view_rate_box">
         <div><strong>종합평점</strong> (참여 <?php echo $rate_count?>명)</div>
         <div id="view_rate"></div>
-    </div> 
+    </div>
 
     <script>
     //$(document).ready(function () {
@@ -650,15 +651,15 @@ if ($bomb) {
 <?php echo $buy_button; ?>
 
 <?php
-//if ($is_signature && $signature && !$view[wr_anonymous] && $mw_basic[cf_attribute] != "anonymous") // 서명출력
-if ($is_signature && !$view[wr_anonymous] && $mw_basic[cf_attribute] != "anonymous") // 서명출력
-{ 
+//if ($is_signature && $signature && !$view[wr_anonymous] && $mw_basic['cf_attribute'] != "anonymous") // 서명출력
+if ($is_signature && !$view['wr_anonymous'] && $mw_basic['cf_attribute'] != "anonymous") // 서명출력
+{
     $tmpsize = array(0, 0);
     $is_comment_image = false;
     $comment_image = mw_get_noimage();
     $comment_class = 'noimage';
-    if ($mw_basic[cf_attribute] != "anonymous" && !$view[wr_anonymous] && $view[mb_id] && file_exists("$comment_image_path/{$view[mb_id]}")) {
-        $comment_image = "$comment_image_path/{$view[mb_id]}";
+    if ($mw_basic['cf_attribute'] != "anonymous" && !$view['wr_anonymous'] && $view['mb_id'] && file_exists("$comment_image_path/{$view['mb_id']}")) {
+        $comment_image = "$comment_image_path/{$view['mb_id']}";
         $is_comment_image = true;
         $tmpsize = @getimagesize($comment_image);
         $comment_image.= '?'.filemtime($comment_image);
@@ -680,10 +681,10 @@ if ($is_signature && !$view[wr_anonymous] && $mw_basic[cf_attribute] != "anonymo
             <img src="<?=$comment_image?>"
                 <?php
                 if ($is_comment_image) { echo "onclick='mw_image_window(this, {$tmpsize[0]}, {$tmpsize[1]});'"; }
-                else if (($is_member && $view[mb_id] == $member[mb_id] && !$view[wr_anonymous]) || $is_admin) { echo "onclick='mw_member_photo(\"{$view['mb_id']}\");'"; }?>>
+                else if (($is_member && $view['mb_id'] == $member['mb_id'] && !$view['wr_anonymous']) || $is_admin) { echo "onclick='mw_member_photo(\"{$view['mb_id']}\");'"; }?>>
 
-            <? if (($is_member && $view[mb_id] == $member[mb_id] && !$view[wr_anonymous]) || $is_admin) { ?>
-            <div style="margin:0 0 0 10px;"><a href="javascript:mw_member_photo('<?=$view[mb_id]?>')"
+            <? if (($is_member && $view['mb_id'] == $member['mb_id'] && !$view['wr_anonymous']) || $is_admin) { ?>
+            <div style="margin:0 0 0 10px;"><a href="javascript:mw_member_photo('<?=$view['mb_id']?>')"
                 style="font:normal 11px; color:#888; text-decoration:none;"><? echo $is_comment_image ? "사진변경" : "사진등록"; ?></a></div>
             <? } ?>
             <script>
@@ -692,11 +693,11 @@ if ($is_signature && !$view[wr_anonymous] && $mw_basic[cf_attribute] != "anonymo
             }
             </script>
             <?
-            if ($mw_basic[cf_icon_level] && !$view[wr_anonymous] && $mw_basic[cf_attribute] != "anonymous" && $write[mb_id] && $write[mb_id] != $config[cf_admin]) { 
-                $level = mw_get_level($view[mb_id]);
+            if ($mw_basic['cf_icon_level'] && !$view['wr_anonymous'] && $mw_basic['cf_attribute'] != "anonymous" && $write['mb_id'] && $write['mb_id'] != $config['cf_admin']) {
+                $level = mw_get_level($view['mb_id']);
                 echo "<div class=\"icon_level".($level+1)."\">&nbsp;</div>";
-                $exp = $icon_level_mb_point[$view[mb_id]] - $level*$mw_basic[cf_icon_level_point];
-                $per = round($exp/$mw_basic[cf_icon_level_point]*100);
+                $exp = $icon_level_mb_point[$view['mb_id']] - $level*$mw_basic['cf_icon_level_point'];
+                $per = round($exp/$mw_basic['cf_icon_level_point']*100);
                 if ($per > 100) $per = 100;
                 echo "<div style=\"background:url($board_skin_path/img/level_exp_bg.gif); width:61px; height:3px; font-size:1px; line-height:1px; margin:5px 0 0 3px;\">";
                 echo "<div style=\"background:url($board_skin_path/img/level_exp_dot.gif); width:$per%; height:3px;\">&nbsp;</div>";
@@ -716,7 +717,7 @@ if ($is_signature && !$view[wr_anonymous] && $mw_basic[cf_attribute] != "anonymo
 <?php } ?>
 
 
-<?php if ($mw_basic[cf_quiz] && is_file($quiz_path."/view.php")) { // 퀴즈 ?>
+<?php if ($mw_basic['cf_quiz'] && is_file($quiz_path."/view.php")) { // 퀴즈 ?>
 <div class="mw_basic_view_quiz">
     <div id="mw_quiz"></div>
 
@@ -731,7 +732,7 @@ if ($is_signature && !$view[wr_anonymous] && $mw_basic[cf_attribute] != "anonymo
 </div><!--mw_basic_view_quiz-->
 <?php } ?>
 
-<?php if ($mw_basic[cf_vote]) { // 설문 ?>
+<?php if ($mw_basic['cf_vote']) { // 설문 ?>
 <div class="mw_basic_view_vote">
     <div id="mw_vote"></div>
 
@@ -765,7 +766,7 @@ if ($is_signature && !$view[wr_anonymous] && $mw_basic[cf_attribute] != "anonymo
             mw_vote_load();
         });
     }
-    <? if ($is_admin or ($write[mb_id] && $member[mb_id] && $write[mb_id] == $member[mb_id])) { ?>
+    <? if ($is_admin or ($write['mb_id'] && $member['mb_id'] && $write['mb_id'] == $member['mb_id'])) { ?>
     function mw_vote_init() {
         if (!confirm("초기화한 데이터는 복구할 방법이 없습니다.\n\n정말 설문을 초기화 하시겠습니까?")) return;
         $.get("<?=$board_skin_path?>/mw.proc/mw.vote.init.php?bo_table=<?=$bo_table?>&wr_id=<?=$wr_id?>", function (str) {
@@ -787,22 +788,22 @@ if ($is_signature && !$view[wr_anonymous] && $mw_basic[cf_attribute] != "anonymo
 <div class='division'></div>
 
 <?php
-if ($mw_basic[cf_attribute] == 'qna' && !$view[is_notice]) {
-    $qna_save_point = round($write[wr_qna_point]*round($mw_basic[cf_qna_save]/100,2));
-    $qna_total_point = $qna_save_point + $mw_basic[cf_qna_point_add];
-    $uname = $board[bo_use_name] ? $member[mb_name] : $member[mb_nick];
+if ($mw_basic['cf_attribute'] == 'qna' && !$view['is_notice']) {
+    $qna_save_point = round($write['wr_qna_point'] * round($mw_basic['cf_qna_save']/100, 2));
+    $qna_total_point = $qna_save_point + $mw_basic['cf_qna_point_add'];
+    $uname = $board['bo_use_name'] ? $member['mb_name'] : $member['mb_nick'];
     ?>
     <div class="mw_basic_qna_info">
         <? if ($is_member) { ?>
         <div><span class="mb_id"><?=$uname?></span>님의 지식을 나누어 주세요!</div> <? } ?>
         <div class="info2">
-            <?php if ($write[wr_qna_point]) { ?>
-            질문자가 자신의 포인트 <span class="num"><b><?=$write[wr_qna_point]?></b></span> 점을 걸었습니다.<br/> <? } ?>
-            답변하시면 포인트 <span class="num"><b><?=$board[bo_comment_point]?></b>점</span>을<?
+            <?php if ($write['wr_qna_point']) { ?>
+            질문자가 자신의 포인트 <span class="num"><b><?=$write['wr_qna_point']?></b></span> 점을 걸었습니다.<br/> <? } ?>
+            답변하시면 포인트 <span class="num"><b><?=$board['bo_comment_point']?></b>점</span>을<?
             if ($qna_total_point) { ?>, 답변이 채택되면
             포인트 <span class="num"><b><?=$qna_total_point?></b>점 <? } ?>
-            <? if ($mw_basic[cf_qna_point_add]) { ?>
-                (채택 <b><?=$qna_save_point?></b> + 추가 <b><?=$mw_basic[cf_qna_point_add]?></b>) <? } ?></span>을 드립니다.
+            <? if ($mw_basic['cf_qna_point_add']) { ?>
+                (채택 <b><?=$qna_save_point?></b> + 추가 <b><?=$mw_basic['cf_qna_point_add']?></b>) <? } ?></span>을 드립니다.
         </div>
     </div><!--mw_basic_qna_info-->
 <?php } ?>
@@ -810,19 +811,19 @@ if ($mw_basic[cf_attribute] == 'qna' && !$view[is_notice]) {
 <?php
 echo "<div class='division'></div>".PHP_EOL;
 
-if ($mw_basic[cf_sns]
+if ($mw_basic['cf_sns']
 or (
-    ($board[bo_use_good] or $board[bo_use_nogood])
-    and $mw_basic[cf_view_good]
-    and $member[mb_level] >= $mw_basic[cf_view_good])
-or $scrap_href) { 
+    ($board['bo_use_good'] or $board['bo_use_nogood'])
+    and $mw_basic['cf_view_good']
+    and $member['mb_level'] >= $mw_basic['cf_view_good'])
+or $scrap_href) {
 
     echo "<div class='scrap_jump'>".PHP_EOL;
 
     if ($scrap_href) {
         $sql = " select count(*) as cnt from $g4[scrap_table] where bo_table = '$bo_table' and wr_id = '$wr_id' ";
         $row = sql_fetch($sql);
-        $scrap_count = $row[cnt];
+        $scrap_count = $row['cnt'];
         ?>
         <div class="scrap_button">
             <button class="fa-button" id="scrap_button" onclick="scrap_ajax()">
@@ -837,7 +838,7 @@ or $scrap_href) {
             $.get("<?php echo $board_skin_path?>/mw.proc/mw.scrap.php", {
                 'bo_table' : '<?php echo $bo_table?>',
                 'wr_id' : '<?php echo $wr_id?>',
-                'token' : '<?php echo $del_token?>' // 토큰 새로만들어야 하는데 이것까지 토큰 쓰기에는 세션이 너무;
+                'token' : '<?php echo $token?>' // 토큰 새로만들어야 하는데 이것까지 토큰 쓰기에는 세션이 너무;
             }, function (str) {
                 tmp = str.split('|');
                 if (tmp[0] == 'false') {
@@ -852,9 +853,9 @@ or $scrap_href) {
     <?php
     }
 
-    if (($board[bo_use_good] or $board[bo_use_nogood])
-        and $mw_basic[cf_view_good]
-        and $member[mb_level] >= $mw_basic[cf_view_good]) { ?>
+    if (($board['bo_use_good'] or $board['bo_use_nogood'])
+        and $mw_basic['cf_view_good']
+        and $member['mb_level'] >= $mw_basic['cf_view_good']) { ?>
             <div class="view_good">
                 <button type="button" class="fa-button" onclick="window.open(
                     '<?=$board_skin_path?>/mw.proc/mw.good.list.php?bo_table=<?=$bo_table?>&wr_id=<?=$wr_id?>',
@@ -873,10 +874,10 @@ or $scrap_href) {
 
     echo "</div>".PHP_EOL;
 
-    if ($mw_basic['cf_sns']) { 
+    if ($mw_basic['cf_sns']) {
         echo "<div class='sns'>{$view_sns}</div>";
     }
-    else { 
+    else {
         //echo "<style>.jump { margin:10px 0 0 5px }</style>";
     }
 
@@ -885,7 +886,7 @@ or $scrap_href) {
 echo "<div class='division'></div>".PHP_EOL;
 
 // 관련글 출력
-if ($mw_basic['cf_related'] && $view['wr_related']) { 
+if ($mw_basic['cf_related'] && $view['wr_related']) {
     $related_skin = '';
     ob_start();
     ?>
@@ -903,30 +904,30 @@ if ($mw_basic['cf_related'] && $view['wr_related']) {
     $related_skin = ob_get_clean();
 
     if (!$mw_basic['cf_related_table'] or ($mw_basic['cf_related_table'] && $mw_basic['cf_related_table_div']))
-        echo mw_related2($bo_table, $view['wr_related'], $related_skin); 
+        echo mw_related2($bo_table, $view['wr_related'], $related_skin);
 
     if ($mw_basic['cf_related_table']) {
         $tables = array_map('trim', explode(",", $mw_basic['cf_related_table']));
         foreach ($tables as $table) {
-            echo mw_related2($table, $view['wr_related'], $related_skin); 
+            echo mw_related2($table, $view['wr_related'], $related_skin);
         }
     }
 }
 
-if ($mw_basic[cf_latest]) { 
+if ($mw_basic['cf_latest']) {
     $latest = mw_view_latest();
     if (count($latest)) {
-        $bo_subject = $board[bo_subject];
-        if ($mw_basic[cf_latest_table]) {
-            $tmp = sql_fetch("select bo_subject from $g4[board_table] where bo_table = '$mw_basic[cf_latest_table]'");
-            $bo_subject = $tmp[bo_subject];
+        $bo_subject = $board['bo_subject'];
+        if ($mw_basic['cf_latest_table']) {
+			$tmp = sql_fetch("select bo_subject from $g4[board_table] where bo_table = '{$mw_basic['cf_latest_table']}'");
+            $bo_subject = $tmp['bo_subject'];
         }
 
 ?>
 <div class="mw_basic_view_latest_title">
     <h3>
         <?php echo $view['name']?> 님의 <?php echo $bo_subject?> 최신글
-        <a href="<?php echo mw_seo_url($bo_table, 0, "&sfl=mb_id,1&stx=$write[mb_id]")?>" class="more">[더보기]</a>
+        <a href="<?php echo mw_seo_url($bo_table, 0, "&sfl=mb_id,1&stx={$write['mb_id']}")?>" class="more">[더보기]</a>
     </h3>
 </div>
 <div class="mw_basic_view_latest">
@@ -942,19 +943,19 @@ if ($mw_basic[cf_latest]) {
 </div>
 <?php
     }
-} 
+}
 
 if ($mw_basic['cf_include_comment_head'] && is_mw_file($mw_basic['cf_include_coment_head']) )
     include_once($mw_basic['cf_include_comment_head']);
 
-if (!$view[wr_comment_hide] && ($mw_basic[cf_comment_level] <= $member[mb_level])) {
-    include_once("./view_comment.php"); // 코멘트 입출력 
+if (!$view['wr_comment_hide'] && ($mw_basic['cf_comment_level'] <= $member['mb_level'])) {
+    include_once("./view_comment.php"); // 코멘트 입출력
 }
 
 printf('<div class="view_buttons2">%s</div>', $link_buttons);
 
-if ($mw_basic[cf_include_tail] && is_mw_file($mw_basic[cf_include_tail]) && strstr($mw_basic[cf_include_tail_page], '/v/')) {
-    include_once($mw_basic[cf_include_tail]);
+if ($mw_basic['cf_include_tail'] && is_mw_file($mw_basic['cf_include_tail']) && strstr($mw_basic['cf_include_tail_page'], '/v/')) {
+    include_once($mw_basic['cf_include_tail']);
 }
 ?>
 
@@ -990,7 +991,7 @@ $(document).ready(function () {
             });
         });
     });
-}); 
+});
 </script>
 <?php } ?>
 
@@ -1037,7 +1038,7 @@ function btn_singo_view(wr_id) {
 
 function btn_singo_clear(wr_id) {
     if (confirm("정말 초기화 하시겠습니까?")) {
-        $.get("<?=$board_skin_path?>/mw.proc/mw.btn.singo.clear.php?bo_table=<?=$bo_table?>&token=<?=$del_token?>&wr_id="+wr_id, function(msg) {
+        $.get("<?=$board_skin_path?>/mw.proc/mw.btn.singo.clear.php?bo_table=<?=$bo_table?>&token=<?=$token?>&wr_id="+wr_id, function(msg) {
             alert(msg);
         });
     }
@@ -1057,14 +1058,14 @@ function btn_print() {
 <script>
 function btn_secret() {
     if (confirm("이 게시물을 비밀글로 설정하시겠습니까?")) {
-        $.get("<?=$board_skin_path?>/mw.proc/mw.btn.secret.php?bo_table=<?=$bo_table?>&wr_id=<?=$wr_id?>&token=<?=$del_token?>", function (str) {
+        $.get("<?=$board_skin_path?>/mw.proc/mw.btn.secret.php?bo_table=<?=$bo_table?>&wr_id=<?=$wr_id?>&token=<?=$token?>", function (str) {
             alert(str);
         });;
     }
 }
 function btn_nosecret() {
     if (confirm("이 게시물의 비밀글 설정을 해제하시겠습니까?")) {
-        $.get("<?=$board_skin_path?>/mw.proc/mw.btn.secret.php?bo_table=<?=$bo_table?>&wr_id=<?=$wr_id?>&token=<?=$del_token?>&flag=no", function (str) {
+        $.get("<?=$board_skin_path?>/mw.proc/mw.btn.secret.php?bo_table=<?=$bo_table?>&wr_id=<?=$wr_id?>&token=<?=$token?>&flag=no", function (str) {
             alert(str);
         });
     }
@@ -1091,11 +1092,11 @@ function btn_now() {
     if (confirm("이 게시물의 작성시간을 현재로 변경하시겠습니까?")) {
         if (confirm("날짜순으로 정렬 하시겠습니까?")) renum = 1;
 
-        $.get("<?=$board_skin_path?>/mw.proc/mw.time.now.php", { 
-            "bo_table":"<?=$bo_table?>", 
-            "wr_id":"<?=$wr_id?>", 
-            "token":"<?=$del_token?>", 
-            "renum":renum 
+        $.get("<?=$board_skin_path?>/mw.proc/mw.time.now.php", {
+            "bo_table":"<?=$bo_table?>",
+            "wr_id":"<?=$wr_id?>",
+            "token":"<?=$token?>",
+            "renum":renum
             } , function (ret) {
                 if (ret)
                     alert(ret);
@@ -1106,7 +1107,7 @@ function btn_now() {
 }
 
 function btn_view_block() {
-    <? if ($write[wr_view_block]) { ?>
+    <? if ($write['wr_view_block']) { ?>
     if (!confirm("이 게시물 보기차단을 해제 하시겠습니까?")) return;
     <? } else { ?>
     if (!confirm("이 게시물 보기를 차단하시겠습니까?")) return;
@@ -1114,7 +1115,7 @@ function btn_view_block() {
     $.post("<?=$board_skin_path?>/mw.proc/mw.view.block.php", {
         "bo_table":"<?=$bo_table?>",
         "wr_id":"<?=$wr_id?>",
-        "token":"<?=$del_token?>"
+        "token":"<?=$token?>"
     }, function (str) {
         if (str)
             alert(str);
@@ -1124,17 +1125,17 @@ function btn_ip(ip) {
     window.open("<?=$board_skin_path?>/mw.proc/mw.whois.php?ip=" + ip, "whois", "width=700,height=600,scrollbars=yes");
 }
 function btn_ip_search(ip) {
-    window.open("<?=$g4[admin_path]?>/member_list.php?sfl=mb_ip&stx=" + ip);
+    window.open("<?=$g4['admin_path']?>/member_list.php?sfl=mb_ip&stx=" + ip);
 }
 function btn_notice() {
     var is_off = 0;
-    <? if ($view[is_notice]) { ?>
+    <? if ($view['is_notice']) { ?>
     if (!confirm("이 공지를 내리시겠습니까?")) return;
-    is_off = 1; 
+    is_off = 1;
     <? } else { ?>
     if (!confirm("이 글을 공지로 등록하시겠습니까?")) return;
     <? } ?>
-    $.get("<?=$board_skin_path?>/mw.proc/mw.notice.php?bo_table=<?=$bo_table?>&wr_id=<?=$wr_id?>&token=<?=$del_token?>&is_off="+is_off, function(data) {
+    $.get("<?=$board_skin_path?>/mw.proc/mw.notice.php?bo_table=<?=$bo_table?>&wr_id=<?=$wr_id?>&token=<?=$token?>&is_off="+is_off, function(data) {
         alert(data);
     });
 }
@@ -1142,23 +1143,23 @@ function btn_popup() {
     var is_off = 0;
     <? if ($is_popup) { ?>
     if (!confirm("이 팝업공지를 내리시겠습니까?")) return;
-    is_off = 1; 
+    is_off = 1;
     <? } else { ?>
     if (!confirm("이 글을 팝업공지로 등록하시겠습니까?")) return;
     <? } ?>
-    $.get("<?=$board_skin_path?>/mw.proc/mw.popup.php?bo_table=<?=$bo_table?>&wr_id=<?=$wr_id?>&token=<?=$del_token?>", function(data) {
+    $.get("<?=$board_skin_path?>/mw.proc/mw.popup.php?bo_table=<?=$bo_table?>&wr_id=<?=$wr_id?>&token=<?=$token?>", function(data) {
         alert(data);
     });
 }
 function btn_comment_hide() {
     var is_off = 0;
-    <? if (!$view[wr_comment_hide]) { ?>
+    <? if (!$view['wr_comment_hide']) { ?>
     if (!confirm("이 글의 댓글을 감추시겠습니까?")) return;
-    is_off = 1; 
+    is_off = 1;
     <? } else { ?>
     if (!confirm("이 글의 댓글을 보이시겠습니까?")) return;
     <? } ?>
-    $.get("<?=$board_skin_path?>/mw.proc/mw.comment.hide.php?bo_table=<?=$bo_table?>&wr_id=<?=$wr_id?>&token=<?=$del_token?>&is_off="+is_off, function(data) {
+    $.get("<?=$board_skin_path?>/mw.proc/mw.comment.hide.php?bo_table=<?=$bo_table?>&wr_id=<?=$wr_id?>&token=<?=$token?>&is_off="+is_off, function(data) {
         alert(data);
         location.reload();
     });
@@ -1166,10 +1167,10 @@ function btn_comment_hide() {
 </script>
 <? } ?>
 
-<?php if ($mw_basic[cf_contents_shop]) { // 배추컨텐츠샵 ?>
-<script src="<?=$mw_cash[path]?>/cybercash.js"></script>
+<?php if ($mw_basic['cf_contents_shop']) { // 배추컨텐츠샵 ?>
+<script src="<?=$mw_cash['path']?>/cybercash.js"></script>
 <script>
-var mw_cash_path = "<?=$mw_cash[path]?>";
+var mw_cash_path = "<?=$mw_cash['path']?>";
 </script>
 <!--<span><img src="<?=$board_skin_path?>/img/icon_cash2.gif" style="cursor:pointer;" onclick="buy_contents('<?=$bo_table?>', '<?=$wr_id?>')" align="absmiddle"></span>-->
 <? } ?>
@@ -1178,9 +1179,9 @@ var mw_cash_path = "<?=$mw_cash[path]?>";
 <script>
 function file_download(link, no) {
     <?
-    if ($member[mb_level] < $board[bo_download_level]) {
+    if ($member['mb_level'] < $board['bo_download_level']) {
         $alert_msg = "다운로드 권한이 없습니다.";
-        if ($member[mb_id]) { 
+        if ($member['mb_id']) {
             echo "alert('$alert_msg'); return;\n";
         } else {
             echo "alert('$alert_msg\\n\\n회원이시라면 로그인 후 이용해 보십시오.');\n";
@@ -1190,9 +1191,9 @@ function file_download(link, no) {
     }
     ?>
 
-    <? if ($board[bo_download_point] < 0) { ?>if (confirm("파일을 다운로드 하시면 포인트가 차감(<?=number_format($board[bo_download_point])?>점)됩니다.\n\n포인트는 게시물당 한번만 차감되며 다음에 다시 다운로드 하셔도 중복하여 차감하지 않습니다.\n\n그래도 다운로드 하시겠습니까?"))<?}?>
+    <? if ($board['bo_download_point'] < 0) { ?>if (confirm("파일을 다운로드 하시면 포인트가 차감(<?=number_format($board['bo_download_point'])?>점)됩니다.\n\n포인트는 게시물당 한번만 차감되며 다음에 다시 다운로드 하셔도 중복하여 차감하지 않습니다.\n\n그래도 다운로드 하시겠습니까?"))<?}?>
 
-    <?php if ($mw_basic[cf_contents_shop] == "1" and !$is_per) { // 배추컨텐츠샵 다운로드 결제 ?>
+    <?php if ($mw_basic['cf_contents_shop'] == "1" and !$is_per) { // 배추컨텐츠샵 다운로드 결제 ?>
         alert("<?=$is_per_msg?>");
         <?php if (!$ca_cash_use) { ?>
             return;
@@ -1201,8 +1202,8 @@ function file_download(link, no) {
         return;
     <? } ?>
 
-    if (<?=$mw_basic[cf_download_popup]?>)
-        window.open("<?=$board_skin_path?>/mw.proc/download.popup.skin.php?bo_table=<?=$bo_table?>&wr_id=<?=$wr_id?>&no="+no, "download_popup", "width=<?=$mw_basic[cf_download_popup_w]?>,height=<?=$mw_basic[cf_download_popup_h]?>,scrollbars=yes");
+    if (<?php echo $mw_basic['cf_download_popup']? '1': '0'?>)
+        window.open("<?=$board_skin_path?>/mw.proc/download.popup.skin.php?bo_table=<?=$bo_table?>&wr_id=<?=$wr_id?>&no="+no, "download_popup", "width=<?=$mw_basic['cf_download_popup_w']?>,height=<?=$mw_basic['cf_download_popup_h']?>,scrollbars=yes");
     else {
         if (typeof comment_rate_run == 'function') {
             comment_rate_run();
@@ -1267,18 +1268,18 @@ function move_link(obj, point, href, target)
 }
 </script>
 
-<? if ($mw_basic[cf_write_notice]) { ?>
+<? if ($mw_basic['cf_write_notice']) { ?>
 <script>
 // 글쓰기버튼 공지
 function btn_write_notice(url) {
-    var msg = "<?=$mw_basic[cf_write_notice]?>";
+    var msg = "<?=$mw_basic['cf_write_notice']?>";
     if (confirm(msg))
 	location.href = url;
 }
 </script>
 <? } ?>
 
-<? if ($mw_basic[cf_link_blank]) { // 본문 링크를 새창으로 ?>
+<? if ($mw_basic['cf_link_blank']) { // 본문 링크를 새창으로 ?>
 <script>
 if (document.getElementById('view_content')) {
     var target = '_blank';
@@ -1290,7 +1291,7 @@ if (document.getElementById('view_content')) {
 </script>
 <? } ?>
 
-<? if ($mw_basic[cf_source_copy]) { // 출처 자동 복사 ?>
+<? if ($mw_basic['cf_source_copy']) { // 출처 자동 복사 ?>
 <script>
 function mw_copy()
 {
@@ -1304,7 +1305,7 @@ function mw_add_source()
 {
     if (window.clipboardData) {
         txt = window.clipboardData.getData('Text');
-        txt = txt + "\r\n[출처 : <?=$g4[url]?>]\r\n";
+        txt = txt + "\r\n[출처 : <?=$g4['url']?>]\r\n";
         window.clipboardData.setData('Text', txt);
     }
 }
@@ -1317,8 +1318,8 @@ function mw_add_source()
 <script>
 function mw_member_email() {
     if (!confirm("이 글을 회원메일로 등록하시겠습니까?")) return false;
-    $.get("<?=$board_skin_path?>/mw.proc/mw.member.email.php?bo_table=<?=$bo_table?>&wr_id=<?=$wr_id?>&token=<?=$del_token?>", function (data) {
-        if (confirm(data)) location.href = "<?=$g4[admin_path]?>/mail_list.php";
+    $.get("<?=$board_skin_path?>/mw.proc/mw.member.email.php?bo_table=<?=$bo_table?>&wr_id=<?=$wr_id?>&token=<?=$token?>", function (data) {
+        if (confirm(data)) location.href = "<?=$g4['admin_path']?>/mail_list.php";
     });
 }
 </script>
@@ -1328,10 +1329,10 @@ function mw_member_email() {
 <script>
 function btn_copy_new() {
     if (!confirm("이 글을 새글로 등록하시겠습니까?")) return false;
-    $.get("<?=$board_skin_path?>/mw.proc/mw.copy.new.php?token=<?=$del_token?>&bo_table=<?=$bo_table?>&wr_id=<?=$wr_id?>", function (data) {
+    $.get("<?=$board_skin_path?>/mw.proc/mw.copy.new.php?token=<?=$token?>&bo_table=<?=$bo_table?>&wr_id=<?=$wr_id?>", function (data) {
         tmp = data.split("|");
         if (tmp[0] == 'true') {
-            location.href = "<?=$g4[bbs_path]?>/board.php?bo_table=<?=$bo_table?>&wr_id="+tmp[1];
+            location.href = "<?=$g4['bbs_path']?>/board.php?bo_table=<?=$bo_table?>&wr_id="+tmp[1];
         } else {
             alert(tmp[1]);
         }
@@ -1351,7 +1352,7 @@ function mw_move_cate_one() {
 <? } ?>
 
 <?php if (!is_g5()) { ?>
-<script> $(document).ready (function() { resizeBoardImage(<?=$board[bo_image_width]?>); }); </script>
+<script> $(document).ready (function() { resizeBoardImage(<?=$board['bo_image_width']?>); }); </script>
 <?php } else { ?>
 <script>
     $("a.view_image").click(function() {
@@ -1371,12 +1372,12 @@ $(".mw_basic_contents_shop_pay_button").click(function () {
 /* 본문 img */
 #mw_basic .mw_basic_view_content img {
     max-width:<?php echo $board['bo_image_width']?>px;
-    height:auto; 
+    height:auto;
 }
 
 #mw_basic .mw_basic_comment_content img {
     max-width:<?php echo $board['bo_image_width']-200?>px;
-    height:auto; 
+    height:auto;
 }
 
 @media screen and (max-width:<?php echo $board['bo_image_width']?>px) {
@@ -1410,12 +1411,12 @@ $(".mw_basic_contents_shop_pay_button").click(function () {
 
 <?php
 // 팝업공지
-$sql = "select * from $mw[popup_notice_table] where bo_table = '$bo_table' order by wr_id desc";
+$sql = "select * from {$mw['popup_notice_table']} where bo_table = '$bo_table' order by wr_id desc";
 $qry = sql_query($sql, false);
 while ($row = sql_fetch_array($qry)) {
-    $row2 = sql_fetch("select * from $write_table where wr_id = '$row[wr_id]'");
+	$row2 = sql_fetch("select * from $write_table where wr_id = '{$row['wr_id']}'");
     if (!$row2) {
-        sql_query("delete from $mw[popup_notice_table] where bo_table = '$bo_table' and wr_id = '$row[wr_id]'");
+		sql_query("delete from {$mw['popup_notice_table']} where bo_table = '$bo_table' and wr_id = '$row[wr_id]'");
         continue;
     }
     $view = get_view($row2, $board, $board_skin_path, 255);
@@ -1423,9 +1424,9 @@ while ($row = sql_fetch_array($qry)) {
 }
 
 // RSS 수집기
-if ($mw_basic[cf_collect] == 'rss' && $rss_collect_path && file_exists("$rss_collect_path/_config.php")) {
+if ($mw_basic['cf_collect'] == 'rss' && $rss_collect_path && file_exists("$rss_collect_path/_config.php")) {
     include_once("$rss_collect_path/_config.php");
-    if ($mw_rss_collect_config[cf_license]) {
+    if ($mw_rss_collect_config['cf_license']) {
         ?>
         <script>
         $(document).ready(function () {
@@ -1437,9 +1438,9 @@ if ($mw_basic[cf_collect] == 'rss' && $rss_collect_path && file_exists("$rss_col
 }
 
 // Youtube 수집기
-if ($mw_basic[cf_collect] == 'youtube' && $youtube_collect_path && file_exists("$youtube_collect_path/_config.php")) {
+if ($mw_basic['cf_collect'] == 'youtube' && $youtube_collect_path && file_exists("$youtube_collect_path/_config.php")) {
     include_once("$youtube_collect_path/_config.php");
-    if ($mw_youtube_collect_config[cf_license]) {
+    if ($mw_youtube_collect_config['cf_license']) {
         ?>
         <script>
         $(document).ready(function () {
@@ -1451,7 +1452,7 @@ if ($mw_basic[cf_collect] == 'youtube' && $youtube_collect_path && file_exists("
 }
 
 // kakao 수집기
-if ($mw_basic[cf_collect] == 'kakao' && $kakao_collect_path && is_mw_file("$kakao_collect_path/_config.php")) {
+if ($mw_basic['cf_collect'] == 'kakao' && $kakao_collect_path && is_mw_file("$kakao_collect_path/_config.php")) {
     include_once("$kakao_collect_path/_config.php");
     if ($mw_kakao_collect_config['cf_license']) {
         ?>

@@ -25,19 +25,19 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 // 컨텐츠샵 멤버쉽
 if (function_exists("mw_cash_is_membership"))
 {
-    $is_membership = @mw_cash_is_membership($member[mb_id], $bo_table);
+    $is_membership = @mw_cash_is_membership($member['mb_id'], $bo_table);
 
     if ($is_membership != "no") {
 ?>
 
-<script type="text/javascript" src="<?=$mw_cash[path]?>/cybercash.js"></script>
+<script type="text/javascript" src="<?=$mw_cash['path']?>/cybercash.js"></script>
 <script type="text/javascript">
-var mw_cash_path = "<?=$mw_cash[path]?>";
+var mw_cash_path = "<?=$mw_cash['path']?>";
 </script>
 
 <div id="membership-info">
     <?
-    $edate = mw_cash_membership_end_date($bo_table, $member[mb_id]);
+    $edate = mw_cash_membership_end_date($bo_table, $member['mb_id']);
     if (!$edate) {
         $cash_button = '결 제';
         ?>
@@ -47,7 +47,7 @@ var mw_cash_path = "<?=$mw_cash[path]?>";
     else
     {
         $cash_button = '연장 결제';
-        $end_time = strtotime($edate) - $g4[server_time];
+        $end_time = strtotime($edate) - $g4['server_time'];
         ?>
         <strong>이용 만기일</strong> : <?=date("Y년 m월 d일", strtotime($edate))?>,
         <span id=end_timer></span> 남음

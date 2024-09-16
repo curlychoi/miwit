@@ -21,7 +21,7 @@
 
 include_once("_common.php");
 
-header("Content-Type: text/html; charset=$g4[charset]");
+header("Content-Type: text/html; charset={$g4['charset']}");
 $gmnow = gmdate("D, d M Y H:i:s") . " GMT";
 header("Expires: 0"); // rfc2616 - Section 14.21
 header("Last-Modified: " . $gmnow);
@@ -30,13 +30,13 @@ header("Cache-Control: pre-check=0, post-check=0, max-age=0"); // HTTP/1.1
 header("Pragma: no-cache"); // HTTP/1.0
 
 // 게시판 관리자 이상 복사, 이동 가능
-if ($is_admin != 'board' && $is_admin != 'group' && $is_admin != 'super') 
+if ($is_admin != 'board' && $is_admin != 'group' && $is_admin != 'super')
     exit("게시판 관리자 이상 접근이 가능합니다.");
 
 if ($sw != "0" && $sw != "1" && $sw != "2")
     alert("sw 값이 제대로 넘어오지 않았습니다.");
 
-for ($i=0, $m=count($_POST['chk_wr_id']); $i<$m; $i++) 
+for ($i=0, $m=count($_POST['chk_wr_id']); $i<$m; $i++)
 {
     $wr_id = $_POST['chk_wr_id'][$i];
     sql_query("update $write_table set wr_qna_status = '$sw' where wr_id = '$wr_id'");

@@ -21,7 +21,7 @@
 
 include_once("_common.php");
 include_once("$board_skin_path/mw.lib/mw.skin.basic.lib.php");
-header("Content-Type: text/html; charset=$g4[charset]");
+header("Content-Type: text/html; charset={$g4['charset']}");
 
 if ($is_admin != 'super')
     die("로그인 해주세요.");
@@ -29,10 +29,10 @@ if ($is_admin != 'super')
 if (!$bo_table)
     die("bo_table 값이 없습니다.");
 
-if (!$token or get_session("ss_config_token") != $token) 
+if (!$token or get_session("ss_config_token") != $token)
     die("토큰 에러로 실행 불가합니다.");
 
-$sql = "update $g4[board_table] set bo_notice = '$bo_notice' where bo_table = '$bo_table'";
+$sql = "update {$g4['board_table']} set bo_notice = '$bo_notice' where bo_table = '$bo_table'";
 $qry = sql_query($sql);
 
 if ($qry) echo "true";

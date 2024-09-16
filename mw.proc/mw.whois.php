@@ -19,10 +19,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+ error_reporting(E_ALL & ~E_NOTICE);
+ini_set('display_errors', 1);
+
 include_once("_common.php");
+
 $viewport = "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0\">";
 ob_start();
-include_once("$g4[path]/head.sub.php");
+include_once("{$g4['path']}/head.sub.php");
 $head = ob_get_clean();
 $head = str_replace("<head>", "<head>\n{$viewport}", $head);
 echo $head;
@@ -44,9 +48,10 @@ if(!$fp)
 
 fputs($fp,"$ip\n");
 
+$res = '';
 while (!feof($fp)) {
     $row = fgets($fp, 80);
-    if (!preg_match("/^utf/i", $g4[charset]))
+    if (!preg_match("/^utf/i", $g4['charset']))
         $row = iconv("utf-8", "cp949", $row)."<br>";
     
     $res .= $row;
@@ -55,7 +60,7 @@ fclose($fp);
 ?>
 <div style="padding:10px">
 
-    <h3> <?=$ip?> 에 대한 <?=$server_name?>  WHOIS 검색결과 입니다.</h3>
+    <h3> <?php echo $ip?> 에 대한 <?php echo $server_name?>  WHOIS 검색결과 입니다.</h3>
     <hr>
     <?
         echo nl2br($res);
@@ -64,4 +69,4 @@ fclose($fp);
     <div style="text-align:center; height:50px;"><input type="button" value="닫     기" onclick="self.close();"></div>
 </div>
 <?
-include_once("$g4[path]/tail.sub.php");
+include_once($g4['path']."/tail.sub.php");

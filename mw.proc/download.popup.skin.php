@@ -68,11 +68,11 @@ a { color:#000; }
 <div class="ci_title"> ▶ 파일다운로드 </div>
 
 <div class="ci_info">
-    <?=$mw_basic[cf_download_popup_msg]?>
+    <?=$mw_basic['cf_download_popup_msg']?>
 
     <div class="ci_buttons">
         <input type="button" class="ci_button" value="파일 다운로드"
-            onclick="location.href='<?=$g4[bbs_path]?>/download.php?bo_table=<?=$bo_table?>&wr_id=<?=$wr_id?>&no=<?=$no?>'">
+            onclick="location.href='<?=$g4['bbs_path']?>/download.php?bo_table=<?=$bo_table?>&wr_id=<?=$wr_id?>&no=<?=$no?>'">
     </div>
 
 </div>

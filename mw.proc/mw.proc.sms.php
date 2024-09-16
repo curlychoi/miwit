@@ -1,8 +1,8 @@
 <?
-if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가 
+if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 
-$icode_id = $mw_basic[cf_sms_id];
-$icode_pw = $mw_basic[cf_sms_pw];
+$icode_id = $mw_basic['cf_sms_id'];
+$icode_pw = $mw_basic['cf_sms_pw'];
 
 $socket_host = "211.172.232.124";
 $port_setting = 1;
@@ -74,5 +74,5 @@ if ($result) {
 }
 
 if (function_exists("write_log"))
-    write_log("$g4[path]/data/log/{$bo_table}.sms.".date("ym", $g4['server_time']), $log);
+    write_log("{$g4['path']}/data/log/{$bo_table}.sms.".date("ym", $g4['server_time']), $log);
 

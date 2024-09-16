@@ -21,15 +21,15 @@
 
 include_once("_common.php");
 
-header("Content-Type: text/html; charset=$g4[charset]");
+header("Content-Type: text/html; charset={$g4['charset']}");
 
-if (!$is_admin) 
+if (!$is_admin)
     exit("관리자만 접근 가능합니다.");
 
 if (!trim($bo_table) || !trim($wr_id))
     exit("데이터가 없습니다.");
 
-if (!$token or get_session("ss_delete_token") != $token) 
+if (!$token or get_session("ss_delete_token") != $token)
     die("토큰 에러로 실행 불가합니다.");
 
 if ($is_off)

@@ -25,8 +25,8 @@ include_once("$board_skin_path/mw.lib/mw.skin.basic.lib.php");
 if ($is_admin != 'super')
     alert_close("접근 권한이 없습니다.");
 
-$g4[title] = "권한별 설정";
-include_once("$g4[path]/head.sub.php");
+$g4['title'] = "권한별 설정";
+include_once("{$g4['path']}/head.sub.php");
 
 $colspan = 3;
 ?>
@@ -81,7 +81,7 @@ for ($i=2; $i<=10; $i++) {
         <input type=text size=10 name="cf_write_day[<?php echo $i?>]" class="ed r" value="<?php echo $row['cf_write_day']?>">
         일에
         <input type=text size=10 name="cf_write_day_count[<?php echo $i?>]" class="ed r" value="<?php echo $row['cf_write_day_count']?>">
-        번 이하 
+        번 이하
     </td>
     <td class="tl">
         <input type=text size=10 name="cf_qna_count[<?php echo $i?>]" class="ed r" value="<?php echo $row['cf_qna_count']?>">
@@ -97,4 +97,4 @@ for ($i=2; $i<=10; $i++) {
 
 <?php
 
-include_once("$g4[path]/tail.sub.php");
+include_once("{$g4['path']}/tail.sub.php");

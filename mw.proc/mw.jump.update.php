@@ -21,7 +21,7 @@
 
 include_once("_common.php");
 
-header("Content-Type: text/html; charset=$g4[charset]");
+header("Content-Type: text/html; charset={$g4['charset']}");
 $gmnow = gmdate("D, d M Y H:i:s") . " GMT";
 header("Expires: 0"); // rfc2616 - Section 14.21
 header("Last-Modified: " . $gmnow);
@@ -67,7 +67,6 @@ if ($mw_basic['cf_jump_point']) {
     insert_point($member['mb_id'], -1*$mw_basic['cf_jump_point'], "새글 점프", $bo_table, $wr_id, $g4['time_ymd'].'-'.$count);
 }
 
-/*
 $wr_num = get_next_num($write_table);
 
 $sql = " update {$write_table} ";
@@ -89,8 +88,6 @@ if ($qry) {
     $sql.= " where bo_table = '{$bo_table}' and wr_id = '{$wr_id}' ";
     sql_query($sql);
 }
-*/
-mw_jump($bo_table, $wr_id);
 
 echo "ok";
 

@@ -21,7 +21,7 @@
 
 include_once("_common.php");
 include_once("$board_skin_path/mw.lib/mw.skin.basic.lib.php");
-header("Content-Type: text/html; charset=$g4[charset]");
+header("Content-Type: text/html; charset={$g4['charset']}");
 
 if ($is_admin != 'super')
     die("로그인 해주세요.");
@@ -29,10 +29,10 @@ if ($is_admin != 'super')
 if (!$bo_table)
     die("bo_table 값이 없습니다.");
 
-if (!$token or get_session("ss_config_token") != $token) 
+if (!$token or get_session("ss_config_token") != $token)
     die("토큰 에러로 실행 불가합니다.");
 
-$mw_basic[cf_watermark_path] = "$g4[bbs_path]/$mw_basic[cf_watermark_path]";
+$mw_basic['cf_watermark_path'] = "{$g4['bbs_path']}/{$mw_basic['cf_watermark_path']}";
 
 // 기존 워터마크 삭제
 if ($handle = opendir($watermark_path)) {
@@ -44,15 +44,15 @@ if ($handle = opendir($watermark_path)) {
     closedir($handle);
 }
 
-$sql = "select * from $g4[board_file_table] where bo_table = '$bo_table' and bf_width > 0  order by wr_id, bf_no";
+$sql = "select * from {$g4['board_file_table']} where bo_table = '$bo_table' and bf_width > 0  order by wr_id, bf_no";
 $qry = sql_query($sql);
 while ($row = sql_fetch_array($qry))
 {
     $file = "$file_path/$row[bf_file]";
 
     // 원본 강제 리사이징
-    if ($mw_basic[cf_original_width] && $mw_basic[cf_original_height]) {
-        mw_make_thumbnail($mw_basic[cf_original_width], $mw_basic[cf_original_height], $file, $file, true);
+    if ($mw_basic['cf_original_width'] && $mw_basic['cf_original_height']) {
+        mw_make_thumbnail($mw_basic['cf_original_width'], $mw_basic['cf_original_height'], $file, $file, true);
         $size = getImageSize($file);
         sql_query("update $g4[board_file_table] set bf_width = '$size[0]', bf_height = '$size[1]'
             where bo_table = '$bo_table' and wr_id = '$wr_id' and bf_no = '$row[bf_no]'");
@@ -62,22 +62,22 @@ while ($row = sql_fetch_array($qry))
     //@unlink("$watermark_path/$row[bf_file]");
 
     // 워터마크 생성
-    if ($mw_basic[cf_watermark_use] && file_exists($mw_basic[cf_watermark_path])) {
+    if ($mw_basic['cf_watermark_use'] && file_exists($mw_basic['cf_watermark_path'])) {
         mw_watermark_file($file);
     }
 
     // 워터마크 썸네일 재생성
-    if ($mw_basic[cf_watermark_use_thumb] && file_exists($mw_basic[cf_watermark_path])) {
-        mw_make_thumbnail($mw_basic[cf_thumb_width], $mw_basic[cf_thumb_height], $source_file,
-            "{$thumb_path}/{$wr_id}", $mw_basic[cf_thumb_keep]);
-        mw_make_thumbnail($mw_basic[cf_thumb2_width], $mw_basic[cf_thumb2_height], $source_file,
-            "{$thumb2_path}/{$wr_id}", $mw_basic[cf_thumb2_keep]);
-        mw_make_thumbnail($mw_basic[cf_thumb3_width], $mw_basic[cf_thumb3_height], $source_file,
-            "{$thumb3_path}/{$wr_id}", $mw_basic[cf_thumb3_keep]);
-        mw_make_thumbnail($mw_basic[cf_thumb4_width], $mw_basic[cf_thumb4_height], $source_file,
-            "{$thumb4_path}/{$wr_id}", $mw_basic[cf_thumb4_keep]);
-        mw_make_thumbnail($mw_basic[cf_thumb5_width], $mw_basic[cf_thumb5_height], $source_file,
-            "{$thumb5_path}/{$wr_id}", $mw_basic[cf_thumb5_keep]);
+    if ($mw_basic['cf_watermark_use_thumb'] && file_exists($mw_basic['cf_watermark_path'])) {
+        mw_make_thumbnail($mw_basic['cf_thumb_width'], $mw_basic['cf_thumb_height'], $source_file,
+            "{$thumb_path}/{$wr_id}", $mw_basic['cf_thumb_keep']);
+        mw_make_thumbnail($mw_basic['cf_thumb2_width'], $mw_basic['cf_thumb2_height'], $source_file,
+            "{$thumb2_path}/{$wr_id}", $mw_basic['cf_thumb2_keep']);
+        mw_make_thumbnail($mw_basic['cf_thumb3_width'], $mw_basic['cf_thumb3_height'], $source_file,
+            "{$thumb3_path}/{$wr_id}", $mw_basic['cf_thumb3_keep']);
+        mw_make_thumbnail($mw_basic['cf_thumb4_width'], $mw_basic['cf_thumb4_height'], $source_file,
+            "{$thumb4_path}/{$wr_id}", $mw_basic['cf_thumb4_keep']);
+        mw_make_thumbnail($mw_basic['cf_thumb5_width'], $mw_basic['cf_thumb5_height'], $source_file,
+            "{$thumb5_path}/{$wr_id}", $mw_basic['cf_thumb5_keep']);
     }
 }
 

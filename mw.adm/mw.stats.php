@@ -21,7 +21,7 @@
 
 include_once("_common.php");
 include_once("$board_skin_path/mw.lib/mw.skin.basic.lib.php");
-//include_once("$g4[path]/head.sub.php");
+//include_once("{$g4['path']}/head.sub.php");
 
 function week_begin($d) {
     $t = strtotime("$d 00:00:00");
@@ -41,10 +41,10 @@ if ($is_admin != "super")
     alert("접근 권한이 없습니다.");
 
 if (!$sdate)
-    $sdate = date("Y-m-01", $g4[server_time]);
+    $sdate = date("Y-m-01", $g4['server_time']);
 
 if (!$edate)
-    $edate = date("Y-m-t", $g4[server_time]);
+    $edate = date("Y-m-t", $g4['server_time']);
 
 if (!$limit)
     $limit = 10;
@@ -113,7 +113,7 @@ jQuery(function($){
         changeYear: true,
         showButtonPanel: true,
         yearRange: 'c-99:c+99'
-    }); 
+    });
 
     $('#edate').datepicker({
         showOn: 'button',
@@ -124,7 +124,7 @@ jQuery(function($){
         changeYear: true,
         showButtonPanel: true,
         yearRange: 'c-99:c+99'
-    }); 
+    });
 });
 
 function change_date(sd, ed) {
@@ -144,7 +144,7 @@ textarea { border:1px solid #9A9A9A; border-right:1px solid #D8D8D8; border-bott
 input.bt { background-color:#efefef; height:20px; cursor:pointer; font-size:11px; font-family:dotum; }
 
 .ui-datepicker { font:12px dotum; }
-.ui-datepicker select.ui-datepicker-month, 
+.ui-datepicker select.ui-datepicker-month,
 .ui-datepicker select.ui-datepicker-year { width: 70px;}
 .ui-datepicker-trigger { margin:0 0 -5px 2px; }
 </style>
@@ -161,7 +161,7 @@ input.bt { background-color:#efefef; height:20px; cursor:pointer; font-size:11px
         onclick="change_date('<?=date("Y-m-01", strtotime("-1 month", strtotime("$sdate 00:00:00")))?>',
         '<?=date("Y-m-t", strtotime("-1 month", strtotime("$sdate 00:00:00")))?>')">
     <input type="button" class="bt" value="이번달"
-        onclick="change_date('<?=date("Y-m-01", $g4[server_time])?>','<?=date("Y-m-t", $g4[server_time])?>')">
+        onclick="change_date('<?=date("Y-m-01", $g4['server_time'])?>','<?=date("Y-m-t", $g4['server_time'])?>')">
     <input type="button" class="bt" value="다음달"
         onclick="change_date('<?=date("Y-m-01", strtotime("+1 month", strtotime("$sdate 00:00:00")))?>',
         '<?=date("Y-m-t", strtotime("+1 month", strtotime("$sdate 00:00:00")))?>')">
@@ -171,13 +171,13 @@ input.bt { background-color:#efefef; height:20px; cursor:pointer; font-size:11px
     <input type="button" class="bt" value="지난주"
         onclick="change_date('<?=week_begin($d)?>','<?=week_end($d)?>')">
     <input type="button" class="bt" value="이번주"
-        onclick="change_date('<?=week_begin($g4[time_ymd])?>','<?=week_end($g4[time_ymd])?>')">
+        onclick="change_date('<?=week_begin($g4['time_ymd'])?>','<?=week_end($g4['time_ymd'])?>')">
     <? $d = date("Y-m-d", strtotime("$sdate 00:00:00")+(86400*7)); ?>
     <input type="button" class="bt" value="다음주"
         onclick="change_date('<?=week_begin($d)?>','<?=week_end($d)?>')">
 </div>
 <div style="height:30px;">
-    통계 : 
+    통계 :
     <select name="stype" required itemname="통계">
     <option value=""> </option>
     <option value="1"> 최다 글+댓글 작성 </option>
@@ -229,13 +229,13 @@ if ($stype)
     $qry = sql_query($sql);
 
 for ($i=0; $row=sql_fetch_array($qry); $i++) {
-    $mb = get_member($row[mb_id], "mb_id, mb_nick, mb_homepage, mb_email");
-    $name = get_sideview($mb[mb_id], $mb[mb_nick], $mb[mb_homepage], $mb[mb_email]);
+    $mb = get_member($row['mb_id'], "mb_id, mb_nick, mb_homepage, mb_email");
+    $name = get_sideview($mb['mb_id'], $mb['mb_nick'], $mb['mb_homepage'], $mb['mb_email']);
 ?>
 <tr align=center height=30 bgcolor="#ffffff">
     <td> <?=($i+1)?> </td>
     <td> <?=$name?> </td>
-    <td> <?=$row[cnt]?> </td>
+    <td> <?=$row['cnt']?> </td>
 </tr>
 <? } ?>
 

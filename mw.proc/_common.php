@@ -1,4 +1,8 @@
 <?php
+
+// ini_set("log_errors", 1);
+// ini_set("error_log", __DIR__."/error_log"); 
+
 // common.php 의 상대 경로
 $g4_path = "../../../..";
 if (is_file($g4_path."/common.php")) {
